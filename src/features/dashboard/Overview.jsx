@@ -6,7 +6,7 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import LineChartComponent from "./LineChartComponent";
 import PieChartCard from "./PieChartCard";
-import { useTransactions } from "./useTransactions";
+import { useTransactions } from "../transactions/useTransactions";
 
 function Overview() {
   const { isLoading, transactions } = useTransactions();

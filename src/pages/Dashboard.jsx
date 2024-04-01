@@ -4,7 +4,7 @@ import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
 import { summarizeAmountsByCategory } from "../helpers/sortTransactions";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { useTransactions } from "../features/dashboard/useTransactions";
+import { useTransactions } from "../features/transactions/useTransactions";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
 import Spinner from "../ui/Spinner";

@@ -4,7 +4,7 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import Table from "../../ui/Table";
 import { FiArrowDownLeft } from "react-icons/fi";
-import { useTransactions } from "../dashboard/useTransactions";
+import { useTransactions } from "../transactions/useTransactions";
 
 function Income() {
   const { isLoading, transactions: incomeTransactions } =

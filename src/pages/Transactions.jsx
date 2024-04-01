@@ -1,7 +1,7 @@
 import Table from "../ui/Table";
 import Spinner from "../ui/Spinner";
 import { FiArrowDownLeft } from "react-icons/fi";
-import { useTransactions } from "../features/dashboard/useTransactions";
+import { useTransactions } from "../features/transactions/useTransactions";
 
 function Transactions() {
   const { isLoading, transactions } = useTransactions();

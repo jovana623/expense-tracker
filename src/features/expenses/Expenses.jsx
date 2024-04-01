@@ -3,7 +3,7 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import PieChartCard from "../dashboard/PieChartCard";
-import { useTransactions } from "../dashboard/useTransactions";
+import { useTransactions } from "../transactions/useTransactions";
 import { FiArrowUpRight } from "react-icons/fi";
 
 function Expenses() {

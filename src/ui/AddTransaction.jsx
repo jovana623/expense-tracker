@@ -1,5 +1,5 @@
 import Modal from "./Modal";
-import CreateTransactionForm from "../features/header/CreateTransactionForm";
+import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import { AiOutlinePlus } from "react-icons/ai";
 
 function AddTransaction() {

@@ -7,7 +7,7 @@ import { useCategories } from "../dashboard/useCategories";
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 import { useType } from "../dashboard/useType";
-import { useUpdateTransaction } from "../dashboard/useUpdateTransactions";
+import { useUpdateTransaction } from "./useUpdateTransactions";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
