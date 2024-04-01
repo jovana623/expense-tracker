@@ -63,13 +63,15 @@ export async function updateTransaction(id, newTransaction) {
 }
 
 export async function deleteTransaction(id) {
+  console.log("Deleting transaction with id:", id);
+
   const { data, error } = await supabase
     .from("Transactions")
     .delete()
     .eq("id", id);
 
   if (error) {
-    console.log(error);
+    console.log("Error deleting transaction:", error);
     throw new Error("Could not delete transaction");
   }
 

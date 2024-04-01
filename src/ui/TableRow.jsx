@@ -5,10 +5,16 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./Modal";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import ConfirmDelete from "./ConfirmDelete";
+import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
+import Spinner from "./Spinner";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {
-  const { Name, Amount, Type, Date } = transaction;
+  const { id: transactionId, Name, Amount, Type, Date } = transaction;
+
+  const { deleteTransaction, isDeleting } = useDeleteTransaction();
+
+  if (isDeleting) return <Spinner />;
 
   return (
     <div className="grid grid-cols-[0.5fr_1fr_1fr_1fr_1.2fr_0.3fr] gap-3 mt-2 items-center py-2">
@@ -32,13 +38,16 @@ function TableRow({ transaction, arrow }) {
           </Modal.Window>
         </Modal>
         <Modal>
-          <Modal.OpenButton>
+          <Modal.OpenButton opens="delete">
             <button>
               <AiOutlineDelete />
             </button>
           </Modal.OpenButton>
-          <Modal.Window>
-            <ConfirmDelete name="transaction" />
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              nameModal="transaction"
+              onConfirm={() => deleteTransaction(transactionId)}
+            />
           </Modal.Window>
         </Modal>
       </div>
