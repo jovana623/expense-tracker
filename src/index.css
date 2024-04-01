@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .nav {
+    @apply flex items-center gap-2 px-4 py-2 hover:text-green-500 hover:bg-green-50 hover:px-4 hover:py-2 hover:rounded-md;
+  }
+
+  .nav-active {
+    @apply text-green-500 bg-green-50 px-4 py-2 rounded-md;
+  }
+
+  .summary-card {
+    @apply bg-lightBg text-stone-800 w-full;
+  }
+
+  .summary-card-active {
+    @apply bg-green-500 text-lightBg w-full;
+  }
+
+  .input-field {
+    @apply px-2 py-2 shadow-sm border-stone-200 border rounded-md focus:outline-green-500 w-full;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #e7e5e4;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a8a29e;
+  border-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
