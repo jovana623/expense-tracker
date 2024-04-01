@@ -37,6 +37,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           },
         }
       );
+      console.log(data);
     } else {
       createTransaction({ newTransaction: data });
     }

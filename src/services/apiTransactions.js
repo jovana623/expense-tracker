@@ -52,7 +52,7 @@ export async function updateTransaction(id, newTransaction) {
 
   if (id) query = query.update({ ...newTransaction }).eq("id", id);
 
-  const { data, error } = await query.select().single;
+  const { data, error } = await query.select();
 
   if (error) {
     console.log(error);

@@ -6,8 +6,7 @@ import CreateTransactionForm from "../features/header/CreateTransactionForm";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {
-  const { id, Name, Amount, Type, Date } = transaction;
-  console.log(id);
+  const { Name, Amount, Type, Date } = transaction;
 
   return (
     <div className="grid grid-cols-[0.5fr_1fr_1fr_1fr_1.2fr_0.3fr] gap-3 mt-2 items-center py-2">
