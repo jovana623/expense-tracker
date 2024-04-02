@@ -6,16 +6,20 @@ import { createPortal } from "react-dom";
 const MenuContext = createContext();
 
 /* eslint-disable react/prop-types */
-function Menu() {
+function Menu({ children }) {
   const [openId, setOpenId] = useState("");
   const [position, setPosition] = useState(null);
 
   const close = () => setOpenId("");
-  const open = () => setOpenId();
+  const open = setOpenId;
 
-  <MenuContext.Provider
-    value={{ openId, open, close, position, setPosition }}
-  ></MenuContext.Provider>;
+  return (
+    <MenuContext.Provider
+      value={{ openId, open, close, position, setPosition }}
+    >
+      {children}
+    </MenuContext.Provider>
+  );
 }
 
 function Toggle({ id }) {
@@ -47,7 +51,12 @@ function List({ id, children }) {
 
   return createPortal(
     /* eslint-disable-next-line react/no-unknown-property */
-    <ul position={position} ref={ref}>
+    <ul
+      position={position}
+      ref={ref}
+      className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md"
+      style={{ top: position?.y, left: position?.x }}
+    >
       {children}
     </ul>,
     document.body

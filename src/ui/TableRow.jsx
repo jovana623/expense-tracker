@@ -1,5 +1,4 @@
 import { formatDate } from "../helpers/dateFunctions";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./Modal";
@@ -7,6 +6,7 @@ import CreateTransactionForm from "../features/transactions/CreateTransactionFor
 import ConfirmDelete from "./ConfirmDelete";
 import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 import Spinner from "./Spinner";
+import Menu from "./Menu";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {
@@ -23,32 +23,31 @@ function TableRow({ transaction, arrow }) {
       <div>{Amount}</div>
       <div>{Type["Name"]}</div>
       <div className="justify-self-center">{formatDate(Date)}</div>
-      <div className="flex items-center gap-2">
-        <button>
-          <BsThreeDotsVertical />
-        </button>
+      <div>
         <Modal>
-          <Modal.OpenButton opens="update">
-            <button>
-              <BiSolidPencil />
-            </button>
-          </Modal.OpenButton>
-          <Modal.Window name="update">
-            <CreateTransactionForm transactionToUpdate={transaction} />
-          </Modal.Window>
-        </Modal>
-        <Modal>
-          <Modal.OpenButton opens="delete">
-            <button>
-              <AiOutlineDelete />
-            </button>
-          </Modal.OpenButton>
-          <Modal.Window name="delete">
-            <ConfirmDelete
-              nameModal="transaction"
-              onConfirm={() => deleteTransaction(transactionId)}
-            />
-          </Modal.Window>
+          <Menu>
+            <Menu.Toggle id={transactionId} />
+            <Menu.List id={transactionId}>
+              <Modal.OpenButton opens="update">
+                <Menu.Button icon={<BiSolidPencil />}>Update</Menu.Button>
+              </Modal.OpenButton>
+
+              <Modal.OpenButton opens="delete">
+                <Menu.Button icon={<AiOutlineDelete />}>Delete</Menu.Button>
+              </Modal.OpenButton>
+            </Menu.List>
+
+            <Modal.Window name="update">
+              <CreateTransactionForm transactionToUpdate={transaction} />
+            </Modal.Window>
+
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                nameModal="transaction"
+                onConfirm={() => deleteTransaction(transactionId)}
+              />
+            </Modal.Window>
+          </Menu>
         </Modal>
       </div>
     </div>
