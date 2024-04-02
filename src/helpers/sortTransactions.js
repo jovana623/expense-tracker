@@ -69,3 +69,12 @@ export function monthySummary(transactions) {
   const data = Object.values(monthlyData);
   return data;
 }
+
+export function calculateTotalAmountSaved(savings) {
+  // Use reduce to sum up the amounts
+  const totalAmountSaved = savings.reduce((total, saving) => {
+    return total + saving.Amount;
+  }, 0);
+
+  return totalAmountSaved;
+}

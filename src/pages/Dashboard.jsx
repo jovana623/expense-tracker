@@ -2,7 +2,10 @@ import { BiDollar } from "react-icons/bi";
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
-import { summarizeAmountsByCategory } from "../helpers/sortTransactions";
+import {
+  calculateTotalAmountSaved,
+  summarizeAmountsByCategory,
+} from "../helpers/sortTransactions";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useTransactions } from "../features/transactions/useTransactions";
 
@@ -10,9 +13,12 @@ import SummaryCard from "../features/dashboard/SummaryCard";
 import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../ui/AddTransaction";
+import { useSavings } from "../features/savings/useSavings";
 
 function Dashboard() {
   const { isLoading, transactions } = useTransactions();
+  const { isLoading: isLoadingSavings, savings } = useSavings();
+  console.log(savings);
 
   const location = useLocation();
 
@@ -20,9 +26,13 @@ function Dashboard() {
     ? summarizeAmountsByCategory(transactions)
     : [];
 
+  if (isLoadingSavings) return <Spinner />;
+
+  const savedSummary = calculateTotalAmountSaved(savings);
+
   const amounts = [45200, 24500, 21200, 46000];
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isLoadingSavings) return <Spinner />;
 
   return (
     <div className="m-2 mx-7">
@@ -53,7 +63,7 @@ function Dashboard() {
           <SummaryCard
             icon={<MdOutlineSavings />}
             name="Savings"
-            amount={amounts[2]}
+            amount={savedSummary}
             percentage="6"
             isActive={location.pathname === "/dashboard/savings"}
           />
