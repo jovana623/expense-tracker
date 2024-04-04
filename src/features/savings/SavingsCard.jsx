@@ -4,13 +4,11 @@ import { calculateDaysLeft } from "../../helpers/dateFunctions";
 function SavingCard({ saving }) {
   if (!saving) return null;
 
-  console.log(saving.Target_Date);
-
   const daysLeft = calculateDaysLeft(saving.Target_Date);
   const percentage = ((saving.Amount * 100) / saving.Goal).toFixed(0);
 
   return (
-    <div className="rounded-md px-3 pt-4 w-1/2 items-end shadow">
+    <div className="rounded-md px-3 pt-4 w-full items-end shadow">
       <div
         style={{
           width: `${100}%`,

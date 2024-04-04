@@ -14,11 +14,14 @@ import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../ui/AddTransaction";
 import { useSavings } from "../features/savings/useSavings";
+import { usePayments } from "../features/savings/usePayments";
 
 function Dashboard() {
   const { isLoading, transactions } = useTransactions();
   const { isLoading: isLoadingSavings, savings } = useSavings();
-  console.log(savings);
+
+  const { isLoading: isLoading2, payments } = usePayments();
+  console.log(isLoading2, payments);
 
   const location = useLocation();
 

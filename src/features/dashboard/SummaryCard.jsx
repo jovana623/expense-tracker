@@ -28,6 +28,7 @@ function SummaryCard({ icon, name, amount, percentage, isActive }) {
         <p className="text-xl font-bold mb-2">
           {amount.toLocaleString()}&euro;
         </p>
+
         <p className="flex items-center gap-1 hover:text-lightBg">
           <span
             className={`flex items-center gap-1 ${

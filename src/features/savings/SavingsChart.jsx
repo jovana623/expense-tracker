@@ -1,4 +1,9 @@
-import { RadialBar, RadialBarChart, ResponsiveContainer } from "recharts";
+import {
+  Legend,
+  RadialBar,
+  RadialBarChart,
+  ResponsiveContainer,
+} from "recharts";
 
 /* eslint-disable react/prop-types */
 export default function SavingsChart({ saving }) {
@@ -25,8 +30,12 @@ export default function SavingsChart({ saving }) {
     },
   ];
 
+  const renderLegend = () => {
+    return `${percentage}%`;
+  };
+
   return (
-    <ResponsiveContainer width="70%" height={400}>
+    <ResponsiveContainer width="70%" height="50%">
       <RadialBarChart
         innerRadius="70%"
         outerRadius="50%"
@@ -42,6 +51,18 @@ export default function SavingsChart({ saving }) {
           clockWise
           dataKey="amount"
           fill="#0ea5e9"
+        />
+        <Legend
+          content={renderLegend}
+          verticalAlign="middle"
+          align="middle"
+          layout="vertical"
+          wrapperStyle={{
+            marginLeft: "43%",
+            fontSize: "28px",
+            fontWeight: "600",
+            color: "#0ea5e9",
+          }}
         />
       </RadialBarChart>
     </ResponsiveContainer>
