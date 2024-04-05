@@ -11,8 +11,12 @@ function SavingsDetailCard({ saving }) {
     <div className="relative shadow rounded-md flex flex-col items-center py-3">
       <div className="flex flex-col items-center gap-1">
         <p className="text-stone-500">You have reached</p>
-        <h1 className="text-2xl font-semibold">{Amount}&euro;</h1>
-        <p className="text-stone-500">of your {Goal}&euro; saving goal</p>
+        <h1 className="text-2xl font-semibold">
+          {Amount.toLocaleString()}&euro;
+        </h1>
+        <p className="text-stone-500">
+          of your {Goal.toLocaleString()}&euro; saving goal
+        </p>
       </div>
       <SavingsChart saving={saving} />
       <div className="flex gap-2">

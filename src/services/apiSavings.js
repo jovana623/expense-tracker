@@ -65,7 +65,7 @@ export async function createNewSavingPayment(newPayment) {
 export async function updateSavingAmount(newAmount, id) {
   const { data, error } = await supabase
     .from("Savings")
-    .update({ Amount: newAmount })
+    .update({ Amount: supabase.sql`Amount + ${newAmount}` })
     .eq("id", id)
     .select();
 

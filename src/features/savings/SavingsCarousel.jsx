@@ -6,7 +6,10 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 function SavingsCarousel({ savings, onCardChange, activeSaving }) {
   function PrevArrow({ onClick }) {
     return (
-      <button className="font-semibold text-blue-500" onClick={onClick}>
+      <button
+        className="font-semibold text-blue-500 absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+        onClick={onClick}
+      >
         <FaChevronLeft />
       </button>
     );
@@ -14,7 +17,10 @@ function SavingsCarousel({ savings, onCardChange, activeSaving }) {
 
   function NextArrow({ onClick }) {
     return (
-      <button onClick={onClick} className="font-semibold text-blue-500">
+      <button
+        onClick={onClick}
+        className="font-semibold text-blue-500 absolute right-0 top-1/2 transform -translate-y-1/2"
+      >
         <FaChevronRight />
       </button>
     );
@@ -27,6 +33,7 @@ function SavingsCarousel({ savings, onCardChange, activeSaving }) {
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
+    swipeToSlide: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
 
@@ -39,7 +46,7 @@ function SavingsCarousel({ savings, onCardChange, activeSaving }) {
   };
 
   return (
-    <div className="mb-18">
+    <div className="relative">
       <Slider {...settings}>
         {savings.map((saving) => (
           <div key={saving.id}>

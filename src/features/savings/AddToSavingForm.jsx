@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import { useCreateSavingPayment } from "./useCreateSavingPayment";
 import Spinner from "../../ui/Spinner";
 import { usePayments } from "./usePayments";
+import { useUpdateAmount } from "./useUpdateAmount";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
   const { payments, isLoading: isLoadingPayments } = usePayments();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
+  const { updateSavingAmount, isLoading: isLoadingUpdate } = useUpdateAmount();
 
   const { close } = useContext(ModalContext);
   function onCancel() {
@@ -23,12 +25,22 @@ function AddToSavingForm({ saving }) {
 
   function onSubmit(data) {
     createPayment({ ...data });
+    updateSavingAmount(
+      { newAmount: data.Amount, id: data.SavingId },
+      {
+        onSuccess: () => {
+          close();
+          reset();
+        },
+      }
+    );
   }
 
-  if (isLoading || isLoadingPayments) return <Spinner />;
+  if (isLoading || isLoadingPayments || isLoadingUpdate) return <Spinner />;
 
   return (
     <form
+      key={saving.id}
       onSubmit={handleSubmit(onSubmit)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
