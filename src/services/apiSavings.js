@@ -24,6 +24,21 @@ export async function getSaving(id) {
   return data;
 }
 
+export async function createNewSaving(newSaving) {
+  const { data, error } = await supabase
+    .from("Savings")
+    .insert([newSaving])
+    .select();
+
+  console.log(newSaving);
+
+  if (error) {
+    throw new Error("Savings could not be added");
+  }
+
+  return data;
+}
+
 export async function getPayments() {
   const { data, error } = await supabase.from("SavingPayment").select("*");
 
@@ -34,14 +49,28 @@ export async function getPayments() {
   return data;
 }
 
-export async function createNewSavingPayment(amount, date, savingId) {
+export async function createNewSavingPayment(newPayment) {
   const { data, error } = await supabase
     .from("SavingPayment")
-    .insert([{ Amount: amount, Date: date, SavingId: savingId }])
+    .insert([newPayment])
     .select();
 
   if (error) {
-    throw new Error("Savings could not be added");
+    throw new Error("Payment could not be added");
+  }
+
+  return data;
+}
+
+export async function updateSavingAmount(newAmount, id) {
+  const { data, error } = await supabase
+    .from("Savings")
+    .update({ Amount: newAmount })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    throw new Error("Saving amount could not be updated");
   }
 
   return data;

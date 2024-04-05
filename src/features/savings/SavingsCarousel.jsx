@@ -1,15 +1,34 @@
 import Slider from "react-slick";
 import SavingCard from "./SavingsCard";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 /* eslint-disable react/prop-types */
-function SavingsCarousel({ savings }) {
+function SavingsCarousel({ savings, onCardChange, activeSaving }) {
+  function PrevArrow({ onClick }) {
+    return (
+      <button className="font-semibold text-blue-500" onClick={onClick}>
+        <FaChevronLeft />
+      </button>
+    );
+  }
+
+  function NextArrow({ onClick }) {
+    return (
+      <button onClick={onClick} className="font-semibold text-blue-500">
+        <FaChevronRight />
+      </button>
+    );
+  }
+
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     slidesToShow: 2,
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
 
     beforeChange: function (currentSlide, nextSlide) {
       console.log("before change", currentSlide, nextSlide);
@@ -20,11 +39,15 @@ function SavingsCarousel({ savings }) {
   };
 
   return (
-    <div className="">
+    <div className="mb-18">
       <Slider {...settings}>
         {savings.map((saving) => (
           <div key={saving.id}>
-            <SavingCard saving={saving} />
+            <SavingCard
+              saving={saving}
+              onCardChange={onCardChange}
+              activeSaving={activeSaving}
+            />
           </div>
         ))}
       </Slider>

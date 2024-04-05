@@ -5,14 +5,10 @@ import PaymentsList from "./PaymentsList";
 import AddToSavingForm from "./AddToSavingForm";
 
 /* eslint-disable react/prop-types */
-function SavingsDetailCard({ saving, onClick }) {
-  const { id, Amount, Goal } = saving;
-  //const percentage = ((Amount * 100) / Goal).toFixed(0);
+function SavingsDetailCard({ saving }) {
+  const { Amount, Goal } = saving;
   return (
-    <div
-      className="relative shadow rounded-md flex flex-col items-center py-3"
-      onClick={() => onClick(id)}
-    >
+    <div className="relative shadow rounded-md flex flex-col items-center py-3">
       <div className="flex flex-col items-center gap-1">
         <p className="text-stone-500">You have reached</p>
         <h1 className="text-2xl font-semibold">{Amount}&euro;</h1>

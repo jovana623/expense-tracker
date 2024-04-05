@@ -4,10 +4,12 @@ import { ModalContext } from "../../ui/Modal";
 import { useForm } from "react-hook-form";
 import { useCreateSavingPayment } from "./useCreateSavingPayment";
 import Spinner from "../../ui/Spinner";
+import { usePayments } from "./usePayments";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
+  const { payments, isLoading: isLoadingPayments } = usePayments();
   const { handleSubmit, register } = useForm();
 
   const { close } = useContext(ModalContext);
@@ -15,22 +17,32 @@ function AddToSavingForm({ saving }) {
     close();
   }
 
-  //const { id } = saving;
+  const { id } = saving;
 
-  function onSubmit() {
-    createPayment({
-      Amount: 120,
-      Date: "2024-03-12",
-    });
+  console.log(payments);
+
+  function onSubmit(data) {
+    createPayment({ ...data });
   }
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isLoadingPayments) return <Spinner />;
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
+      <div className="hidden">
+        <label htmlFor="SavingId">SavingId</label>
+        <input
+          type="number"
+          id="SavingId"
+          className="input-field"
+          value={id}
+          {...register("SavingId")}
+        ></input>
+      </div>
+
       <div className="flex flex-col gap-1 col-span-2 bg-gray-50">
         <label htmlFor="Name">Saving name</label>
         <input
@@ -41,6 +53,7 @@ function AddToSavingForm({ saving }) {
           defaultValue={saving.Name}
         ></input>
       </div>
+
       <div className="flex flex-col gap-1">
         <label htmlFor="Amount">Amount</label>
         <input

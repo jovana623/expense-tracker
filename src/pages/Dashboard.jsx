@@ -14,14 +14,11 @@ import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../ui/AddTransaction";
 import { useSavings } from "../features/savings/useSavings";
-import { usePayments } from "../features/savings/usePayments";
+import AddSavingGoal from "../ui/AddSavingGoal";
 
 function Dashboard() {
   const { isLoading, transactions } = useTransactions();
   const { isLoading: isLoadingSavings, savings } = useSavings();
-
-  const { isLoading: isLoading2, payments } = usePayments();
-  console.log(isLoading2, payments);
 
   const location = useLocation();
 
@@ -40,7 +37,11 @@ function Dashboard() {
   return (
     <div className="m-2 mx-7">
       <div className="flex justify-between items-center mb-3">
-        <AddTransaction />
+        {window.location.pathname === "/dashboard/savings" ? (
+          <AddSavingGoal />
+        ) : (
+          <AddTransaction />
+        )}
         <TimeFilter />
       </div>
       <div className="flex justify-between gap-7">
