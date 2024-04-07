@@ -39,33 +39,10 @@ export async function createNewSaving(newSaving) {
   return data;
 }
 
-export async function getPayments() {
-  const { data, error } = await supabase.from("SavingPayment").select("*");
-
-  if (error) {
-    throw new Error("Payments could not be loaded");
-  }
-
-  return data;
-}
-
-export async function createNewSavingPayment(newPayment) {
-  const { data, error } = await supabase
-    .from("SavingPayment")
-    .insert([newPayment])
-    .select();
-
-  if (error) {
-    throw new Error("Payment could not be added");
-  }
-
-  return data;
-}
-
-export async function updateSavingAmount(newAmount, id) {
+export async function updateSaving(newAmount, id, newStatus) {
   const { data, error } = await supabase
     .from("Savings")
-    .update({ Amount: supabase.sql`Amount + ${newAmount}` })
+    .update({ Amount: supabase.sql`Amount + ${newAmount}`, Status: newStatus })
     .eq("id", id)
     .select();
 

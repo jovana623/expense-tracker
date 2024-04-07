@@ -19,7 +19,11 @@ function SavingsDetailCard({ saving }) {
         </p>
       </div>
       <SavingsChart saving={saving} />
-      <div className="flex gap-2">
+      <div
+        className={`flex gap-2 ${
+          saving.Status === "Completed" ? "flex-col items-center" : ""
+        }`}
+      >
         <Modal>
           <Modal.OpenButton opens="details">
             <Button type="secondary">See details</Button>
@@ -28,14 +32,18 @@ function SavingsDetailCard({ saving }) {
             <PaymentsList saving={saving} />
           </Modal.Window>
         </Modal>
-        <Modal>
-          <Modal.OpenButton opens="add-saving">
-            <Button type="primary">Add to this saving</Button>
-          </Modal.OpenButton>
-          <Modal.Window name="add-saving">
-            <AddToSavingForm saving={saving} />
-          </Modal.Window>
-        </Modal>
+        {saving.Status === "Completed" ? (
+          <p className="text-stone-500">You have reached goal amount</p>
+        ) : (
+          <Modal>
+            <Modal.OpenButton opens="add-saving">
+              <Button type="primary">Add to this saving</Button>
+            </Modal.OpenButton>
+            <Modal.Window name="add-saving">
+              <AddToSavingForm saving={saving} />
+            </Modal.Window>
+          </Modal>
+        )}
       </div>
     </div>
   );

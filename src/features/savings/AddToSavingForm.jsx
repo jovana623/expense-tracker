@@ -4,29 +4,27 @@ import { ModalContext } from "../../ui/Modal";
 import { useForm } from "react-hook-form";
 import { useCreateSavingPayment } from "./useCreateSavingPayment";
 import Spinner from "../../ui/Spinner";
-import { usePayments } from "./usePayments";
-import { useUpdateAmount } from "./useUpdateAmount";
+import { useUpdateSaving } from "./useUpdateSaving";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
-  const { payments, isLoading: isLoadingPayments } = usePayments();
-  const { handleSubmit, register, reset } = useForm();
-  const { updateSavingAmount, isLoading: isLoadingUpdate } = useUpdateAmount();
+  const { handleSubmit, register, reset, formState } = useForm();
+  const { updateSaving, isLoading: isLoadingUpdate } = useUpdateSaving();
 
+  const { errors } = formState;
   const { close } = useContext(ModalContext);
+
   function onCancel() {
     close();
   }
 
   const { id } = saving;
 
-  console.log(payments);
-
   function onSubmit(data) {
     createPayment({ ...data });
-    updateSavingAmount(
-      { newAmount: data.Amount, id: data.SavingId },
+    updateSaving(
+      { newAmount: data.Amount, id: data.SavingId, newStatus: saving.Status },
       {
         onSuccess: () => {
           close();
@@ -36,12 +34,16 @@ function AddToSavingForm({ saving }) {
     );
   }
 
-  if (isLoading || isLoadingPayments || isLoadingUpdate) return <Spinner />;
+  function onError(errors) {
+    console.log(errors);
+  }
+
+  if (isLoading || isLoadingUpdate) return <Spinner />;
 
   return (
     <form
       key={saving.id}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
       <div className="hidden">
@@ -72,8 +74,21 @@ function AddToSavingForm({ saving }) {
           type="number"
           id="Amount"
           className="input-field"
-          {...register("Amount")}
+          {...register("Amount", {
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Amount should be at least 1",
+            },
+            max: {
+              value: saving.Goal - saving.Amount,
+              message: `You only need ${
+                saving.Goal - saving.Amount
+              }€ to reach the goal`,
+            },
+          })}
         ></input>
+        <p className="text-xs text-red-500">{errors?.Amount?.message}</p>
       </div>
       <div className="flex flex-col gap-1">
         <label htmlFor="Date">Date</label>
@@ -81,9 +96,13 @@ function AddToSavingForm({ saving }) {
           type="date"
           className="input-field"
           id="Date"
-          {...register("Date")}
+          {...register("Date", {
+            required: "This field is required",
+          })}
         ></input>
+        <p className="text-xs text-red-500">{errors?.Date?.message}</p>
       </div>
+
       <div className="flex gap-2 col-start-2 mt-4">
         <Button type="secondary" onClick={onCancel}>
           Cancel

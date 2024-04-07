@@ -65,7 +65,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
             <div className="flex justify-between mt-3 text-stone-500">
               <p>
                 {saving.Amount.toLocaleString()}&euro; /{" "}
-                {saving.Goal.toLocaleString()}˛&euro;
+                {saving.Goal.toLocaleString()}&euro;
               </p>
               <p>{percentage}&#x25;</p>
             </div>
