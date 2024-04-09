@@ -6,7 +6,7 @@ import {
   calculateTotalAmountSaved,
   summarizeAmountsByCategory,
 } from "../helpers/sortTransactions";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useTransactions } from "../features/transactions/useTransactions";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
@@ -19,20 +19,13 @@ import AddSavingGoal from "../ui/AddSavingGoal";
 function Dashboard() {
   const { isLoading, transactions } = useTransactions();
   const { isLoading: isLoadingSavings, savings } = useSavings();
-
-  const location = useLocation();
-
-  const summarizedByCategory = transactions
-    ? summarizeAmountsByCategory(transactions)
-    : [];
-
-  if (isLoadingSavings) return <Spinner />;
-
-  const savedSummary = calculateTotalAmountSaved(savings);
-
-  const amounts = [45200, 24500, 21200, 46000];
+  console.log(transactions);
 
   if (isLoading || isLoadingSavings) return <Spinner />;
+
+  const summarizedByCategory = summarizeAmountsByCategory(transactions);
+  const savedSummary = calculateTotalAmountSaved(savings);
+  const amounts = [45200, 24500, 21200, 46000];
 
   return (
     <div className="m-2 mx-7">

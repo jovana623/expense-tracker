@@ -39,15 +39,40 @@ export async function createNewSaving(newSaving) {
   return data;
 }
 
-export async function updateSaving(newAmount, id, newStatus) {
+export async function updateSaving(
+  newName,
+  newGoal,
+  newAmount,
+  newStatus,
+  newDate,
+  newDescription,
+  id
+) {
   const { data, error } = await supabase
     .from("Savings")
-    .update({ Amount: supabase.sql`Amount + ${newAmount}`, Status: newStatus })
+    .update({
+      Name: newName,
+      Goal: newGoal,
+      Amount: supabase.sql`Amount + ${newAmount}`,
+      Status: newStatus,
+      Date: newDate,
+      Description: newDescription,
+    })
     .eq("id", id)
     .select();
 
   if (error) {
-    throw new Error("Saving amount could not be updated");
+    throw new Error("Saving could not be updated");
+  }
+
+  return data;
+}
+
+export async function deleteSaving(id) {
+  const { data, error } = await supabase.from("Savings").delete().eq("id", id);
+
+  if (error) {
+    throw new Error("Saving amount could not be deleted");
   }
 
   return data;

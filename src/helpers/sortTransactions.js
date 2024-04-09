@@ -1,25 +1,25 @@
 import { getMonthName } from "./helpers";
 
-export function summarizeAmountsByCategory(data) {
-  const summary = {};
+export function summarizeAmountsByCategory(transactions) {
+  const incomeTransactions = transactions.filter(
+    (transaction) => transaction.Categories.Name === "Income"
+  );
+  const expensesTransactions = transactions.filter(
+    (transaction) => transaction.Categories.Name === "Expenses"
+  );
 
-  data.forEach((entry) => {
-    const CategoryId = entry.CategoryId;
-    const amount = entry.Amount;
-
-    if (!summary[CategoryId]) {
-      summary[CategoryId] = amount;
-    } else {
-      summary[CategoryId] += amount;
-    }
-  });
-
-  const result = Object.keys(summary).map((CategoryId) => ({
-    CategoryId: CategoryId,
-    amount: summary[CategoryId],
-  }));
-
-  return result;
+  const totalIncome = incomeTransactions.reduce(
+    (acc, transaction) => acc + transaction.Amount,
+    0
+  );
+  const totalExpenses = expensesTransactions.reduce(
+    (acc, transaction) => acc + transaction.Amount,
+    0
+  );
+  return [
+    { category: "Income", amount: totalIncome },
+    { category: "Expenses", amount: totalExpenses },
+  ];
 }
 
 export function summarizeAmountsByType(data) {

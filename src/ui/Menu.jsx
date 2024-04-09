@@ -52,7 +52,6 @@ function List({ id, children }) {
   return createPortal(
     /* eslint-disable-next-line react/no-unknown-property */
     <ul
-      position={position}
       ref={ref}
       className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md"
       style={{ top: position?.y, left: position?.x }}

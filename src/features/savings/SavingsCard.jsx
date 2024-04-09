@@ -1,8 +1,18 @@
+import { BiSolidPencil } from "react-icons/bi";
 import { calculateDaysLeft } from "../../helpers/dateFunctions";
+import Menu from "../../ui/Menu";
+import Modal from "../../ui/Modal";
+import { AiOutlineDelete } from "react-icons/ai";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import useDeleteSaving from "./useDeleteSaving";
+import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */
 function SavingCard({ saving, onCardChange, activeSaving }) {
+  const { mutate: deleteSaving, isLoading } = useDeleteSaving();
   if (!saving) return null;
+
+  const { id } = saving;
 
   const daysLeft = calculateDaysLeft(saving.Target_Date);
   const percentage = ((saving.Amount * 100) / saving.Goal).toFixed(0);
@@ -15,6 +25,8 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
       : saving.Status === "Completed"
       ? "bg-green-500"
       : "bg-yellow-500";
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="flex justify-center">
@@ -42,6 +54,34 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
               >
                 {saving.Status}
               </p>
+              <div className="justify-self-end self-end">
+                <Modal>
+                  <Menu>
+                    <Menu.Toggle id={saving.id} />
+                    <Menu.List id={saving.id}>
+                      <Modal.OpenButton opens="update-saving">
+                        <Menu.Button icon={<BiSolidPencil />}>
+                          Update
+                        </Menu.Button>
+                      </Modal.OpenButton>
+                      <Modal.OpenButton opens="delete-saving">
+                        <Menu.Button icon={<AiOutlineDelete />}>
+                          Delete
+                        </Menu.Button>
+                      </Modal.OpenButton>
+                    </Menu.List>
+                    <Modal.Window name="update-saving">
+                      <p>Update</p>
+                    </Modal.Window>
+                    <Modal.Window name="delete-saving">
+                      <ConfirmDelete
+                        nameModal="transaction"
+                        onConfirm={() => deleteSaving(id)}
+                      />
+                    </Modal.Window>
+                  </Menu>
+                </Modal>
+              </div>
             </div>
             <div
               style={{
