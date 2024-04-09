@@ -13,14 +13,30 @@ import Investments from "./features/investments/Investments";
 import Savings from "./features/savings/Savings";
 import Expenses from "./features/expenses/Expenses";
 import { Toaster } from "react-hot-toast";
+import Login from "./pages/Login";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import Register from "./pages/Register";
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 0,
+      },
+    },
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route
               index
               element={<Navigate replace to="dashboard/overview" />}
@@ -38,6 +54,8 @@ function App() {
             <Route path="settings" element={<Settings />} />
             <Route path="profile" element={<Profile />} />
           </Route>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Routes>
       </BrowserRouter>
       <Toaster
