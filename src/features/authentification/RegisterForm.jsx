@@ -7,14 +7,19 @@ function RegisterForm() {
   const { register, handleSubmit, reset } = useForm();
 
   function onSubmit({ fullName, email, password }) {
-    registerUser({ fullName, email, password }, { onSettled: () => reset() });
+    registerUser(
+      { fullName, email, password },
+      {
+        onSettled: () => reset(),
+      }
+    );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div>
-          <label htmlFor="fullName">Username</label>
+          <label htmlFor="fullName">Full Name or Username</label>
           <input
             type="text"
             id="fullName"

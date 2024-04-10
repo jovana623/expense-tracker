@@ -4,11 +4,12 @@ import {
 } from "../helpers/filterTransactions";
 import supabase from "./supabase";
 
-export async function getTransactions({ categoryName = null, filter }) {
+export async function getTransactions({ categoryName = null, filter, userId }) {
   console.log("Category Name:", categoryName);
   let query = supabase
     .from("Transactions")
-    .select("*,Categories!inner(*), Type(*)");
+    .select("*,Categories!inner(*), Type(*)")
+    .eq("UserId", userId);
 
   //Filter by category
   if (categoryName) {
@@ -33,10 +34,10 @@ export async function getTransactions({ categoryName = null, filter }) {
   return filteredData;
 }
 
-export async function createNewTransaction({ newTransaction }) {
+export async function createNewTransaction({ newTransaction, UserId }) {
   const { data, error } = await supabase
     .from("Transactions")
-    .insert([newTransaction])
+    .insert([{ ...newTransaction, UserId }])
     .select();
 
   if (error) {
@@ -47,10 +48,11 @@ export async function createNewTransaction({ newTransaction }) {
   return data;
 }
 
-export async function updateTransaction(id, newTransaction) {
+export async function updateTransaction(newTransaction, id, UserId) {
   let query = supabase.from("Transactions");
 
-  if (id) query = query.update({ ...newTransaction }).eq("id", id);
+  if (id)
+    query = query.update({ ...newTransaction, UserId: UserId }).eq("id", id);
 
   const { data, error } = await query.select();
 

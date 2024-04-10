@@ -4,7 +4,7 @@ import Header from "../features/header/Header";
 
 function AppLayout() {
   return (
-    <div className="grid grid-cols-[auto_1fr] py-3 gap-0">
+    <div className="grid grid-cols-[auto_1fr] py-3 gap-0 overflow-hidden">
       <NavBar />
       <div className="flex flex-col">
         <Header />

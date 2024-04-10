@@ -7,9 +7,11 @@ import Spinner from "../../ui/Spinner";
 import LineChartComponent from "./LineChartComponent";
 import PieChartCard from "./PieChartCard";
 import { useTransactions } from "../transactions/useTransactions";
+import { useUser } from "../authentification/useUser";
 
 function Overview() {
-  const { isLoading, transactions } = useTransactions();
+  const { data: user, isLoadingUser } = useUser();
+  const { isLoading, transactions } = useTransactions(null, user.user.id);
 
   const summarizedByCategory = transactions
     ? summarizeAmountsByCategory(transactions)
@@ -18,7 +20,7 @@ function Overview() {
   const sortedByMonth = transactions ? monthySummary(transactions) : [];
   console.log(sortedByMonth);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isLoadingUser) return <Spinner />;
 
   return (
     <div className="grid grid-cols-[1fr_3fr] gap-14">

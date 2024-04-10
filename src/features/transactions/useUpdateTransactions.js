@@ -6,8 +6,8 @@ export function useUpdateTransaction() {
   const queryClient = useQueryClient();
 
   const { mutate: updatedTransaction, isLoading } = useMutation({
-    mutationFn: ({ id, newTransaction }) =>
-      updateTransaction(id, newTransaction),
+    mutationFn: ({ newTransaction, id, UserId }) =>
+      updateTransaction(newTransaction, id, UserId),
     onSuccess: () => {
       toast.success("Transaction updated");
       queryClient.invalidateQueries({ queryKey: ["transactions"] });

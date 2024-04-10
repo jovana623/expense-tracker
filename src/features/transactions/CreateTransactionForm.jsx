@@ -8,6 +8,7 @@ import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 import { useType } from "../dashboard/useType";
 import { useUpdateTransaction } from "./useUpdateTransactions";
+import { useUser } from "../authentification/useUser";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
@@ -15,8 +16,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { updatedTransaction, isLoading: isUpdating } = useUpdateTransaction();
   const { categories, isLoading: isLoadingCategories } = useCategories();
   const { type, isLoading: isLoadingType } = useType();
+  const { data: user, isLoadingUser } = useUser();
 
-  const { id: updateId, ...updateValues } = transactionToUpdate;
+  const { id: updateId, UserId, ...updateValues } = transactionToUpdate;
 
   const isUpdateSession = Boolean(updateId);
 
@@ -29,7 +31,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   function onSubmit(data) {
     if (isUpdateSession) {
       updatedTransaction(
-        { newTransaction: { ...data }, id: updateId },
+        { newTransaction: { ...data }, id: updateId, UserId: UserId },
         {
           onSuccess: () => {
             reset();
@@ -39,7 +41,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
       );
       console.log(data);
     } else {
-      createTransaction({ newTransaction: data });
+      createTransaction({ newTransaction: data, UserId: user.user.id });
     }
   }
 
@@ -47,7 +49,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     close();
   }
 
-  const isWorking = isCreating || isUpdating;
+  const isWorking = isCreating || isUpdating || isLoadingUser;
 
   return (
     <form

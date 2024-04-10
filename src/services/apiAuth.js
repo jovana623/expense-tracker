@@ -22,13 +22,20 @@ export async function register({ fullName, email, password }) {
   let { data, error } = await supabase.auth.signUp({
     email,
     password,
+    fullName,
     options: {
-      fullName,
       avatar: "",
     },
   });
 
+  console.log(fullName, email, password);
+
   if (error) throw new Error(error);
 
   return data;
+}
+
+export async function logout() {
+  let { error } = await supabase.auth.signOut();
+  if (error) throw new Error(error.message);
 }

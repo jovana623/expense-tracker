@@ -2,16 +2,20 @@ import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
+import { useUser } from "../authentification/useUser";
 import PieChartCard from "../dashboard/PieChartCard";
 import { useTransactions } from "../transactions/useTransactions";
 import { FiArrowUpRight } from "react-icons/fi";
 
 function Expenses() {
-  const { isLoading, transactions: expenseTransactions } =
-    useTransactions("Expense");
+  const { data: user, isLoadingUser } = useUser();
+  const { isLoading, transactions: expenseTransactions } = useTransactions(
+    "Expense",
+    user.user.id
+  );
 
   const summarizedByType = summarizeAmountsByType(expenseTransactions);
-  if (isLoading) return <Spinner />;
+  if (isLoading || isLoadingUser) return <Spinner />;
 
   return (
     <div>

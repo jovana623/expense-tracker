@@ -28,7 +28,7 @@ function Dashboard() {
   const amounts = [45200, 24500, 21200, 46000];
 
   return (
-    <div className="m-2 mx-7">
+    <div className="p-2 px-7 overflow-y-scroll">
       <div className="flex justify-between items-center mb-3">
         {window.location.pathname === "/dashboard/savings" ? (
           <AddSavingGoal />
