@@ -4,8 +4,8 @@ import {
 } from "../helpers/filterTransactions";
 import supabase from "./supabase";
 
-export async function getIncome({ filter }) {
-  let query = supabase.from("Income").select("*, Type(*)");
+export async function getIncome({ filter, userId }) {
+  let query = supabase.from("Income").select("*, Type(*)").eq("userId", userId);
 
   const { data, error } = await query;
 

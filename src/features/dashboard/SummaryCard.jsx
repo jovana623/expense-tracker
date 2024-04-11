@@ -29,14 +29,14 @@ function SummaryCard({ icon, name, amount, percentage, isActive }) {
           {amount.toLocaleString()}&euro;
         </p>
 
-        <p className="flex items-center gap-1 hover:text-lightBg">
+        <p className="flex items-center gap-1">
           <span
             className={`flex items-center gap-1 ${
               isActive ? "text-lightBg" : "text-green-500"
-            } ${isActive && "hover:text-lightBg"}`}
+            }`}
           >
             <BsArrowUpRight />
-            {percentage}&#x25;
+            <span className="hover:text-lightBg">{percentage}&#x25;</span>
           </span>{" "}
           <span
             className={`${isActive ? "text-lightBg" : ""} hover:text-lightBg`}

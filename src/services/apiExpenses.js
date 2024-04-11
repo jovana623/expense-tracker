@@ -4,8 +4,11 @@ import {
 } from "../helpers/filterTransactions";
 import supabase from "./supabase";
 
-export async function getExpenses({ filter }) {
-  let query = supabase.from("Expenses").select("*,Type(*)");
+export async function getExpenses({ filter, userId }) {
+  let query = supabase
+    .from("Expenses")
+    .select("*,Type(*)")
+    .eq("userId", userId);
 
   const { data, error } = await query;
 
