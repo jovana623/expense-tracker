@@ -4,24 +4,16 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import Table from "../../ui/Table";
 import { FiArrowDownLeft } from "react-icons/fi";
-import { useTransactions } from "../transactions/useTransactions";
-import { useUser } from "../authentification/useUser";
+import { useIncomeTransactions } from "./useIncomeTransactions";
 
 function Income() {
-  const { data: user, isLoadingUser } = useUser();
-  const { isLoading, transactions: incomeTransactions } = useTransactions(
-    "Income",
-    user.user.id
-  );
-
-  console.log(user);
-  console.log(incomeTransactions);
+  const { incomeTransactions, isLoading } = useIncomeTransactions();
 
   const summary = incomeTransactions
     ? summarizeAmountsByType(incomeTransactions)
     : [];
 
-  if (isLoading || isLoadingUser) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <div>

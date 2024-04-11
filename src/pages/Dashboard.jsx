@@ -3,8 +3,8 @@ import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
 import {
-  calculateTotalAmountSaved,
-  summarizeAmountsByCategory,
+  calculateTotalAmount,
+  calculateTotalAmountSavings,
 } from "../helpers/sortTransactions";
 import { NavLink, Outlet } from "react-router-dom";
 import { useTransactions } from "../features/transactions/useTransactions";
@@ -15,16 +15,17 @@ import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../ui/AddTransaction";
 import { useSavings } from "../features/savings/useSavings";
 import AddSavingGoal from "../ui/AddSavingGoal";
+import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
 
 function Dashboard() {
-  const { isLoading, transactions } = useTransactions();
+  const { incomeTransactions, isLoadingIncome } = useIncomeTransactions();
   const { isLoading: isLoadingSavings, savings } = useSavings();
-  console.log(transactions);
 
-  if (isLoading || isLoadingSavings) return <Spinner />;
+  if (isLoadingSavings || isLoadingIncome) return <Spinner />;
 
-  const summarizedByCategory = summarizeAmountsByCategory(transactions);
-  const savedSummary = calculateTotalAmountSaved(savings);
+  const incomeSummary = incomeTransactions
+    ? calculateTotalAmount(incomeTransactions)
+    : [];
   const amounts = [45200, 24500, 21200, 46000];
 
   return (
@@ -42,7 +43,7 @@ function Dashboard() {
           <SummaryCard
             icon={<BiDollar />}
             name="Total income"
-            amount={summarizedByCategory[0].amount}
+            amount={incomeSummary}
             percentage="6"
             isActive={location.pathname === "/dashboard/income"}
           />
@@ -60,7 +61,7 @@ function Dashboard() {
           <SummaryCard
             icon={<MdOutlineSavings />}
             name="Savings"
-            amount={savedSummary}
+            amount={10200}
             percentage="6"
             isActive={location.pathname === "/dashboard/savings"}
           />

@@ -10,7 +10,7 @@ import Menu from "./Menu";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {
-  const { id: transactionId, Name, Amount, Type, Date } = transaction;
+  const { id: transactionId, name, amount, Type, date } = transaction;
 
   const { deleteTransaction, isDeleting } = useDeleteTransaction();
 
@@ -19,10 +19,10 @@ function TableRow({ transaction, arrow }) {
   return (
     <div className="grid grid-cols-[0.5fr_1fr_1fr_1fr_1.2fr_0.3fr] gap-3 mt-2 items-center py-2">
       <div className="text-green-500 w-5 h-5 justify-center">{arrow}</div>
-      <div>{Name}</div>
-      <div>{Amount}</div>
-      <div>{Type["Name"]}</div>
-      <div className="justify-self-center">{formatDate(Date)}</div>
+      <div>{name}</div>
+      <div>{amount}</div>
+      <div>{Type["name"]}</div>
+      <div className="justify-self-center">{formatDate(date)}</div>
       <div>
         <Modal>
           <Menu>

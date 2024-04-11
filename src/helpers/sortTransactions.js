@@ -26,9 +26,9 @@ export function summarizeAmountsByType(data) {
   const summary = {};
 
   data.forEach((entry) => {
-    const typeName = entry.Type.Name;
-    const amount = entry.Amount;
-    const color = entry.Type.Color;
+    const typeName = entry.Type.name;
+    const amount = entry.amount;
+    const color = entry.Type.color;
 
     if (!summary[typeName]) {
       summary[typeName] = { amount, color };
@@ -70,7 +70,16 @@ export function monthySummary(transactions) {
   return data;
 }
 
-export function calculateTotalAmountSaved(savings) {
+export function calculateTotalAmount(savings) {
+  // Use reduce to sum up the amounts
+  const totalAmountSaved = savings.reduce((total, saving) => {
+    return total + saving.amount;
+  }, 0);
+
+  return totalAmountSaved;
+}
+
+export function calculateTotalAmountSavings(savings) {
   // Use reduce to sum up the amounts
   const totalAmountSaved = savings.reduce((total, saving) => {
     return total + saving.Amount;

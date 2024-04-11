@@ -13,7 +13,7 @@ export function getTransactionsThisMonth(transactions) {
   const endOfCurrentMonth = endOfMonth(currentDate);
 
   return transactions.filter((transaction) => {
-    const transactionDate = parseISO(transaction.Date);
+    const transactionDate = parseISO(transaction.date);
     return isWithinInterval(transactionDate, {
       start: startOfCurrentMonth,
       end: endOfCurrentMonth,
@@ -27,7 +27,7 @@ export function getTransactionsThisYear(transactions) {
   const endOfCurrentYear = endOfYear(currentDate);
 
   return transactions.filter((transaction) => {
-    const transactionDate = parseISO(transaction.Date);
+    const transactionDate = parseISO(transaction.date);
     return isWithinInterval(transactionDate, {
       start: startOfCurrentYear,
       end: endOfCurrentYear,
