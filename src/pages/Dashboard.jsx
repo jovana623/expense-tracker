@@ -2,13 +2,8 @@ import { BiDollar } from "react-icons/bi";
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
-import {
-  calculateTotalAmount,
-  calculateTotalAmountSavings,
-} from "../helpers/sortTransactions";
+import { calculateTotalAmount } from "../helpers/sortTransactions";
 import { NavLink, Outlet } from "react-router-dom";
-import { useTransactions } from "../features/transactions/useTransactions";
-
 import SummaryCard from "../features/dashboard/SummaryCard";
 import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
@@ -16,16 +11,26 @@ import AddTransaction from "../ui/AddTransaction";
 import { useSavings } from "../features/savings/useSavings";
 import AddSavingGoal from "../ui/AddSavingGoal";
 import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
+import { useExpensesTransactions } from "../features/expenses/useExpensesTransactions";
 
 function Dashboard() {
-  const { incomeTransactions, isLoadingIncome } = useIncomeTransactions();
+  const { incomeTransactions, isLoading: isLoadingIncome } =
+    useIncomeTransactions();
+  const { expensesTransactions, isLoading: isLoadingExpenses } =
+    useExpensesTransactions();
   const { isLoading: isLoadingSavings, savings } = useSavings();
 
-  if (isLoadingSavings || isLoadingIncome) return <Spinner />;
+  if (isLoadingSavings || isLoadingIncome || isLoadingExpenses)
+    return <Spinner />;
 
   const incomeSummary = incomeTransactions
     ? calculateTotalAmount(incomeTransactions)
     : [];
+
+  const expensesSummary = expensesTransactions
+    ? calculateTotalAmount(expensesTransactions)
+    : [];
+
   const amounts = [45200, 24500, 21200, 46000];
 
   return (
@@ -52,7 +57,7 @@ function Dashboard() {
           <SummaryCard
             icon={<BiReceipt />}
             name="Total expenses"
-            amount={amounts[1]}
+            amount={expensesSummary}
             percentage="6"
             isActive={location.pathname === "/dashboard/expenses"}
           />
