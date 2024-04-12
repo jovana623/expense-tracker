@@ -4,10 +4,12 @@ import {
 } from "../helpers/filterTransactions";
 import supabase from "./supabase";
 
-export async function getTransactions({ filter }) {
+export async function getTransactions({ filter, userId, categoryName }) {
   let query = supabase
     .from("Transactions")
-    .select("*,Categories!inner(*), Type(*)");
+    .select("*,Categories!inner(*), Type(*)")
+    .eq("userId", userId)
+    .eq("Categories.name", categoryName);
 
   const { data, error } = await query;
 

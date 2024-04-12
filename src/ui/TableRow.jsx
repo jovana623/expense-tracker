@@ -4,17 +4,18 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./Modal";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import ConfirmDelete from "./ConfirmDelete";
-import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 import Spinner from "./Spinner";
 import Menu from "./Menu";
+import { useDeleteIncome } from "../features/income/useDeleteIncome";
+import { useDeleteExpense } from "../features/expenses/useDeleteExpense";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {
   const { id: transactionId, name, amount, Type, date } = transaction;
+  const { deleteIncome, isLoading: isDeletingIncome } = useDeleteIncome();
+  const { deleteExpense, isLoading: isDeletingExpense } = useDeleteExpense();
 
-  const { deleteTransaction, isDeleting } = useDeleteTransaction();
-
-  if (isDeleting) return <Spinner />;
+  if (isDeletingIncome || isDeletingExpense) return <Spinner />;
 
   return (
     <div className="grid grid-cols-[0.5fr_1fr_1fr_1fr_1.2fr_0.3fr] gap-3 mt-2 items-center py-2">
@@ -42,10 +43,17 @@ function TableRow({ transaction, arrow }) {
             </Modal.Window>
 
             <Modal.Window name="delete">
-              <ConfirmDelete
-                nameModal="transaction"
-                onConfirm={() => deleteTransaction(transactionId)}
-              />
+              {Type.category === "income" ? (
+                <ConfirmDelete
+                  nameModal="income"
+                  onConfirm={() => deleteIncome(transactionId)}
+                />
+              ) : (
+                <ConfirmDelete
+                  nameModal="expense"
+                  onConfirm={() => deleteExpense(transactionId)}
+                />
+              )}
             </Modal.Window>
           </Menu>
         </Modal>

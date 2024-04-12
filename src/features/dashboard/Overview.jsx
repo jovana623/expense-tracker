@@ -7,20 +7,26 @@ import Spinner from "../../ui/Spinner";
 import LineChartComponent from "./LineChartComponent";
 import PieChartCard from "./PieChartCard";
 import { useTransactions } from "../transactions/useTransactions";
-import { useUser } from "../authentification/useUser";
+import { useIncomeTransactions } from "../income/useIncomeTransactions";
+import { useExpensesTransactions } from "../expenses/useExpensesTransactions";
 
 function Overview() {
-  const { data: user, isLoadingUser } = useUser();
-  const { isLoading, transactions } = useTransactions(null, user.user.id);
+  const { isLoading, transactions } = useTransactions(null);
+  const { incomeTransactions, isLoading: isLoadingIncome } =
+    useIncomeTransactions();
+
+  const { expensesTransactions, isLoading: isLoadingExpenses } =
+    useExpensesTransactions();
+
+  if (isLoading || isLoadingIncome || isLoadingExpenses) return <Spinner />;
+
+  const allTransactions = incomeTransactions?.concat(expensesTransactions);
 
   const summarizedByCategory = transactions
     ? summarizeAmountsByCategory(transactions)
     : [];
 
-  const sortedByMonth = transactions ? monthySummary(transactions) : [];
-  console.log(sortedByMonth);
-
-  if (isLoading || isLoadingUser) return <Spinner />;
+  const sortedByMonth = allTransactions ? monthySummary(allTransactions) : [];
 
   return (
     <div className="grid grid-cols-[1fr_3fr] gap-14">

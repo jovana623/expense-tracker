@@ -1,133 +1,194 @@
+import { useCreateIncome } from "../income/useCreateIncome";
+import { useCreateExpense } from "../expenses/useCreateExpense";
+import { useUser } from "../authentification/useUser";
+import { useType } from "../type/useType";
 import { useForm } from "react-hook-form";
-import { useCreateTransaction } from "./useCreateTransaction";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "../../ui/Modal";
-import { useCategories } from "../dashboard/useCategories";
-
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
-import { useType } from "../dashboard/useType";
-import { useUpdateTransaction } from "./useUpdateTransactions";
-import { useUser } from "../authentification/useUser";
+import { useUpdateIncome } from "../income/useUpdateIncome";
+import { useUpdateExpense } from "../expenses/useUpdateExpense";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
-  const { createTransaction, isLoading: isCreating } = useCreateTransaction();
-  const { updatedTransaction, isLoading: isUpdating } = useUpdateTransaction();
-  const { categories, isLoading: isLoadingCategories } = useCategories();
+  const { createIncome, isLoading: isCreatingIncome } = useCreateIncome();
+  const { createExpense, isLoading: isCreatingExpense } = useCreateExpense();
   const { type, isLoading: isLoadingType } = useType();
   const { data: user, isLoadingUser } = useUser();
+  const { updateIncome, isLoading: isUpdatingIncome } = useUpdateIncome();
+  const { updateExpense, isLoading: isUpdatingExpense } = useUpdateExpense();
+  const { id: editId, ...editValues } = transactionToUpdate;
+  const isUpdateSession = Boolean(editId);
 
-  const { id: updateId, UserId, ...updateValues } = transactionToUpdate;
-
-  const isUpdateSession = Boolean(updateId);
-
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: isUpdateSession ? updateValues : {},
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: isUpdateSession ? editValues : {},
   });
 
+  const [category, setCategory] = useState(
+    isUpdateSession ? transactionToUpdate.Type.category : "income"
+  );
+
+  function onError() {
+    console.log(errors);
+  }
+
+  const { errors } = formState;
   const { close } = useContext(ModalContext);
 
   function onSubmit(data) {
     if (isUpdateSession) {
-      updatedTransaction(
-        { newTransaction: { ...data }, id: updateId, UserId: UserId },
-        {
-          onSuccess: () => {
-            reset();
-            close();
-          },
-        }
-      );
-      console.log(data);
+      if (data.category === "income") {
+        updateIncome({
+          id: editId,
+          name: data.name,
+          date: data.date,
+          typeId: data.typeId,
+          amount: data.amount,
+          description: data.description,
+          userId: user.user.id,
+        });
+      } else if (data.category === "expense") {
+        updateExpense({
+          id: editId,
+          name: data.name,
+          date: data.date,
+          typeId: data.typeId,
+          amount: data.amount,
+          description: data.description,
+          userId: user.user.id,
+        });
+      }
     } else {
-      createTransaction({ newTransaction: data, UserId: user.user.id });
+      if (data.category === "income") {
+        createIncome({
+          name: data.name,
+          date: data.date,
+          typeId: data.typeId,
+          amount: data.amount,
+          description: data.description,
+          userId: user.user.id,
+        });
+      } else if (data.category === "expense") {
+        createExpense({
+          name: data.name,
+          date: data.date,
+          typeId: data.typeId,
+          amount: data.amount,
+          description: data.description,
+          userId: user.user.id,
+        });
+      }
     }
+
+    console.log(data);
   }
 
   function onCancel() {
     close();
+    reset();
   }
 
-  const isWorking = isCreating || isUpdating || isLoadingUser;
+  const isWorking =
+    isCreatingIncome ||
+    isCreatingExpense ||
+    isLoadingUser ||
+    isUpdatingExpense ||
+    isUpdatingIncome;
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onError)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
-      {isLoadingCategories || isLoadingType ? (
+      {isLoadingType ? (
         <Spinner />
       ) : (
         <>
           <div className="flex flex-col gap-1">
-            <label htmlFor="Name">Name</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
-              id="Name"
+              id="name"
               disabled={isWorking}
-              {...register("Name")}
+              {...register("name", {
+                required: "This field is required",
+              })}
               className="input-field"
             ></input>
+            <p className="text-xs text-red-500">{errors?.name?.message}</p>
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="Amount">Amount</label>
+            <label htmlFor="amount">Amount</label>
             <input
               type="number"
               className="input-field"
-              id="Amount"
-              {...register("Amount")}
+              id="amount"
+              {...register("amount", {
+                required: "This field is required",
+                min: {
+                  value: 0,
+                  message: "Amount can't be less than 0",
+                },
+              })}
             ></input>
+            <p className="text-xs text-red-500">{errors?.amount?.message}</p>
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
-            <label htmlFor="Category">Category</label>
-            <select className="input-field" {...register("CategoryId")}>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.Name}
-                </option>
-              ))}
+            <label htmlFor="category">Category</label>
+            <select
+              className="input-field"
+              {...register("category")}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
             </select>
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
-            <label htmlFor="Type">Type</label>
-            <select className="input-field" {...register("TypeId")}>
-              {type.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.Name}
-                </option>
-              ))}
+            <label htmlFor="typeId">Type</label>
+            <select
+              className="input-field"
+              {...register("typeId", { required: "This field is required" })}
+            >
+              {type
+                .filter((option) => option.category === category)
+                .map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
             </select>
+            <p className="text-xs text-red-500">{errors?.typeId?.message}</p>
           </div>
 
           <div className="col-span-2 flex flex-col gap-1">
-            <label htmlFor="Description">Description</label>
+            <label htmlFor="description">Description</label>
             <textarea
               className="input-field"
               type="textarea"
-              id="Description"
-              {...register("Description")}
+              id="description"
+              {...register("description")}
             ></textarea>
           </div>
 
           <div className="col-span-2 flex flex-col gap-1">
-            <label htmlFor="Date">Date</label>
+            <label htmlFor="date">Date</label>
             <input
               type="date"
               className="input-field"
-              id="Date"
-              {...register("Date")}
-            ></input>
+              id="date"
+              {...register("date", { required: "This field is required" })}
+            />
+            <p className="text-xs text-red-500">{errors?.date?.message}</p>
           </div>
           <div className="flex gap-2 col-start-2 mt-4">
             <Button type="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="primary">
-              {isUpdateSession ? "Update transaction" : "Add transaction"}
-            </Button>
+            <Button type="primary">Add transaction</Button>
           </div>
         </>
       )}

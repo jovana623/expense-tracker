@@ -2,10 +2,10 @@ import { getMonthName } from "./helpers";
 
 export function summarizeAmountsByCategory(transactions) {
   const incomeTransactions = transactions.filter(
-    (transaction) => transaction.Categories.Name === "Income"
+    (transaction) => transaction.Type.name === "income"
   );
   const expensesTransactions = transactions.filter(
-    (transaction) => transaction.Categories.Name === "Expenses"
+    (transaction) => transaction.Type.name === "expenses"
   );
 
   const totalIncome = incomeTransactions.reduce(
@@ -50,19 +50,23 @@ export function summarizeAmountsByType(data) {
 export function monthySummary(transactions) {
   const monthlyData = {};
 
-  transactions.forEach((transaction) => {
-    const [year, month] = transaction.Date.split("-"); // Splitting date correctly
+  transactions.forEach((transaction, index) => {
+    if (!transaction.date) {
+      console.error(`Transaction at index ${index} has no date property`);
+      return;
+    }
+
+    const [year, month] = transaction.date.split("-");
     const monthYear = `${getMonthName(Number(month) - 1)} ${year}`;
 
     if (!monthlyData[monthYear]) {
       monthlyData[monthYear] = { month: monthYear, income: 0, expenses: 0 };
     }
 
-    // Check transaction type based on the "Name" field
-    if (transaction.CategoryId === 1) {
-      monthlyData[monthYear].income += transaction.Amount;
-    } else if (transaction.CategoryId === 2) {
-      monthlyData[monthYear].expenses += transaction.Amount;
+    if (transaction.Type.category === "income") {
+      monthlyData[monthYear].income += transaction.amount;
+    } else if (transaction.Type.category === "expense") {
+      monthlyData[monthYear].expenses += transaction.amount;
     }
   });
 

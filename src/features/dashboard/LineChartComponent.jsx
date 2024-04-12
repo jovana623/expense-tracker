@@ -10,6 +10,7 @@ import {
 
 /* eslint-disable react/prop-types */
 function LineChartComponent({ data }) {
+  if (!data) return null;
   return (
     <div className="pl-0 ml-[-2.3rem]">
       <LineChart
