@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Spinner from "../../ui/Spinner";
 import SavingsCarousel from "./SavingsCarousel";
-
 import SavingsDetailCard from "./SavingsDetailCard";
 import { useSaving } from "./useSaving";
 import { useSavings } from "./useSavings";

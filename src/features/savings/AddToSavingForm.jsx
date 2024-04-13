@@ -1,16 +1,18 @@
 import { useContext } from "react";
-import Button from "../../ui/Button";
-import { ModalContext } from "../../ui/Modal";
+import { useCreateSavingPayment } from "../payments/useCreateSavingPayment";
 import { useForm } from "react-hook-form";
-import { useCreateSavingPayment } from "./useCreateSavingPayment";
+import { ModalContext } from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
-import { useUpdateSaving } from "./useUpdateSaving";
+import Button from "../../ui/Button";
+import { useCreateExpense } from "../expenses/useCreateExpense";
+import { useUser } from "../authentification/useUser";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
-  const { handleSubmit, register, reset, formState } = useForm();
-  const { updateSaving, isLoading: isLoadingUpdate } = useUpdateSaving();
+  const { handleSubmit, register, formState } = useForm();
+  const { createExpense, isLoading: isCreatingExpense } = useCreateExpense();
+  const { data: user, isLoading: isLoadingUser } = useUser();
 
   const { errors } = formState;
   const { close } = useContext(ModalContext);
@@ -19,26 +21,27 @@ function AddToSavingForm({ saving }) {
     close();
   }
 
-  const { id } = saving;
-
   function onSubmit(data) {
-    createPayment({ ...data });
-    updateSaving(
-      { newAmount: data.Amount, id: data.SavingId, newStatus: saving.Status },
-      {
-        onSuccess: () => {
-          close();
-          reset();
-        },
-      }
-    );
+    createPayment({
+      amount: data.amount,
+      date: data.date,
+      savingId: saving.id,
+    });
+    createExpense({
+      name: `${saving.name} payment`,
+      typeId: 9,
+      amount: data.amount,
+      description: `Added ${saving.amount} to ${data.name}`,
+      userId: user.user.id,
+      date: data.date,
+    });
   }
 
   function onError(errors) {
     console.log(errors);
   }
 
-  if (isLoading || isLoadingUpdate) return <Spinner />;
+  if (isLoading || isCreatingExpense || isLoadingUser) return <Spinner />;
 
   return (
     <form
@@ -46,57 +49,47 @@ function AddToSavingForm({ saving }) {
       onSubmit={handleSubmit(onSubmit, onError)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
-      <div className="hidden">
-        <label htmlFor="SavingId">SavingId</label>
-        <input
-          type="number"
-          id="SavingId"
-          className="input-field"
-          value={id}
-          {...register("SavingId")}
-        ></input>
-      </div>
-
       <div className="flex flex-col gap-1 col-span-2 bg-gray-50">
-        <label htmlFor="Name">Saving name</label>
+        <label htmlFor="name">Saving name</label>
         <input
           type="text"
-          id="Name"
+          id="name"
           disabled={true}
           className="input-field"
-          defaultValue={saving.Name}
+          defaultValue={saving.name}
+          {...register("name")}
         ></input>
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="Amount">Amount</label>
+        <label htmlFor="amount">Amount</label>
         <input
           type="number"
-          id="Amount"
+          id="amount"
           className="input-field"
-          {...register("Amount", {
+          {...register("amount", {
             required: "This field is required",
             min: {
               value: 1,
               message: "Amount should be at least 1",
             },
             max: {
-              value: saving.Goal - saving.Amount,
+              value: saving.goal - saving.amount,
               message: `You only need ${
-                saving.Goal - saving.Amount
+                saving.goal - saving.amount
               }€ to reach the goal`,
             },
           })}
         ></input>
-        <p className="text-xs text-red-500">{errors?.Amount?.message}</p>
+        <p className="text-xs text-red-500">{errors?.amount?.message}</p>
       </div>
       <div className="flex flex-col gap-1">
-        <label htmlFor="Date">Date</label>
+        <label htmlFor="date">Date</label>
         <input
           type="date"
           className="input-field"
-          id="Date"
-          {...register("Date", {
+          id="date"
+          {...register("date", {
             required: "This field is required",
           })}
         ></input>

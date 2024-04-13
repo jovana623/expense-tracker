@@ -1,8 +1,8 @@
 import SavingsChart from "./SavingsChart";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import PaymentsList from "./PaymentsList";
 import AddToSavingForm from "./AddToSavingForm";
+import PaymentsList from "../payments/PaymentsList";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ saving }) {

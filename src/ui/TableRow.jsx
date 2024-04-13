@@ -48,6 +48,8 @@ function TableRow({ transaction, arrow }) {
                   nameModal="income"
                   onConfirm={() => deleteIncome(transactionId)}
                 />
+              ) : transaction.Type.category === "savings" ? (
+                "Delete saving payment in savings"
               ) : (
                 <ConfirmDelete
                   nameModal="expense"

@@ -1,7 +1,7 @@
 import supabase from "./supabase";
 
 export async function getPayments() {
-  const { data, error } = await supabase.from("SavingPayment").select("*");
+  const { data, error } = await supabase.from("Payments").select("*");
 
   if (error) {
     throw new Error("Payments could not be loaded");
@@ -10,28 +10,27 @@ export async function getPayments() {
   return data;
 }
 
-export async function createNewPayment(newPayment) {
-  const { data, error } = await supabase
-    .from("SavingPayment")
-    .insert([newPayment])
-    .select();
+export async function deletePayment(id) {
+  console.log("Deleting payment with ID:", id);
+  const { data, error } = await supabase.from("Payments").delete().eq("id", id);
 
   if (error) {
-    throw new Error("Payment could not be added");
+    console.log(error);
+    throw new Error("Payment could not be deleted");
   }
 
   return data;
 }
 
-export async function deletePayment(id) {
-  console.log("Deleting payment with ID:", id);
+export async function createNewPayment({ amount, date, savingId }) {
   const { data, error } = await supabase
-    .from("SavingPayment")
-    .delete()
-    .eq("id", id);
+    .from("Payments")
+    .insert([{ amount: amount, date: date, savingId: savingId }])
+    .select();
 
   if (error) {
-    throw new Error("Payment could not be deleted");
+    console.log(error);
+    throw new Error(error.message);
   }
 
   return data;

@@ -16,7 +16,7 @@ export async function getSavings({ userId }) {
 export async function getSaving(id) {
   const { data, error } = await supabase
     .from("Savings")
-    .select("*,SavingPayment(*)")
+    .select("*,Payments(*)")
     .eq("id", id)
     .single();
 
