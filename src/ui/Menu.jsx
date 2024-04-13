@@ -72,7 +72,10 @@ function Button({ children, icon, onClick }) {
 
   return (
     <li>
-      <button onClick={handleClick}>
+      <button
+        onClick={handleClick}
+        className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+      >
         {icon}
         <span>{children}</span>
       </button>

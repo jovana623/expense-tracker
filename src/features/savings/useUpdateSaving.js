@@ -6,21 +6,15 @@ export function useUpdateSaving() {
   const queryClient = useQueryClient();
   const { mutate: updateSaving, isLoading } = useMutation({
     mutationFn: ({
-      newName,
-      newGoal,
-      newAmount,
-      newStatus,
-      newDate,
-      newDescription,
+      id,
+      name,
+      amount,
+      goal,
+      target_date,
+      description,
+      userId,
     }) =>
-      updateSavingApi(
-        newName,
-        newGoal,
-        newAmount,
-        newStatus,
-        newDate,
-        newDescription
-      ),
+      updateSavingApi(id, name, amount, goal, target_date, description, userId),
     onSuccess: () => {
       toast.success("Saving updated");
       queryClient.invalidateQueries({ queryKey: ["savings"] });

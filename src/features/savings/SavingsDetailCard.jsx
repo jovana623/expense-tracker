@@ -6,22 +6,22 @@ import AddToSavingForm from "./AddToSavingForm";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ saving }) {
-  const { Amount, Goal } = saving;
+  const { amount, goal } = saving;
   return (
     <div className="relative shadow rounded-md flex flex-col items-center py-3">
       <div className="flex flex-col items-center gap-1">
         <p className="text-stone-500">You have reached</p>
         <h1 className="text-2xl font-semibold">
-          {Amount.toLocaleString()}&euro;
+          {amount.toLocaleString()}&euro;
         </h1>
         <p className="text-stone-500">
-          of your {Goal.toLocaleString()}&euro; saving goal
+          of your {goal.toLocaleString()}&euro; saving goal
         </p>
       </div>
       <SavingsChart saving={saving} />
       <div
         className={`flex gap-2 ${
-          saving.Status === "Completed" ? "flex-col items-center" : ""
+          saving.status === "Completed" ? "flex-col items-center" : ""
         }`}
       >
         <Modal>
@@ -32,7 +32,7 @@ function SavingsDetailCard({ saving }) {
             <PaymentsList saving={saving} />
           </Modal.Window>
         </Modal>
-        {saving.Status === "Completed" ? (
+        {saving.status === "Completed" ? (
           <p className="text-stone-500">You have reached goal amount</p>
         ) : (
           <Modal>

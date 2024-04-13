@@ -5,7 +5,7 @@ import { useState } from "react";
 
 /* eslint-disable react/prop-types */
 function SavingsCarousel({ savings, onCardChange, activeSaving }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(activeSaving);
 
   function PrevArrow({ onClick }) {
     return (

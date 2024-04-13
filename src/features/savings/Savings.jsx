@@ -11,7 +11,6 @@ function Savings() {
   const { savings, isLoading: isLoadingAll } = useSavings();
   const { saving, isLoading } = useSaving(activeSaving);
 
-  console.log(saving);
   if (!saving) return null;
 
   function handleCardChange(value) {

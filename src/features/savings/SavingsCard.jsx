@@ -6,6 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
+import CreateSavingGoalForm from "./CreateSavingGoalForm";
 
 /* eslint-disable react/prop-types */
 function SavingCard({ saving, onCardChange, activeSaving }) {
@@ -14,10 +15,10 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
 
   const { id } = saving;
 
-  const daysLeft = calculateDaysLeft(saving.Target_Date);
-  const percentage = ((saving.Amount * 100) / saving.Goal).toFixed(0);
+  const daysLeft = calculateDaysLeft(saving.target_Date);
+  const percentage = ((saving.amount * 100) / saving.goal).toFixed(0);
 
-  const firstLetter = saving.Name.charAt(0);
+  const firstLetter = saving.name.charAt(0);
 
   const statusBg =
     saving.Status === "In progress"
@@ -47,12 +48,12 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
           <div>
             <div className="flex items-center gap-3 pb-4">
               <p className=" text-stone-900 text-xl font-semibold">
-                {saving.Name}
+                {saving.name}
               </p>
               <p
                 className={`py-1 px-2 text-xs rounded-md text-lightBg ${statusBg}`}
               >
-                {saving.Status}
+                {saving.status}
               </p>
               <div className="justify-self-end self-end">
                 <Modal>
@@ -71,11 +72,11 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
                       </Modal.OpenButton>
                     </Menu.List>
                     <Modal.Window name="update-saving">
-                      <p>Update</p>
+                      <CreateSavingGoalForm savingToUpdate={saving} />
                     </Modal.Window>
                     <Modal.Window name="delete-saving">
                       <ConfirmDelete
-                        nameModal="transaction"
+                        nameModal="saving goal"
                         onConfirm={() => deleteSaving(id)}
                       />
                     </Modal.Window>
@@ -104,8 +105,8 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
             </div>
             <div className="flex justify-between mt-3 text-stone-500">
               <p>
-                {saving.Amount.toLocaleString()}&euro; /{" "}
-                {saving.Goal.toLocaleString()}&euro;
+                {saving.amount.toLocaleString()}&euro; /{" "}
+                {saving.goal.toLocaleString()}&euro;
               </p>
               <p>{percentage}&#x25;</p>
             </div>

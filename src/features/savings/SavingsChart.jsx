@@ -7,8 +7,8 @@ import {
 
 /* eslint-disable react/prop-types */
 export default function SavingsChart({ saving }) {
-  const amount = parseInt(saving.Amount);
-  const goal = parseInt(saving.Goal);
+  const amount = parseInt(saving.amount);
+  const goal = parseInt(saving.goal);
   const percentage = ((amount * 100) / goal).toFixed(0);
   const angle_in_degrees = (percentage / 100) * 360;
 

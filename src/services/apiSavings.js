@@ -1,7 +1,10 @@
 import supabase from "./supabase";
 
-export async function getSavings() {
-  const { data, error } = await supabase.from("Savings").select("*");
+export async function getSavings({ userId }) {
+  const { data, error } = await supabase
+    .from("Savings")
+    .select("*")
+    .eq("userId", userId);
 
   if (error) {
     throw new Error("Savings could not be loaded");
@@ -24,13 +27,27 @@ export async function getSaving(id) {
   return data;
 }
 
-export async function createNewSaving(newSaving) {
+export async function createNewSaving({
+  name,
+  goal,
+  target_Date,
+  description,
+  userId,
+}) {
   const { data, error } = await supabase
     .from("Savings")
-    .insert([newSaving])
+    .insert([
+      {
+        name: name,
+        amount: 0,
+        goal: goal,
+        target_Date: target_Date,
+        status: "In progress",
+        description: description,
+        userId: userId,
+      },
+    ])
     .select();
-
-  console.log(newSaving);
 
   if (error) {
     throw new Error("Savings could not be added");
@@ -40,23 +57,24 @@ export async function createNewSaving(newSaving) {
 }
 
 export async function updateSaving(
-  newName,
-  newGoal,
-  newAmount,
-  newStatus,
-  newDate,
-  newDescription,
-  id
+  id,
+  name,
+  amount,
+  goal,
+  target_Date,
+  description,
+  userId
 ) {
   const { data, error } = await supabase
     .from("Savings")
     .update({
-      Name: newName,
-      Goal: newGoal,
-      Amount: supabase.sql`Amount + ${newAmount}`,
-      Status: newStatus,
-      Date: newDate,
-      Description: newDescription,
+      name: name,
+      amount: amount,
+      goal: goal,
+      target_Date: target_Date,
+      status: "In progress",
+      description: description,
+      userId: userId,
     })
     .eq("id", id)
     .select();
