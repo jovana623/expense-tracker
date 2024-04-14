@@ -8,7 +8,8 @@ export function useCreateSavingPayment() {
     mutationFn: createNewPayment,
     onSuccess: () => {
       toast.success("New payment added");
-      queryClient.invalidateQueries({ queryKey: ["payments"] });
+      queryClient.invalidateQueries("payments");
+      queryClient.invalidateQueries("savings");
     },
     onError: (err) => {
       toast.error(err.message);

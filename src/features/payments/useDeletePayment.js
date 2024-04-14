@@ -8,9 +8,8 @@ export function useDeletePayment() {
     mutationFn: deletePaymentApi,
     onSuccess: () => {
       toast.success("Payment successfully deleted");
-      queryClient.invalidateQueries({
-        queryKey: ["payments"],
-      });
+      queryClient.invalidateQueries("payments");
+      queryClient.invalidateQueries("savings");
     },
     onError: (err) => {
       toast.error(err.message);

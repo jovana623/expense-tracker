@@ -21,7 +21,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
   const firstLetter = saving.name.charAt(0);
 
   const statusBg =
-    saving.Status === "In progress"
+    saving.status === "In progress"
       ? "bg-blue-500"
       : saving.Status === "Completed"
       ? "bg-green-500"

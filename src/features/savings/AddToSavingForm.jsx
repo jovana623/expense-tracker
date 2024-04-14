@@ -6,6 +6,7 @@ import Spinner from "../../ui/Spinner";
 import Button from "../../ui/Button";
 import { useCreateExpense } from "../expenses/useCreateExpense";
 import { useUser } from "../authentification/useUser";
+import { useUpdateSaving } from "./useUpdateSaving";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
@@ -13,9 +14,12 @@ function AddToSavingForm({ saving }) {
   const { handleSubmit, register, formState } = useForm();
   const { createExpense, isLoading: isCreatingExpense } = useCreateExpense();
   const { data: user, isLoading: isLoadingUser } = useUser();
+  const { updateSaving, isLoading: isUpdating } = useUpdateSaving();
 
   const { errors } = formState;
   const { close } = useContext(ModalContext);
+
+  console.log(saving);
 
   function onCancel() {
     close();
@@ -31,9 +35,17 @@ function AddToSavingForm({ saving }) {
       name: `${saving.name} payment`,
       typeId: 9,
       amount: data.amount,
-      description: `Added ${saving.amount} to ${data.name}`,
+      description: `Added ${saving.amount} to ${saving.name}`,
       userId: user.user.id,
       date: data.date,
+    });
+    updateSaving({
+      id: saving.id,
+      name: saving.name,
+      amount: Number(saving.amount) + Number(data.amount),
+      target_Date: saving.target_Date,
+      description: saving.description,
+      userId: saving.userId,
     });
   }
 
@@ -41,7 +53,8 @@ function AddToSavingForm({ saving }) {
     console.log(errors);
   }
 
-  if (isLoading || isCreatingExpense || isLoadingUser) return <Spinner />;
+  if (isLoading || isCreatingExpense || isLoadingUser || isUpdating)
+    return <Spinner />;
 
   return (
     <form

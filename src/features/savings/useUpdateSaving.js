@@ -17,7 +17,7 @@ export function useUpdateSaving() {
       updateSavingApi(id, name, amount, goal, target_date, description, userId),
     onSuccess: () => {
       toast.success("Saving updated");
-      queryClient.invalidateQueries({ queryKey: ["savings"] });
+      queryClient.invalidateQueries("savings");
     },
     onErorr: (error) => {
       toast.error(error.message);

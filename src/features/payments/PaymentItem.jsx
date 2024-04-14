@@ -1,17 +1,28 @@
 import { formatDate } from "../../helpers/dateFunctions";
 import { AiOutlineDelete } from "react-icons/ai";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeletePayment } from "./useDeletePayment";
+import { useSaving } from "../savings/useSaving";
+import { useUpdateSaving } from "../savings/useUpdateSaving";
 
 /* eslint-disable react/prop-types */
 function PaymentItem({ payment }) {
   const { deletePayment, isDeletingPayment } = useDeletePayment();
+  const { saving, isLoading: isLoadingSaving } = useSaving(payment.savingId);
+  const { updateSaving, isLoading: isUpdatingSaving } = useUpdateSaving();
 
-  const handleDelete = () => {
-    console.log("Delete button clicked");
-    deletePayment(payment.id);
-  };
+  const { id } = payment;
+
+  function handleDelete(id) {
+    deletePayment(id);
+    updateSaving({
+      id: saving.id,
+      name: saving.name,
+      amount: Number(saving.amount) - Number(payment.amount),
+      target_Date: saving.target_Date,
+      description: saving.description,
+      userId: saving.userId,
+    });
+  }
 
   return (
     <div className="grid grid-cols-[4fr_4fr_1fr] gap-10 border-b border-stone-200 py-2 my-2 justify-between">
@@ -19,17 +30,11 @@ function PaymentItem({ payment }) {
       <p className="self-item-center">
         {payment.amount.toLocaleString()}&euro;
       </p>
-
-      <Modal>
-        <Modal.OpenButton opens="delete-payment">
-          <button disabled={isDeletingPayment}>
-            <AiOutlineDelete />
-          </button>
-        </Modal.OpenButton>
-        <Modal.Window name="delete-payment">
-          <ConfirmDelete nameModal="payment" onConfirm={handleDelete} />
-        </Modal.Window>
-      </Modal>
+      <p>
+        <button onClick={() => handleDelete(id)} disabled={isDeletingPayment}>
+          {<AiOutlineDelete />}
+        </button>
+      </p>
     </div>
   );
 }
