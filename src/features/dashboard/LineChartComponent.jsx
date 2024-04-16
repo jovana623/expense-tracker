@@ -9,18 +9,29 @@ import {
 } from "recharts";
 
 /* eslint-disable react/prop-types */
-function LineChartComponent({ data }) {
+function LineChartComponent({ data, timeValue, monthData }) {
   if (!data) return null;
+  let adjustedData = {};
+
+  if (timeValue === "month") {
+    adjustedData = monthData;
+  } else adjustedData = data;
+
   return (
     <div className="pl-0 ml-[-2.3rem]">
       <LineChart
         width={650}
         height={300}
-        data={data}
+        data={adjustedData}
         margin={{ top: 5, right: 10, left: 30, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
+        {timeValue === "month" ? (
+          <XAxis dataKey="day" />
+        ) : (
+          <XAxis dataKey="month" />
+        )}
+
         <YAxis />
         <Tooltip />
         <Legend />

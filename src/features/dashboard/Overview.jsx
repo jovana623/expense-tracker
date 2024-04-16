@@ -1,40 +1,51 @@
 import {
+  getCurrentMonthData,
   monthySummary,
-  summarizeAmountsByCategory,
 } from "../../helpers/sortTransactions";
-import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import LineChartComponent from "./LineChartComponent";
 import PieChartCard from "./PieChartCard";
-import { useTransactions } from "../transactions/useTransactions";
 import { useIncomeTransactions } from "../income/useIncomeTransactions";
 import { useExpensesTransactions } from "../expenses/useExpensesTransactions";
+import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
+import { useSearchParams } from "react-router-dom";
 
 function Overview() {
-  const { isLoading, transactions } = useTransactions(null);
+  const [searchParams] = useSearchParams();
   const { incomeTransactions, isLoading: isLoadingIncome } =
     useIncomeTransactions();
 
   const { expensesTransactions, isLoading: isLoadingExpenses } =
     useExpensesTransactions();
 
-  if (isLoading || isLoadingIncome || isLoadingExpenses) return <Spinner />;
+  if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
 
   const allTransactions = incomeTransactions?.concat(expensesTransactions);
 
-  const summarizedByCategory = transactions
-    ? summarizeAmountsByCategory(transactions)
-    : [];
-
   const sortedByMonth = allTransactions ? monthySummary(allTransactions) : [];
 
+  const timeValue = searchParams.get("time");
+
+  const monthData = getCurrentMonthData(allTransactions);
+
+  console.log(monthData);
+  console.log(sortedByMonth);
+
   return (
-    <div className="grid grid-cols-[1fr_3fr] gap-14">
+    <div className="grid grid-cols-[1fr_1fr] gap-10">
       <PieChartCard>
-        <PieChartComponent data={summarizedByCategory}></PieChartComponent>
+        <PositiveAndNegativeBar
+          data={sortedByMonth}
+          timeValue={timeValue}
+          monthData={monthData}
+        ></PositiveAndNegativeBar>
       </PieChartCard>
       <PieChartCard>
-        <LineChartComponent data={sortedByMonth} />
+        <LineChartComponent
+          data={sortedByMonth}
+          timeValue={timeValue}
+          monthData={monthData}
+        />
       </PieChartCard>
     </div>
   );
