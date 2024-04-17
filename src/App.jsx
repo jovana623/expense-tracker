@@ -9,13 +9,13 @@ import Profile from "./pages/Profile";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Overview from "./features/dashboard/Overview";
 import Income from "./features/income/Income";
-import Investments from "./features/investments/Investments";
 import Savings from "./features/savings/Savings";
 import Expenses from "./features/expenses/Expenses";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Register from "./pages/Register";
+import Balance from "./features/balance/Balance";
 
 function App() {
   const queryClient = new QueryClient({
@@ -45,7 +45,7 @@ function App() {
               <Route path="overview" element={<Overview />} />
               <Route path="income" element={<Income />} />
               <Route path="expenses" element={<Expenses />} />
-              <Route path="investments" element={<Investments />} />
+              <Route path="balance" element={<Balance />} />
               <Route path="savings" element={<Savings />} />
             </Route>
             <Route path="budget" element={<Budget />} />

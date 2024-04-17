@@ -47,7 +47,27 @@ export function summarizeAmountsByType(data) {
 }
 
 export function monthySummary(transactions) {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   const monthlyData = {};
+
+  let minYear = Infinity;
+  let maxYear = -Infinity;
+  let minMonth = 12;
+  let maxMonth = 1;
 
   transactions.forEach((transaction, index) => {
     if (!transaction.date) {
@@ -56,10 +76,14 @@ export function monthySummary(transactions) {
     }
 
     const [year, month] = transaction.date.split("-");
-    const monthYear = `${getMonthName(Number(month) - 1)} ${year}`;
+    const monthYear = `${year}-${month}`;
 
     if (!monthlyData[monthYear]) {
-      monthlyData[monthYear] = { month: monthYear, income: 0, expenses: 0 };
+      monthlyData[monthYear] = {
+        month: `${getMonthName(Number(month) - 1)} ${year}`,
+        income: 0,
+        expenses: 0,
+      };
     }
 
     if (transaction.Type.category === "income") {
@@ -70,10 +94,50 @@ export function monthySummary(transactions) {
     ) {
       monthlyData[monthYear].expenses += transaction.amount;
     }
+
+    const numericYear = Number(year);
+    const numericMonth = Number(month);
+    if (
+      numericYear < minYear ||
+      (numericYear === minYear && numericMonth < minMonth)
+    ) {
+      minYear = numericYear;
+      minMonth = numericMonth;
+    }
+    if (
+      numericYear > maxYear ||
+      (numericYear === maxYear && numericMonth > maxMonth)
+    ) {
+      maxYear = numericYear;
+      maxMonth = numericMonth;
+    }
   });
 
-  const data = Object.values(monthlyData);
-  return data;
+  for (let year = minYear; year <= maxYear; year++) {
+    for (let month = 1; month <= 12; month++) {
+      const monthYear = `${year}-${month.toString().padStart(2, "0")}`;
+      if (!monthlyData[monthYear]) {
+        monthlyData[monthYear] = {
+          month: `${getMonthName(month - 1)} ${year}`,
+          income: 0,
+          expenses: 0,
+        };
+      }
+    }
+  }
+
+  const sortedData = Object.values(monthlyData).sort((a, b) => {
+    const [yearA, monthA] = a.month.split(" ");
+    const [yearB, monthB] = b.month.split(" ");
+
+    if (yearA !== yearB) {
+      return Number(yearA) - Number(yearB);
+    } else {
+      return monthNames.indexOf(monthA) - monthNames.indexOf(monthB);
+    }
+  });
+
+  return sortedData;
 }
 
 export function calculateTotalAmount(savings) {
@@ -129,4 +193,18 @@ export function getCurrentMonthData(data) {
   }
 
   return dailySummary;
+}
+
+export function calculateBalance(data) {
+  return data.map((item) => ({
+    month: item.month,
+    balance: item.income - item.expenses,
+  }));
+}
+
+export function calculateDailyBalance(data) {
+  return data.map((item) => ({
+    day: item.day,
+    balance: item.income - item.expenses,
+  }));
 }

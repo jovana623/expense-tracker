@@ -1,4 +1,3 @@
-import { BiDollar } from "react-icons/bi";
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
@@ -12,6 +11,7 @@ import { useSavings } from "../features/savings/useSavings";
 import AddSavingGoal from "../ui/AddSavingGoal";
 import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
 import { useExpensesTransactions } from "../features/expenses/useExpensesTransactions";
+import { MdOutlineEuroSymbol } from "react-icons/md";
 
 function Dashboard() {
   const { incomeTransactions, isLoading: isLoadingIncome } =
@@ -33,7 +33,7 @@ function Dashboard() {
 
   const savingsSummary = savings ? calculateTotalAmount(savings) : [];
 
-  const amounts = [45200, 24500, 21200, 46000];
+  const balance = incomeSummary - expensesSummary;
 
   return (
     <div className="py-2 px-7 overflow-y-scroll">
@@ -48,7 +48,7 @@ function Dashboard() {
       <div className="flex justify-between gap-7">
         <NavLink to="income" className="w-full">
           <SummaryCard
-            icon={<BiDollar />}
+            icon={<MdOutlineEuroSymbol />}
             name="Total income"
             amount={incomeSummary}
             percentage="6"
@@ -73,13 +73,13 @@ function Dashboard() {
             isActive={location.pathname === "/dashboard/savings"}
           />
         </NavLink>
-        <NavLink to="investments" className="w-full">
+        <NavLink to="balance" className="w-full">
           <SummaryCard
             icon={<BiWallet />}
-            name="Investments"
-            amount={amounts[3]}
+            name="Balance"
+            amount={balance}
             percentage="6"
-            isActive={location.pathname === "/dashboard/investments"}
+            isActive={location.pathname === "/dashboard/balance"}
           />
         </NavLink>
       </div>

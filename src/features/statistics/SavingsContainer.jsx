@@ -18,7 +18,7 @@ function SavingsContainer() {
 
   return (
     <div className="rounded-md shadow h-[100%] flex flex-col px-4 py-7">
-      <p>Saving goals</p>
+      <p className="font-semibold text-xl text-center">Saving goals</p>
       <RadialBarChartComponent data={adjustedData} />
       <RadialChartTable data={adjustedData} />
     </div>
