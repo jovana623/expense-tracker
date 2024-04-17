@@ -2,9 +2,10 @@ import {
   getTransactionsThisMonth,
   getTransactionsThisYear,
 } from "../helpers/filterTransactions";
+import { getTransactionsByMonth } from "../helpers/statistics";
 import supabase from "./supabase";
 
-export async function getExpenses({ filter, userId }) {
+export async function getExpenses({ filter, userId, monthFilter }) {
   let query = supabase
     .from("Expenses")
     .select("*,Type(*)")
@@ -17,6 +18,10 @@ export async function getExpenses({ filter, userId }) {
     filteredData = getTransactionsThisMonth(data);
   } else if (filter && filter.value === "year") {
     filteredData = getTransactionsThisYear(data);
+  }
+
+  if (monthFilter && monthFilter.field === "month") {
+    filteredData = getTransactionsByMonth(data, monthFilter.value);
   }
 
   if (error) throw new Error(error.message);

@@ -4,8 +4,13 @@ export function formatDate(date) {
   return formattedDate.toLocaleDateString("en-GB", options);
 }
 
-//Days left
+export function formatMonthYear(date) {
+  const options = { month: "short", year: "numeric" };
+  const formattedDate = new Date(date);
+  return formattedDate.toLocaleDateString("en-GB", options);
+}
 
+//Days left
 export function calculateDaysLeft(endDateStr) {
   const startDate = new Date();
 

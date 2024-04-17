@@ -31,7 +31,10 @@ function PaymentItem({ payment }) {
         {payment.amount.toLocaleString()}&euro;
       </p>
       <p>
-        <button onClick={() => handleDelete(id)} disabled={isDeletingPayment}>
+        <button
+          onClick={() => handleDelete(id)}
+          disabled={isDeletingPayment || isLoadingSaving || isUpdatingSaving}
+        >
           {<AiOutlineDelete />}
         </button>
       </p>

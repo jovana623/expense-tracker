@@ -1,14 +1,14 @@
-import { useCreateIncome } from "../income/useCreateIncome";
-import { useCreateExpense } from "../expenses/useCreateExpense";
-import { useUser } from "../authentification/useUser";
-import { useType } from "../type/useType";
+import { useCreateIncome } from "../features/income/useCreateIncome";
+import { useCreateExpense } from "../features/expenses/useCreateExpense";
+import { useUser } from "../features/authentification/useUser";
+import { useType } from "../features/type/useType";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
-import { ModalContext } from "../../ui/Modal";
-import Button from "../../ui/Button";
-import Spinner from "../../ui/Spinner";
-import { useUpdateIncome } from "../income/useUpdateIncome";
-import { useUpdateExpense } from "../expenses/useUpdateExpense";
+import { ModalContext } from "./Modal";
+import Button from "./Button";
+import Spinner from "./Spinner";
+import { useUpdateIncome } from "../features/income/useUpdateIncome";
+import { useUpdateExpense } from "../features/expenses/useUpdateExpense";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {

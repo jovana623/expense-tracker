@@ -18,7 +18,7 @@ function Dashboard() {
     useIncomeTransactions();
   const { expensesTransactions, isLoading: isLoadingExpenses } =
     useExpensesTransactions();
-  const { isLoading: isLoadingSavings, savings } = useSavings();
+  const { savings, isLoading: isLoadingSavings } = useSavings();
 
   if (isLoadingSavings || isLoadingIncome || isLoadingExpenses)
     return <Spinner />;
@@ -31,10 +31,12 @@ function Dashboard() {
     ? calculateTotalAmount(expensesTransactions)
     : [];
 
+  const savingsSummary = savings ? calculateTotalAmount(savings) : [];
+
   const amounts = [45200, 24500, 21200, 46000];
 
   return (
-    <div className="p-2 px-7 overflow-y-scroll">
+    <div className="py-2 px-7 overflow-y-scroll">
       <div className="flex justify-between items-center mb-3">
         {window.location.pathname === "/dashboard/savings" ? (
           <AddSavingGoal />
@@ -66,7 +68,7 @@ function Dashboard() {
           <SummaryCard
             icon={<MdOutlineSavings />}
             name="Savings"
-            amount={10200}
+            amount={savingsSummary}
             percentage="6"
             isActive={location.pathname === "/dashboard/savings"}
           />

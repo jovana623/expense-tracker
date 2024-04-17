@@ -21,15 +21,9 @@ function Overview() {
   if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
 
   const allTransactions = incomeTransactions?.concat(expensesTransactions);
-
   const sortedByMonth = allTransactions ? monthySummary(allTransactions) : [];
-
   const timeValue = searchParams.get("time");
-
   const monthData = getCurrentMonthData(allTransactions);
-
-  console.log(monthData);
-  console.log(sortedByMonth);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">

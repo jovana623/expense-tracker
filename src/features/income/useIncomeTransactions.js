@@ -22,15 +22,20 @@ export function useIncomeTransactions() {
   }, []);
 
   const filterValue = searchParams.get("time");
+  const monthValue = searchParams.get("month");
 
   const filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "time", value: filterValue };
 
+  const monthFilter = !monthValue
+    ? null
+    : { field: "month", value: monthValue };
+
   const { data: incomeTransactions, isLoading } = useQuery({
-    queryKey: ["income", filter, userId],
-    queryFn: () => getIncome({ filter, userId }),
+    queryKey: ["income", filter, userId, monthFilter],
+    queryFn: () => getIncome({ filter, userId, monthFilter }),
   });
 
   return { incomeTransactions, isLoading };

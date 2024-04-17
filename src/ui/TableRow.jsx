@@ -2,12 +2,12 @@ import { formatDate } from "../helpers/dateFunctions";
 import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./Modal";
-import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import ConfirmDelete from "./ConfirmDelete";
 import Spinner from "./Spinner";
 import Menu from "./Menu";
 import { useDeleteIncome } from "../features/income/useDeleteIncome";
 import { useDeleteExpense } from "../features/expenses/useDeleteExpense";
+import CreateTransactionForm from "./CreateTransactionForm";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction, arrow }) {

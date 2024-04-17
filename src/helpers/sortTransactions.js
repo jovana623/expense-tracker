@@ -46,7 +46,6 @@ export function summarizeAmountsByType(data) {
   return result;
 }
 
-//summary of income and expenses for every month
 export function monthySummary(transactions) {
   const monthlyData = {};
 
@@ -65,7 +64,10 @@ export function monthySummary(transactions) {
 
     if (transaction.Type.category === "income") {
       monthlyData[monthYear].income += transaction.amount;
-    } else if (transaction.Type.category === "expense") {
+    } else if (
+      transaction.Type.category === "expense" ||
+      transaction.Type.category === "savings"
+    ) {
       monthlyData[monthYear].expenses += transaction.amount;
     }
   });
@@ -75,7 +77,6 @@ export function monthySummary(transactions) {
 }
 
 export function calculateTotalAmount(savings) {
-  // Use reduce to sum up the amounts
   const totalAmountSaved = savings.reduce((total, saving) => {
     return total + saving.amount;
   }, 0);
@@ -84,10 +85,48 @@ export function calculateTotalAmount(savings) {
 }
 
 export function calculateTotalAmountSavings(savings) {
-  // Use reduce to sum up the amounts
   const totalAmountSaved = savings.reduce((total, saving) => {
     return total + saving.Amount;
   }, 0);
 
   return totalAmountSaved;
+}
+
+export function getCurrentMonthData(data) {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+
+  const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  const dailySummary = [];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    let income = 0;
+    let expenses = 0;
+
+    const transactionsForDay = data.filter((transaction) => {
+      const transactionDate = new Date(transaction.date);
+      return (
+        transactionDate.getFullYear() === currentYear &&
+        transactionDate.getMonth() + 1 === currentMonth &&
+        transactionDate.getDate() === day
+      );
+    });
+
+    transactionsForDay.forEach((transaction) => {
+      if (transaction.Type.category === "income") {
+        income += transaction.amount;
+      } else if (
+        transaction.Type.category === "expense" ||
+        transaction.Type.category === "savings"
+      ) {
+        expenses += transaction.amount;
+      }
+    });
+
+    dailySummary.push({ day: day, income: income, expenses: expenses });
+  }
+
+  return dailySummary;
 }

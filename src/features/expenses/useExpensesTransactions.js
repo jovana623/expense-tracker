@@ -21,6 +21,11 @@ export function useExpensesTransactions() {
   }, []);
 
   const filterValue = searchParams.get("time");
+  const monthValue = searchParams.get("month");
+
+  const monthFilter = !monthValue
+    ? null
+    : { field: "month", value: monthValue };
 
   const filter =
     !filterValue || filterValue === "all"
@@ -28,8 +33,8 @@ export function useExpensesTransactions() {
       : { field: "time", value: filterValue };
 
   const { data: expensesTransactions, isLoading } = useQuery({
-    queryKey: ["expenses", filter, userId],
-    queryFn: () => getExpenses({ filter, userId }),
+    queryKey: ["expenses", filter, userId, monthFilter],
+    queryFn: () => getExpenses({ filter, userId, monthFilter }),
   });
 
   return { expensesTransactions, isLoading };
