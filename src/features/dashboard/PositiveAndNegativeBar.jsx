@@ -23,6 +23,31 @@ function PositiveAndNegativeBar({ data, timeValue, monthData }) {
     expenses: -item.expenses,
   }));
 
+  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+
+  function renderTooltip({ active, payload }) {
+    if (!active || !payload || !payload[0]) return null;
+
+    const { day, month, income, expenses } = payload[0].payload;
+    const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
+
+    return (
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
+        {timeValue === "month" ? (
+          <p>
+            {day} {currentMonth}
+          </p>
+        ) : (
+          <p>{month}</p>
+        )}
+        <p className="text-green-500">Income: {income.toLocaleString()}€</p>{" "}
+        <p className="text-red-500">
+          Expenses: {Math.abs(expenses).toLocaleString()}€
+        </p>
+      </div>
+    );
+  }
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
@@ -38,8 +63,8 @@ function PositiveAndNegativeBar({ data, timeValue, monthData }) {
         ) : (
           <XAxis dataKey="month" />
         )}
-        <YAxis />
-        <Tooltip />
+        <YAxis tickFormatter={euroFormatter} />
+        <Tooltip content={renderTooltip} />
         <Legend />
         <ReferenceLine y={0} stroke="#000" />
         <Bar dataKey="income" fill="#22c55e" stackId="stack" />

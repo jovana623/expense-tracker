@@ -16,6 +16,29 @@ function AreaChartComponent({ data, timeValue, monthData }) {
     adjustedData = monthData;
   } else adjustedData = data;
 
+  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+
+  function renderTooltip({ active, payload }) {
+    if (!active || !payload || !payload[0]) return null;
+
+    const { day, month, balance } = payload[0].payload;
+    const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
+
+    return (
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
+        {timeValue === "month" ? (
+          <p>
+            {day} {currentMonth}
+          </p>
+        ) : (
+          <p>{month}</p>
+        )}
+        <p className="text-green-500">Balance: {balance.toLocaleString()}€</p>{" "}
+        <p className="text-red-500"></p>
+      </div>
+    );
+  }
+
   const gradientOffset = () => {
     const dataMax = Math.max(...data.map((i) => i.balance));
     const dataMin = Math.min(...data.map((i) => i.balance));
@@ -43,9 +66,9 @@ function AreaChartComponent({ data, timeValue, monthData }) {
       ) : (
         <XAxis dataKey="month" />
       )}
-      <YAxis />
+      <YAxis tickFormatter={euroFormatter} />
       <CartesianGrid strokeDasharray="3 3" />
-      <Tooltip />
+      <Tooltip content={renderTooltip} />
       <defs>
         <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
           <stop offset={off} stopColor="green" stopOpacity={1} />

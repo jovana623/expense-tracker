@@ -27,14 +27,14 @@ function Overview() {
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">
-      <PieChartCard>
+      <PieChartCard title="Income vs. Expenses bar">
         <PositiveAndNegativeBar
           data={sortedByMonth}
           timeValue={timeValue}
           monthData={monthData}
         ></PositiveAndNegativeBar>
       </PieChartCard>
-      <PieChartCard>
+      <PieChartCard title="Income vs. Expenses line">
         <LineChartComponent
           data={sortedByMonth}
           timeValue={timeValue}

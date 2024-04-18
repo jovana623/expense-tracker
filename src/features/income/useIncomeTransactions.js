@@ -3,6 +3,7 @@ import { getIncome } from "../../services/apiIncome";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCurrentUser } from "../../services/apiAuth";
+import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 export function useIncomeTransactions() {
   const [searchParams] = useSearchParams();
@@ -24,13 +25,15 @@ export function useIncomeTransactions() {
   const filterValue = searchParams.get("time");
   const monthValue = searchParams.get("month");
 
+  const currentMonthAndYear = getCurrentMonthAndYear();
+
   const filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "time", value: filterValue };
 
   const monthFilter = !monthValue
-    ? null
+    ? { field: "month", value: currentMonthAndYear }
     : { field: "month", value: monthValue };
 
   const { data: incomeTransactions, isLoading } = useQuery({

@@ -25,7 +25,7 @@ function HorizontalBarChart({ data, color }) {
   const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
 
   function renderTooltip({ active, payload }) {
-    if (!active || !payload || !payload[0]) return null; // Check if tooltip should be displayed and if payload is available
+    if (!active || !payload || !payload[0]) return null;
 
     const { typeName, amount } = payload[0].payload;
 
