@@ -64,15 +64,6 @@ function Dashboard() {
             isActive={location.pathname === "/dashboard/expenses"}
           />
         </NavLink>
-        <NavLink to="savings" className="w-full">
-          <SummaryCard
-            icon={<MdOutlineSavings />}
-            name="Savings"
-            amount={savingsSummary}
-            percentage="6"
-            isActive={location.pathname === "/dashboard/savings"}
-          />
-        </NavLink>
         <NavLink to="balance" className="w-full">
           <SummaryCard
             icon={<BiWallet />}
@@ -80,6 +71,15 @@ function Dashboard() {
             amount={balance}
             percentage="6"
             isActive={location.pathname === "/dashboard/balance"}
+          />
+        </NavLink>
+        <NavLink to="savings" className="w-full">
+          <SummaryCard
+            icon={<MdOutlineSavings />}
+            name="Savings"
+            amount={savingsSummary}
+            percentage="6"
+            isActive={location.pathname === "/dashboard/savings"}
           />
         </NavLink>
       </div>

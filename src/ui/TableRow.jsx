@@ -8,21 +8,50 @@ import Menu from "./Menu";
 import { useDeleteIncome } from "../features/income/useDeleteIncome";
 import { useDeleteExpense } from "../features/expenses/useDeleteExpense";
 import CreateTransactionForm from "./CreateTransactionForm";
+import { FiArrowUpRight } from "react-icons/fi";
+import { FiArrowDownLeft } from "react-icons/fi";
+import { useLocation } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
-function TableRow({ transaction, arrow }) {
-  const { id: transactionId, name, amount, Type, date } = transaction;
+function TableRow({ transaction }) {
+  const {
+    id: transactionId,
+    name,
+    amount,
+    Type,
+    date,
+    description,
+  } = transaction;
   const { deleteIncome, isLoading: isDeletingIncome } = useDeleteIncome();
   const { deleteExpense, isLoading: isDeletingExpense } = useDeleteExpense();
+  const location = useLocation();
+  const isTransactionsPath = location.pathname === "/transactions";
 
   if (isDeletingIncome || isDeletingExpense) return <Spinner />;
 
   return (
-    <div className="grid grid-cols-[0.5fr_1fr_1fr_1fr_1.2fr_0.3fr] gap-3 mt-2 items-center py-2">
-      <div className="text-green-500 w-5 h-5 justify-center">{arrow}</div>
+    <div
+      className={`grid  ${
+        isTransactionsPath
+          ? "grid-cols-[0.5fr_1.5fr_1fr_1fr_2fr_1.2fr_0.3fr]"
+          : "grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr_0.3fr]"
+      } gap-3 my-2 items-center bg-lightBg shadow rounded-md h-14 mx-2 hover:shadow-md hover:cursor-pointer`}
+    >
+      <div
+        className={` w-5 h-5 justify-self-center text-xl ${
+          Type.category === "income" ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        {Type.category === "income" ? <FiArrowDownLeft /> : <FiArrowUpRight />}
+      </div>
       <div>{name}</div>
-      <div>{amount}</div>
+      <div className="justufy-self-center">{amount.toLocaleString()}&euro;</div>
       <div>{Type["name"]}</div>
+      {isTransactionsPath ? (
+        <div className="justify-self-center">{description}</div>
+      ) : (
+        ""
+      )}
       <div className="justify-self-center">{formatDate(date)}</div>
       <div>
         <Modal>

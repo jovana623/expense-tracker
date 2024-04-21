@@ -5,6 +5,7 @@ import Spinner from "../../ui/Spinner";
 import {
   calculateBalance,
   calculateDailyBalance,
+  findLargestIncomeAndExpense,
   getCurrentMonthData,
   monthySummary,
 } from "../../helpers/sortTransactions";
@@ -27,7 +28,9 @@ function Balance() {
   const monthData = getCurrentMonthData(allTransactions);
   const adjustedMonthData = calculateDailyBalance(monthData);
   const balance = calculateBalance(sortedByMonth);
-  console.log(monthData);
+  const { largestIncome, largestExpense } =
+    findLargestIncomeAndExpense(allTransactions);
+  console.log(largestExpense, largestIncome);
 
   return (
     <div className="flex gap-12 h-80">

@@ -5,7 +5,7 @@ import { BsArrowUpRight } from "react-icons/bs";
 function SummaryCard({ icon, name, amount, percentage, isActive }) {
   return (
     <div
-      className={`shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg  ${
+      className={`shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-xl transition-all duration-200 ${
         isActive ? "bg-green-500 text-lightBg" : "bg-lightBg"
       }`}
     >

@@ -35,7 +35,9 @@ function AddToSavingForm({ saving }) {
       name: `${saving.name} payment`,
       typeId: 9,
       amount: data.amount,
-      description: `Added ${saving.amount} to ${saving.name}`,
+      description: `Added ${data.amount.toLocaleString()}&euro; to ${
+        saving.name
+      }`,
       userId: user.user.id,
       date: data.date,
     });

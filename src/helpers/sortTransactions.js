@@ -208,3 +208,21 @@ export function calculateDailyBalance(data) {
     balance: item.income - item.expenses,
   }));
 }
+
+export function findLargestIncomeAndExpense(data) {
+  let biggestIncome = { amount: 0 };
+  let biggestExpense = { amount: 0 };
+
+  data.forEach((item) => {
+    if (item.Type.category === "income" && item.amount > biggestIncome.amount) {
+      biggestIncome = item;
+    } else if (
+      item.Type.category === "expense" &&
+      item.amount > biggestExpense.amount
+    ) {
+      biggestExpense = item;
+    }
+  });
+
+  return { biggestIncome, biggestExpense };
+}

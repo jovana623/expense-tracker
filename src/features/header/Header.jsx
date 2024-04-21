@@ -7,15 +7,15 @@ function Header() {
   const { logout, isLoading } = useLogout();
 
   console.log(isLoadingUser || isLoading);
+  console.log(user.user);
 
   return (
-    <div className="border-b border-stone-200 py-3 h-[50px] flex items-center gap-3 sticky">
-      <p>Welcome, {user.user.email}</p>
-      <button onClick={logout}>
+    <div className="border-b border-stone-200 py-3 h-[50px] flex items-center gap-2 justify-end">
+      <img src="../anon-user.png" className="w-8" />
+      <p>Jonny</p>
+      <button onClick={logout} className="ml-auto">
         <HiOutlineLogout />
       </button>
-
-      <div className="ml-auto mr-9"></div>
     </div>
   );
 }

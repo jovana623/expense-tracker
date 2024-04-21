@@ -3,7 +3,6 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import PieChartCard from "../dashboard/PieChartCard";
-import { FiArrowUpRight } from "react-icons/fi";
 import { useExpensesTransactions } from "./useExpensesTransactions";
 
 function Expenses() {
@@ -21,11 +20,9 @@ function Expenses() {
         <PieChartCard>
           <PieChartComponent data={summarizedByType}></PieChartComponent>
         </PieChartCard>
-        <Table
-          data={expensesTransactions}
-          isLoading={isLoading}
-          arrow={<FiArrowUpRight />}
-        ></Table>
+        <div className="h-80 w-full">
+          <Table data={expensesTransactions} isLoading={isLoading}></Table>
+        </div>
       </div>
     </div>
   );
