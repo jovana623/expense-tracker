@@ -1,37 +1,35 @@
-import supabase from "./supabase";
+import axios from "axios";
 
 export async function getPayments() {
-  const { data, error } = await supabase.from("Payments").select("*");
-
-  if (error) {
-    throw new Error("Payments could not be loaded");
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/savings/payments/"
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  return data;
 }
 
 export async function deletePayment(id) {
-  console.log("Deleting payment with ID:", id);
-  const { data, error } = await supabase.from("Payments").delete().eq("id", id);
-
-  if (error) {
-    console.log(error);
-    throw new Error("Payment could not be deleted");
-  }
-
-  return data;
-}
-
-export async function createNewPayment({ amount, date, savingId }) {
-  const { data, error } = await supabase
-    .from("Payments")
-    .insert([{ amount: amount, date: date, savingId: savingId }])
-    .select();
-
-  if (error) {
-    console.log(error);
+  try {
+    const response = await axios.delete(
+      `http://127.0.0.1:8000/api/savings/payments/${id}`
+    );
+    return response.data;
+  } catch (error) {
     throw new Error(error.message);
   }
+}
 
-  return data;
+export async function createPayment(id, paymentData) {
+  try {
+    const response = await axios.post(
+      `http://127.0.0.1:8000/api/savings/create_payment/${id}`,
+      paymentData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }

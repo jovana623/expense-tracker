@@ -5,16 +5,7 @@ import toast from "react-hot-toast";
 export function useUpdateSaving() {
   const queryClient = useQueryClient();
   const { mutate: updateSaving, isLoading } = useMutation({
-    mutationFn: ({
-      id,
-      name,
-      amount,
-      goal,
-      target_date,
-      description,
-      userId,
-    }) =>
-      updateSavingApi(id, name, amount, goal, target_date, description, userId),
+    mutationFn: updateSavingApi,
     onSuccess: () => {
       toast.success("Saving updated");
       queryClient.invalidateQueries("savings");

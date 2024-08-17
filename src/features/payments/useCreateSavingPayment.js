@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNewPayment } from "../../services/apiPayments";
+import { createPayment as createPaymentAPI } from "../../services/apiPayments";
 import toast from "react-hot-toast";
 
 export function useCreateSavingPayment() {
   const queryClient = useQueryClient();
   const { mutate: createPayment, isLoading } = useMutation({
-    mutationFn: createNewPayment,
+    mutationFn: createPaymentAPI,
     onSuccess: () => {
       toast.success("New payment added");
       queryClient.invalidateQueries("payments");

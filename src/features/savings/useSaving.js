@@ -4,7 +4,7 @@ import { getSaving } from "../../services/apiSavings";
 /* eslint-disable react/prop-types */
 export function useSaving(savingId) {
   const { data: saving, isLoading } = useQuery({
-    queryFn: () => getSaving(savingId),
+    queryFn: getSaving,
     queryKey: ["saving", savingId],
   });
 
