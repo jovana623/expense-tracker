@@ -18,7 +18,7 @@ export async function getSaving(id) {
   }
 }
 
-export async function creatSaving(savingData) {
+export async function createSaving(savingData) {
   try {
     const response = await axios.post(
       "http://127.0.0.1:8000/api/savings/",

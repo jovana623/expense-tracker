@@ -1,23 +1,20 @@
-import { useCreateIncome } from "../features/income/useCreateIncome";
-import { useCreateExpense } from "../features/expenses/useCreateExpense";
 import { useUser } from "../features/authentification/useUser";
 import { useType } from "../features/type/useType";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { ModalContext } from "./Modal";
+import { useCreateTransaction } from "../features/transactions/useCreateTransaction";
+import { useUpdateTransaction } from "../features/transactions/useUpdateTransaction";
 import Button from "./Button";
 import Spinner from "./Spinner";
-import { useUpdateIncome } from "../features/income/useUpdateIncome";
-import { useUpdateExpense } from "../features/expenses/useUpdateExpense";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
-  const { createIncome, isLoading: isCreatingIncome } = useCreateIncome();
-  const { createExpense, isLoading: isCreatingExpense } = useCreateExpense();
+  const { createTransaction, isLoading: isCreating } = useCreateTransaction();
+  const { updateTransaction, isLoading } = useUpdateTransaction();
   const { type, isLoading: isLoadingType } = useType();
   const { data: user, isLoadingUser } = useUser();
-  const { updateIncome, isLoading: isUpdatingIncome } = useUpdateIncome();
-  const { updateExpense, isLoading: isUpdatingExpense } = useUpdateExpense();
+
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
 
@@ -38,50 +35,25 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
   function onSubmit(data) {
     if (isUpdateSession) {
-      if (data.category === "income") {
-        updateIncome({
-          id: editId,
-          name: data.name,
-          date: data.date,
-          typeId: data.typeId,
-          amount: data.amount,
-          description: data.description,
-          userId: user.user.id,
-        });
-      } else if (data.category === "expense") {
-        updateExpense({
-          id: editId,
-          name: data.name,
-          date: data.date,
-          typeId: data.typeId,
-          amount: data.amount,
-          description: data.description,
-          userId: user.user.id,
-        });
-      }
+      updateTransaction({
+        id: editId,
+        name: data.name,
+        date: data.date,
+        typeId: data.typeId,
+        amount: data.amount,
+        description: data.description,
+        userId: user.user.id,
+      });
     } else {
-      if (data.category === "income") {
-        createIncome({
-          name: data.name,
-          date: data.date,
-          typeId: data.typeId,
-          amount: data.amount,
-          description: data.description,
-          userId: user.user.id,
-        });
-      } else if (data.category === "expense") {
-        createExpense({
-          name: data.name,
-          date: data.date,
-          typeId: data.typeId,
-          amount: data.amount,
-          description: data.description,
-          userId: user.user.id,
-        });
-      }
+      createTransaction({
+        name: data.name,
+        date: data.date,
+        typeId: data.typeId,
+        amount: data.amount,
+        description: data.description,
+        userId: user.user.id,
+      });
     }
-
-    console.log(data);
   }
 
   function onCancel() {
@@ -89,12 +61,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     reset();
   }
 
-  const isWorking =
-    isCreatingIncome ||
-    isCreatingExpense ||
-    isLoadingUser ||
-    isUpdatingExpense ||
-    isUpdatingIncome;
+  const isWorking = isCreating || isLoadingUser || isLoading;
 
   return (
     <form
@@ -195,5 +162,4 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     </form>
   );
 }
-
 export default CreateTransactionForm;

@@ -2,17 +2,19 @@ import { useContext } from "react";
 import { useCreateSavingPayment } from "../payments/useCreateSavingPayment";
 import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
-import Spinner from "../../ui/Spinner";
-import Button from "../../ui/Button";
-import { useCreateExpense } from "../expenses/useCreateExpense";
 import { useUser } from "../authentification/useUser";
 import { useUpdateSaving } from "./useUpdateSaving";
+import { useCreateTransaction } from "../transactions/useCreateTransaction";
+
+import Spinner from "../../ui/Spinner";
+import Button from "../../ui/Button";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
   const { handleSubmit, register, formState } = useForm();
-  const { createExpense, isLoading: isCreatingExpense } = useCreateExpense();
+  const { createTransaction, isLoading: isCreatingExpense } =
+    useCreateTransaction();
   const { data: user, isLoading: isLoadingUser } = useUser();
   const { updateSaving, isLoading: isUpdating } = useUpdateSaving();
 
@@ -31,7 +33,7 @@ function AddToSavingForm({ saving }) {
       date: data.date,
       savingId: saving.id,
     });
-    createExpense({
+    createTransaction({
       name: `${saving.name} payment`,
       typeId: 9,
       amount: data.amount,

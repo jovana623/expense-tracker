@@ -1,16 +1,18 @@
 import { formatDate } from "../helpers/dateFunctions";
+
 import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
+import { FiArrowUpRight } from "react-icons/fi";
+import { FiArrowDownLeft } from "react-icons/fi";
+
 import Modal from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
 import Spinner from "./Spinner";
 import Menu from "./Menu";
-import { useDeleteIncome } from "../features/income/useDeleteIncome";
-import { useDeleteExpense } from "../features/expenses/useDeleteExpense";
 import CreateTransactionForm from "./CreateTransactionForm";
-import { FiArrowUpRight } from "react-icons/fi";
-import { FiArrowDownLeft } from "react-icons/fi";
+
 import { useLocation } from "react-router-dom";
+import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 
 /* eslint-disable react/prop-types */
 function TableRow({ transaction }) {
@@ -22,12 +24,11 @@ function TableRow({ transaction }) {
     date,
     description,
   } = transaction;
-  const { deleteIncome, isLoading: isDeletingIncome } = useDeleteIncome();
-  const { deleteExpense, isLoading: isDeletingExpense } = useDeleteExpense();
+  const { deleteTransaction, isLoading } = useDeleteTransaction();
   const location = useLocation();
   const isTransactionsPath = location.pathname === "/transactions";
 
-  if (isDeletingIncome || isDeletingExpense) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <div
@@ -75,14 +76,14 @@ function TableRow({ transaction }) {
               {Type.category === "income" ? (
                 <ConfirmDelete
                   nameModal="income"
-                  onConfirm={() => deleteIncome(transactionId)}
+                  onConfirm={() => deleteTransaction(transactionId)}
                 />
               ) : transaction.Type.category === "savings" ? (
                 "Delete saving payment in savings"
               ) : (
                 <ConfirmDelete
                   nameModal="expense"
-                  onConfirm={() => deleteExpense(transactionId)}
+                  onConfirm={() => deleteTransaction(transactionId)}
                 />
               )}
             </Modal.Window>
