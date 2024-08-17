@@ -6,9 +6,9 @@ function RegisterForm() {
   const { registerUser, isLoading } = useRegister();
   const { register, handleSubmit, reset } = useForm();
 
-  function onSubmit({ fullName, email, password }) {
+  function onSubmit({ username, email, password }) {
     registerUser(
-      { fullName, email, password },
+      { username, email, password },
       {
         onSettled: () => reset(),
       }
@@ -19,13 +19,13 @@ function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div>
-          <label htmlFor="fullName">Full Name or Username</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
-            id="fullName"
+            id="username"
             className="input-field"
             disabled={isLoading}
-            {...register("fullName", { required: "This field is required" })}
+            {...register("username", { required: "This field is required" })}
           />
         </div>
         <div>

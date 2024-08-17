@@ -1,4 +1,5 @@
 import supabase from "./supabase";
+import axios from "axios";
 
 export async function getCurrentUser() {
   const { data, error } = await supabase.auth.getUser();
@@ -8,36 +9,40 @@ export async function getCurrentUser() {
 }
 
 export async function login({ email, password }) {
-  let { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) throw new Error(error.message);
-
-  return data?.user;
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/users/login/",
+      { email, password },
+      { withCredentials: true }
+    );
+    return response.data.user;
+  } catch (error) {
+    throw new Error(error.response?.data?.detail || "Login failed");
+  }
 }
 
-export async function register({ fullName, email, password }) {
-  let { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    fullName,
-    options: {
-      avatar: "",
-    },
-  });
-
-  console.log(fullName, email, password);
-
-  if (error) throw new Error(error);
-
-  return data;
+export async function register({ username, email, password }) {
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/users/register/",
+      { username, email, password },
+      { withCredentials: true }
+    );
+    return response.data.user;
+  } catch (error) {
+    throw new Error(error.response?.data?.detail || "Register failed");
+  }
 }
 
 export async function logout() {
-  let { error } = await supabase.auth.signOut();
-  if (error) throw new Error(error.message);
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/users/logout/"
+    );
+    return response.user.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.detail || "Logout failed");
+  }
 }
 
 export async function updateUser({ password }) {
