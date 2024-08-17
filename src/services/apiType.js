@@ -1,11 +1,12 @@
-import supabase from "./supabase";
+import axios from "axios";
 
 export async function getType() {
-  let { data, error } = await supabase.from("Type").select("*");
-
-  if (error) {
-    throw new Error("Categories could not be loaded");
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/transactions/types"
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  return data;
 }
