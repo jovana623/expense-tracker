@@ -3,7 +3,7 @@ import PieChartCard from "../dashboard/PieChartCard";
 import PieChartComponent from "../../ui/PieChartComponent";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import Table from "../../ui/Table";
-import { useIncomeTransactions } from "./useIncomeTransactions";
+import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 
 function Income() {
   const { incomeTransactions, isLoading } = useIncomeTransactions();

@@ -1,16 +1,13 @@
+import axios from "axios";
 import supabase from "./supabase";
 
-export async function getSavings({ userId }) {
-  const { data, error } = await supabase
-    .from("Savings")
-    .select("*")
-    .eq("userId", userId);
-
-  if (error) {
-    throw new Error("Savings could not be loaded");
+export async function getSavings() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8000/api/savings/");
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
   }
-
-  return data;
 }
 
 export async function getSaving(id) {

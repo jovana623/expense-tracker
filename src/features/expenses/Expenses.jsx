@@ -3,10 +3,10 @@ import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import PieChartCard from "../dashboard/PieChartCard";
-import { useExpensesTransactions } from "./useExpensesTransactions";
+import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 
 function Expenses() {
-  const { expensesTransactions, isLoading } = useExpensesTransactions();
+  const { expensesTransactions, isLoading } = useExpenseTransactions();
 
   const summarizedByType = expensesTransactions
     ? summarizeAmountsByType(expensesTransactions)

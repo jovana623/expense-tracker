@@ -1,17 +1,19 @@
 import { FiArrowUpRight } from "react-icons/fi";
-import { useExpensesTransactions } from "../features/expenses/useExpensesTransactions";
-import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
+
 import Spinner from "../ui/Spinner";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";
 import SortByTable from "../ui/SortByTable";
+
+import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
+import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 
 function Transactions() {
   const { incomeTransactions, isLoading: isLoadingIncome } =
     useIncomeTransactions();
 
   const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpensesTransactions();
+    useExpenseTransactions();
 
   if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
   const allTransactions = incomeTransactions?.concat(expensesTransactions);

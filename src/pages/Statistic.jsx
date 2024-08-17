@@ -1,21 +1,23 @@
-import StatisticFilter from "../features/statistics/StatisticFilter";
-import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
 import {
   calculateTotalAmount,
   summarizeAmountsByType,
 } from "../helpers/sortTransactions";
+
+import StatisticFilter from "../features/statistics/StatisticFilter";
 import Spinner from "../ui/Spinner";
-import { useExpensesTransactions } from "../features/expenses/useExpensesTransactions";
 import StatisticsContainer from "../features/statistics/StatisticsContainer";
 import InfoCards from "../features/statistics/InfoCards";
 import SavingsContainer from "../features/statistics/SavingsContainer";
+
+import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
+import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 
 function Statistic() {
   const { incomeTransactions, isLoading: isLoadingIncome } =
     useIncomeTransactions();
 
   const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpensesTransactions();
+    useExpenseTransactions();
 
   if (!incomeTransactions || !expensesTransactions) return null;
 

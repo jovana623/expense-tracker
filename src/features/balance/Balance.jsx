@@ -1,6 +1,4 @@
 import { useSearchParams } from "react-router-dom";
-import { useIncomeTransactions } from "../income/useIncomeTransactions";
-import { useExpensesTransactions } from "../expenses/useExpensesTransactions";
 import Spinner from "../../ui/Spinner";
 import {
   calculateBalance,
@@ -11,6 +9,8 @@ import {
 } from "../../helpers/sortTransactions";
 import PieChartCard from "../dashboard/PieChartCard";
 import AreaChartComponent from "./AreaChartComponent";
+import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
+import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 
 function Balance() {
   const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ function Balance() {
     useIncomeTransactions();
 
   const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpensesTransactions();
+    useExpenseTransactions();
 
   if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
 

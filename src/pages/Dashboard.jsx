@@ -1,23 +1,26 @@
-import { MdOutlineSavings } from "react-icons/md";
-import { BiWallet } from "react-icons/bi";
-import { BiReceipt } from "react-icons/bi";
 import { calculateTotalAmount } from "../helpers/sortTransactions";
 import { NavLink, Outlet } from "react-router-dom";
+
 import SummaryCard from "../features/dashboard/SummaryCard";
 import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../ui/AddTransaction";
-import { useSavings } from "../features/savings/useSavings";
 import AddSavingGoal from "../ui/AddSavingGoal";
-import { useIncomeTransactions } from "../features/income/useIncomeTransactions";
-import { useExpensesTransactions } from "../features/expenses/useExpensesTransactions";
+
+import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
+import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
+import { useSavings } from "../features/savings/useSavings";
+
+import { MdOutlineSavings } from "react-icons/md";
+import { BiWallet } from "react-icons/bi";
+import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
 function Dashboard() {
   const { incomeTransactions, isLoading: isLoadingIncome } =
     useIncomeTransactions();
   const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpensesTransactions();
+    useExpenseTransactions();
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   if (isLoadingSavings || isLoadingIncome || isLoadingExpenses)
