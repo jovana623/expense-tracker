@@ -1,11 +1,11 @@
-import Modal from "./Modal";
+import Modal from "../../ui/Modal";
 import CreateTransactionForm from "./CreateTransactionForm";
 import { AiOutlinePlus } from "react-icons/ai";
 
 function AddTransaction() {
   return (
     <div>
-      <Modal> 
+      <Modal>
         <Modal.OpenButton opens="transaction-form">
           <button className="flex items-center gap-2 bg-green-500 text-lightBg px-3 py-2 rounded-md hover:bg-green-600">
             <span className="px-0.5 py-0.5 bg-lightBg rounded-full text-green-500">

@@ -1,5 +1,64 @@
 import { getMonthName } from "./helpers";
 
+export function sortByMonth(transactions) {
+  const monthlySummary = {};
+
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.date);
+    const month = date.toLocaleString("default", { month: "long" });
+    const category = transaction.type.category;
+
+    if (!monthlySummary[month]) {
+      monthlySummary[month] = { income: 0, expenses: 0 };
+    }
+
+    if (category === "Income") {
+      monthlySummary[month].income += parseFloat(transaction.amount);
+    } else {
+      monthlySummary[month].expenses -= parseFloat(transaction.amount);
+    }
+  });
+  return Object.entries(monthlySummary).map(
+    ([month, { income, expenses }]) => ({
+      month,
+      income,
+      expenses,
+    })
+  );
+}
+
+export function getCurrentMonthData(transactions) {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  const dailySummary = Array.from({ length: daysInMonth }, (_, i) => ({
+    day: i + 1,
+    income: 0,
+    expenses: 0,
+  }));
+
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.date);
+    const transactionMonth = date.getMonth();
+    const transactionYear = date.getFullYear();
+
+    if (transactionMonth === currentMonth && transactionYear === currentYear) {
+      const day = date.getDate();
+      const category = transaction.type?.category?.name;
+
+      const daySummary = dailySummary.find((d) => d.day === day);
+
+      if (category === "Income") {
+        daySummary.income += parseFloat(transaction.amount);
+      } else daySummary.expenses -= parseFloat(transaction.amount);
+    }
+  });
+  return dailySummary;
+}
+
 export function summarizeAmountsByCategory(transactions) {
   const incomeTransactions = transactions.filter(
     (transaction) => transaction.Type.name === "income"
@@ -154,45 +213,6 @@ export function calculateTotalAmountSavings(savings) {
   }, 0);
 
   return totalAmountSaved;
-}
-
-export function getCurrentMonthData(data) {
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
-
-  const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-
-  const dailySummary = [];
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    let income = 0;
-    let expenses = 0;
-
-    const transactionsForDay = data.filter((transaction) => {
-      const transactionDate = new Date(transaction.date);
-      return (
-        transactionDate.getFullYear() === currentYear &&
-        transactionDate.getMonth() + 1 === currentMonth &&
-        transactionDate.getDate() === day
-      );
-    });
-
-    transactionsForDay.forEach((transaction) => {
-      if (transaction.Type.category === "income") {
-        income += transaction.amount;
-      } else if (
-        transaction.Type.category === "expense" ||
-        transaction.Type.category === "savings"
-      ) {
-        expenses += transaction.amount;
-      }
-    });
-
-    dailySummary.push({ day: day, income: income, expenses: expenses });
-  }
-
-  return dailySummary;
 }
 
 export function calculateBalance(data) {

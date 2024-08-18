@@ -1,14 +1,10 @@
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
-import { useUpdateUser } from "../authentification/useUpdateUser";
 
 function ChangePasswordForm() {
-  const { register, handleSubmit, getValues, reset } = useForm();
-  const { updatedUser, isLoading } = useUpdateUser();
+  const { register, handleSubmit, getValues } = useForm();
 
-  function onSubmit({ Password }) {
-    updatedUser({ Password }, { onSuccess: reset });
-  }
+  function onSubmit() {}
 
   return (
     <form
@@ -35,9 +31,7 @@ function ChangePasswordForm() {
 
       <div className="col-span-2 justify-self-end flex items-center gap-3">
         <Button>Cancel</Button>
-        <Button type="primary" disabled={isLoading}>
-          Confirm
-        </Button>
+        <Button type="primary">Confirm</Button>
       </div>
     </form>
   );

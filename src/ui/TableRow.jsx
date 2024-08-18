@@ -9,7 +9,7 @@ import Modal from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
 import Spinner from "./Spinner";
 import Menu from "./Menu";
-import CreateTransactionForm from "./CreateTransactionForm";
+import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 
 import { useLocation } from "react-router-dom";
 import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";

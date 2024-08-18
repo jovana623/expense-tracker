@@ -1,6 +1,6 @@
 import {
   getCurrentMonthData,
-  monthySummary,
+  sortByMonth,
 } from "../../helpers/sortTransactions";
 import Spinner from "../../ui/Spinner";
 import { useTransactions } from "../transactions/useTransactions";
@@ -15,9 +15,10 @@ function Overview() {
 
   if (isLoadingTransactions) return <Spinner />;
 
-  const sortedByMonth = transactions ? monthySummary(transactions) : [];
+  const sortedByMonth = sortByMonth(transactions);
   const timeValue = searchParams.get("time");
   const monthData = getCurrentMonthData(transactions);
+  console.log(monthData);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">

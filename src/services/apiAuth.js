@@ -1,12 +1,4 @@
-import supabase from "./supabase";
 import axios from "axios";
-
-export async function getCurrentUser() {
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error) throw new Error(error.message);
-  return data;
-}
 
 export async function login({ email, password }) {
   try {
@@ -43,15 +35,4 @@ export async function logout() {
   } catch (error) {
     throw new Error(error.response?.data?.detail || "Logout failed");
   }
-}
-
-export async function updateUser({ password }) {
-  let updateData;
-  if (password) updateData = { password };
-
-  const { data, error } = await supabase.auth.updateUser(updateData);
-
-  if (error) throw new Error(error);
-
-  return data;
 }

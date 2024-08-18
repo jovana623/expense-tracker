@@ -1,25 +1,12 @@
-import { useUser } from "../authentification/useUser";
 import Button from "../../ui/Button";
 
 function ChangeProfileInfoForm() {
-  const { data: user, isLoading } = useUser();
-
   return (
     <form className="grid grid-cols-[2fr_3fr] gap-y-4 items-center">
       <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        className="input-field"
-        value="test"
-        disabled={isLoading}
-      />
+      <input type="text" className="input-field" value="test" />
       <label htmlFor="email">Email</label>
-      <input
-        type="text"
-        className="input-field"
-        value={user.user.email}
-        disabled={true}
-      />
+      <input type="text" className="input-field" disabled={true} />
       <label htmlFor="avatar">Upload avatar</label>
       <div className="relative">
         <input

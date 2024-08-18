@@ -1,15 +1,9 @@
-import { calculateTotalAmount } from "../helpers/sortTransactions";
 import { NavLink, Outlet } from "react-router-dom";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
-import Spinner from "../ui/Spinner";
 import TimeFilter from "../ui/TimeFilter";
-import AddTransaction from "../ui/AddTransaction";
+import AddTransaction from "../features/transactions/AddTransaction";
 import AddSavingGoal from "../ui/AddSavingGoal";
-
-import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
-import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
-import { useSavings } from "../features/savings/useSavings";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -17,24 +11,11 @@ import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
 function Dashboard() {
-  const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions();
-  const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpenseTransactions();
-  const { savings, isLoading: isLoadingSavings } = useSavings();
+  const incomeSummary = 120;
 
-  if (isLoadingSavings || isLoadingIncome || isLoadingExpenses)
-    return <Spinner />;
+  const expensesSummary = 100;
 
-  const incomeSummary = incomeTransactions
-    ? calculateTotalAmount(incomeTransactions)
-    : [];
-
-  const expensesSummary = expensesTransactions
-    ? calculateTotalAmount(expensesTransactions)
-    : [];
-
-  const savingsSummary = savings ? calculateTotalAmount(savings) : [];
+  const savingsSummary = 240;
 
   const balance = incomeSummary - expensesSummary;
 

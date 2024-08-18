@@ -4,14 +4,12 @@ import { useCreateSaving } from "./useCreateSaving";
 import Spinner from "../../ui/Spinner";
 import { useContext } from "react";
 import { ModalContext } from "../../ui/Modal";
-import { useUser } from "../authentification/useUser";
 import { useUpdateSaving } from "./useUpdateSaving";
 
 /* eslint-disable react/prop-types */
 function CreateSavingGoalForm({ savingToUpdate = {} }) {
   const { updateSaving, isLoading: isUpdating } = useUpdateSaving();
   const { createSaving, isLoading } = useCreateSaving();
-  const { data: user, isLoading: isLoadingUser } = useUser();
 
   const { id: editId, ...editValues } = savingToUpdate;
   const isUpdateSession = Boolean(editId);
@@ -29,17 +27,15 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         name: data.name,
         amount: savingToUpdate.amount,
         goal: data.goal,
-        target_Date: data.target_Date,
+        target_date: data.target_Date,
         description: data.description,
-        userId: user.user.id,
       });
     } else {
       createSaving({
         name: data.name,
         goal: data.goal,
-        target_Date: data.target_Date,
+        target_date: data.target_Date,
         description: data.description,
-        userId: user.user.id,
       });
     }
   }
@@ -48,7 +44,7 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
     close();
   }
 
-  if (isLoading || isLoadingUser || isUpdating) return <Spinner />;
+  if (isLoading || isUpdating) return <Spinner />;
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -75,7 +71,7 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       </div>
 
       <div className="col-span-2 flex flex-col gap-1">
-        <label htmlFor="target_Date">Target Date</label>
+        <label htmlFor="target_date">Target Date</label>
         <input
           type="date"
           className="input-field"

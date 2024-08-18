@@ -13,7 +13,6 @@ import Savings from "./features/savings/Savings";
 import Expenses from "./features/expenses/Expenses";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
-import ProtectedRoute from "./ui/ProtectedRoute";
 import Register from "./pages/Register";
 import Balance from "./features/balance/Balance";
 
@@ -30,13 +29,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
+          <Route element={<AppLayout />}>
             <Route
               index
               element={<Navigate replace to="dashboard/overview" />}

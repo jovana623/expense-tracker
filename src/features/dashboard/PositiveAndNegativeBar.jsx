@@ -13,6 +13,7 @@ import {
 /* eslint-disable react/prop-types */
 function PositiveAndNegativeBar({ data, timeValue, monthData }) {
   let adjustedData = {};
+  console.log(monthData);
 
   if (timeValue === "month") {
     adjustedData = monthData;
@@ -20,7 +21,7 @@ function PositiveAndNegativeBar({ data, timeValue, monthData }) {
 
   const finalData = adjustedData.map((item) => ({
     ...item,
-    expenses: -item.expenses,
+    expenses: item.expenses,
   }));
 
   const euroFormatter = (tick) => `${tick.toLocaleString()}€`;

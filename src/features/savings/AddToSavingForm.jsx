@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useCreateSavingPayment } from "../payments/useCreateSavingPayment";
 import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
-import { useUser } from "../authentification/useUser";
 import { useUpdateSaving } from "./useUpdateSaving";
 import { useCreateTransaction } from "../transactions/useCreateTransaction";
 
@@ -15,7 +14,7 @@ function AddToSavingForm({ saving }) {
   const { handleSubmit, register, formState } = useForm();
   const { createTransaction, isLoading: isCreatingExpense } =
     useCreateTransaction();
-  const { data: user, isLoading: isLoadingUser } = useUser();
+
   const { updateSaving, isLoading: isUpdating } = useUpdateSaving();
 
   const { errors } = formState;
@@ -40,7 +39,7 @@ function AddToSavingForm({ saving }) {
       description: `Added ${data.amount.toLocaleString()}&euro; to ${
         saving.name
       }`,
-      userId: user.user.id,
+
       date: data.date,
     });
     updateSaving({
@@ -57,8 +56,7 @@ function AddToSavingForm({ saving }) {
     console.log(errors);
   }
 
-  if (isLoading || isCreatingExpense || isLoadingUser || isUpdating)
-    return <Spinner />;
+  if (isLoading || isCreatingExpense || isUpdating) return <Spinner />;
 
   return (
     <form

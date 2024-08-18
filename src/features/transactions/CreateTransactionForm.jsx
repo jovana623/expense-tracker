@@ -1,19 +1,17 @@
-import { useUser } from "../features/authentification/useUser";
-import { useType } from "../features/type/useType";
+import { useType } from "../type/useType";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
-import { ModalContext } from "./Modal";
-import { useCreateTransaction } from "../features/transactions/useCreateTransaction";
-import { useUpdateTransaction } from "../features/transactions/useUpdateTransaction";
-import Button from "./Button";
-import Spinner from "./Spinner";
+import { ModalContext } from "../../ui/Modal";
+import { useCreateTransaction } from "./useCreateTransaction";
+import { useUpdateTransaction } from "./useUpdateTransaction";
+import Button from "../../ui/Button";
+import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { createTransaction, isLoading: isCreating } = useCreateTransaction();
   const { updateTransaction, isLoading } = useUpdateTransaction();
   const { type, isLoading: isLoadingType } = useType();
-  const { data: user, isLoadingUser } = useUser();
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
@@ -39,19 +37,17 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
         id: editId,
         name: data.name,
         date: data.date,
-        typeId: data.typeId,
+        type_id: data.typeId,
         amount: data.amount,
         description: data.description,
-        userId: user.user.id,
       });
     } else {
       createTransaction({
         name: data.name,
         date: data.date,
-        typeId: data.typeId,
+        type_id: data.typeId,
         amount: data.amount,
         description: data.description,
-        userId: user.user.id,
       });
     }
   }
@@ -61,7 +57,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     reset();
   }
 
-  const isWorking = isCreating || isLoadingUser || isLoading;
+  const isWorking = isCreating || isLoading;
 
   return (
     <form
