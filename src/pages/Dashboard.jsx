@@ -10,10 +10,25 @@ import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
-function Dashboard() {
-  const incomeSummary = 120;
+import { summary } from "../helpers/sortTransactions";
+import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
+import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
+import Spinner from "../ui/Spinner";
 
-  const expensesSummary = 100;
+function Dashboard() {
+  const { incomeTransactions, isLoading: isLoadingIncome } =
+    useIncomeTransactions();
+  const { expenseTransactions, isLoading: isLoadingExpense } =
+    useExpenseTransactions();
+
+  if (isLoadingIncome || isLoadingExpense) return <Spinner />;
+  console.log(incomeTransactions);
+
+  const incomeSummary = summary(incomeTransactions);
+
+  console.log(incomeSummary);
+
+  const expensesSummary = summary(expenseTransactions);
 
   const savingsSummary = 240;
 

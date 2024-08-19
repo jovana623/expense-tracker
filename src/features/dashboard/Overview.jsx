@@ -18,7 +18,6 @@ function Overview() {
   const sortedByMonth = sortByMonth(transactions);
   const timeValue = searchParams.get("time");
   const monthData = getCurrentMonthData(transactions);
-  console.log(monthData);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">

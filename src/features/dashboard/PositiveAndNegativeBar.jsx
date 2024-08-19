@@ -13,7 +13,6 @@ import {
 /* eslint-disable react/prop-types */
 function PositiveAndNegativeBar({ data, timeValue, monthData }) {
   let adjustedData = {};
-  console.log(monthData);
 
   if (timeValue === "month") {
     adjustedData = monthData;

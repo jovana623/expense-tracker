@@ -12,7 +12,7 @@ export function sortByMonth(transactions) {
       monthlySummary[month] = { income: 0, expenses: 0 };
     }
 
-    if (category === "Income") {
+    if (category === 1) {
       monthlySummary[month].income += parseFloat(transaction.amount);
     } else {
       monthlySummary[month].expenses -= parseFloat(transaction.amount);
@@ -57,6 +57,16 @@ export function getCurrentMonthData(transactions) {
     }
   });
   return dailySummary;
+}
+
+export function summary(transactions) {
+  let total = 0;
+
+  transactions.forEach((transaction) => {
+    total += parseFloat(transaction.amount);
+  });
+
+  return total;
 }
 
 export function summarizeAmountsByCategory(transactions) {
