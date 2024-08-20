@@ -1,11 +1,9 @@
-import { useLocation } from "react-router-dom";
 import Spinner from "./Spinner";
 import TableRow from "./TableRow";
 
 /* eslint-disable react/prop-types */
 function Table({ data, isLoading }) {
   if (isLoading) return <Spinner />;
-  const location = useLocation();
   const isTransactionsPath = location.pathname === "/transactions";
 
   if (!data) return null;

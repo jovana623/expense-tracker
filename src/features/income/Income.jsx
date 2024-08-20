@@ -8,10 +8,7 @@ import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 function Income() {
   const { incomeTransactions, isLoading } = useIncomeTransactions();
 
-  const summary = incomeTransactions
-    ? summarizeAmountsByType(incomeTransactions)
-    : [];
-
+  const summary = summarizeAmountsByType(incomeTransactions);
   if (isLoading) return <Spinner />;
 
   return (

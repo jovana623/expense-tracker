@@ -6,13 +6,12 @@ import PieChartCard from "../dashboard/PieChartCard";
 import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 
 function Expenses() {
-  const { expensesTransactions, isLoading } = useExpenseTransactions();
-
-  const summarizedByType = expensesTransactions
-    ? summarizeAmountsByType(expensesTransactions)
-    : [];
+  const { expenseTransactions, isLoading } = useExpenseTransactions();
 
   if (isLoading) return <Spinner />;
+  console.log(expenseTransactions);
+
+  const summarizedByType = summarizeAmountsByType(expenseTransactions);
 
   return (
     <div>
@@ -21,7 +20,7 @@ function Expenses() {
           <PieChartComponent data={summarizedByType}></PieChartComponent>
         </PieChartCard>
         <div className="h-80 w-full">
-          <Table data={expensesTransactions} isLoading={isLoading}></Table>
+          <Table data={expenseTransactions} isLoading={isLoading}></Table>
         </div>
       </div>
     </div>

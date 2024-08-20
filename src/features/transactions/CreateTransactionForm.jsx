@@ -37,17 +37,19 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
         id: editId,
         name: data.name,
         date: data.date,
-        type_id: data.typeId,
+        type: "Test",
         amount: data.amount,
         description: data.description,
+        user: 2,
       });
     } else {
       createTransaction({
         name: data.name,
         date: data.date,
-        type_id: data.typeId,
+        type_id: "Test",
         amount: data.amount,
         description: data.description,
+        user: 2,
       });
     }
   }
@@ -112,10 +114,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
           <div className="flex flex-col gap-1 col-span-2">
             <label htmlFor="typeId">Type</label>
-            <select
-              className="input-field"
-              {...register("typeId", { required: "This field is required" })}
-            >
+            <select className="input-field" {...register("typeId")}>
               {type
                 .filter((option) => option.category === category)
                 .map((option) => (

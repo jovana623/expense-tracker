@@ -6,13 +6,13 @@ export function sortByMonth(transactions) {
   transactions.forEach((transaction) => {
     const date = new Date(transaction.date);
     const month = date.toLocaleString("default", { month: "long" });
-    const category = transaction.type.category;
+    const category = transaction.type.category.name;
 
     if (!monthlySummary[month]) {
       monthlySummary[month] = { income: 0, expenses: 0 };
     }
 
-    if (category === 1) {
+    if (category === "Income") {
       monthlySummary[month].income += parseFloat(transaction.amount);
     } else {
       monthlySummary[month].expenses -= parseFloat(transaction.amount);
@@ -69,6 +69,34 @@ export function summary(transactions) {
   return total;
 }
 
+export function summarizeAmountsByType(transactions) {
+  const summary = {};
+
+  if (!transactions || transactions.length === 0) {
+    return [];
+  }
+
+  transactions.forEach((transaction) => {
+    const typeName = transaction.type.name;
+    const amount = parseFloat(transaction.amount);
+    const color = transaction.type.color;
+
+    if (!summary[typeName]) {
+      summary[typeName] = { amount, color };
+    } else {
+      summary[typeName].amount += amount;
+    }
+  });
+
+  const result = Object.keys(summary).map((typeName) => ({
+    typeName,
+    amount: summary[typeName].amount,
+    color: summary[typeName].color,
+  }));
+
+  return result;
+}
+
 export function summarizeAmountsByCategory(transactions) {
   const incomeTransactions = transactions.filter(
     (transaction) => transaction.Type.name === "income"
@@ -89,30 +117,6 @@ export function summarizeAmountsByCategory(transactions) {
     { category: "Income", amount: totalIncome },
     { category: "Expenses", amount: totalExpenses },
   ];
-}
-
-export function summarizeAmountsByType(data) {
-  const summary = {};
-
-  data.forEach((entry) => {
-    const typeName = entry.Type.name;
-    const amount = entry.amount;
-    const color = entry.Type.color;
-
-    if (!summary[typeName]) {
-      summary[typeName] = { amount, color };
-    } else {
-      summary[typeName].amount += amount;
-    }
-  });
-
-  const result = Object.keys(summary).map((typeName) => ({
-    typeName,
-    amount: summary[typeName].amount,
-    color: summary[typeName].color,
-  }));
-
-  return result;
 }
 
 export function monthySummary(transactions) {

@@ -20,13 +20,14 @@ function TableRow({ transaction }) {
     id: transactionId,
     name,
     amount,
-    Type,
+    type,
     date,
     description,
   } = transaction;
   const { deleteTransaction, isLoading } = useDeleteTransaction();
   const location = useLocation();
   const isTransactionsPath = location.pathname === "/transactions";
+  const category = type.category.name;
 
   if (isLoading) return <Spinner />;
 
@@ -40,14 +41,14 @@ function TableRow({ transaction }) {
     >
       <div
         className={` w-5 h-5 justify-self-center text-xl ${
-          Type.category === "income" ? "text-green-500" : "text-red-500"
+          category === "Income" ? "text-green-500" : "text-red-500"
         }`}
       >
-        {Type.category === "income" ? <FiArrowDownLeft /> : <FiArrowUpRight />}
+        {category === "Income" ? <FiArrowDownLeft /> : <FiArrowUpRight />}
       </div>
       <div>{name}</div>
       <div className="justufy-self-center">{amount.toLocaleString()}&euro;</div>
-      <div>{Type["name"]}</div>
+      <div>{type.name}</div>
       {isTransactionsPath ? (
         <div className="justify-self-center">{description}</div>
       ) : (
@@ -73,12 +74,12 @@ function TableRow({ transaction }) {
             </Modal.Window>
 
             <Modal.Window name="delete">
-              {Type.category === "income" ? (
+              {category === "Income" ? (
                 <ConfirmDelete
                   nameModal="income"
                   onConfirm={() => deleteTransaction(transactionId)}
                 />
-              ) : transaction.Type.category === "savings" ? (
+              ) : category === "savings" ? (
                 "Delete saving payment in savings"
               ) : (
                 <ConfirmDelete

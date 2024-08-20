@@ -22,13 +22,11 @@ function Dashboard() {
     useExpenseTransactions();
 
   if (isLoadingIncome || isLoadingExpense) return <Spinner />;
-  console.log(incomeTransactions);
 
   const incomeSummary = summary(incomeTransactions);
 
-  console.log(incomeSummary);
-
   const expensesSummary = summary(expenseTransactions);
+  console.log(expenseTransactions);
 
   const savingsSummary = 240;
 
