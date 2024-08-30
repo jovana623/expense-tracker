@@ -1,18 +1,12 @@
 import axios from "axios";
 
-export async function getTransactions() {
-  try {
-    const response = await axios.get("http://127.0.0.1:8000/api/transactions/");
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-export async function getIncomeTransactions() {
+export async function getTransactions(time) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/income/"
+      "http://127.0.0.1:8000/api/transactions/",
+      {
+        params: { time },
+      }
     );
     return response.data;
   } catch (error) {
@@ -20,10 +14,23 @@ export async function getIncomeTransactions() {
   }
 }
 
-export async function getExpenseTransactions() {
+export async function getIncomeTransactions(time) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/expense/"
+      "http://127.0.0.1:8000/api/transactions/income/",
+      { params: { time } }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getExpenseTransactions(time) {
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/transactions/expense/",
+      { params: { time } }
     );
     return response.data;
   } catch (error) {

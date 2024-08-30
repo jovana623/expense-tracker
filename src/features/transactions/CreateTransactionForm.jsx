@@ -1,17 +1,19 @@
 import { useType } from "../type/useType";
 import { useForm } from "react-hook-form";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ModalContext } from "../../ui/Modal";
 import { useCreateTransaction } from "./useCreateTransaction";
 import { useUpdateTransaction } from "./useUpdateTransaction";
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
+import { useCategories } from "../category/useCategories";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { createTransaction, isLoading: isCreating } = useCreateTransaction();
   const { updateTransaction, isLoading } = useUpdateTransaction();
-  const { type, isLoading: isLoadingType } = useType();
+  const { types, isLoading: isLoadingType } = useType();
+  const { categories, isLoading: isLoadingCategory } = useCategories();
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
@@ -19,10 +21,6 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isUpdateSession ? editValues : {},
   });
-
-  const [category, setCategory] = useState(
-    isUpdateSession ? transactionToUpdate.Type.category : "income"
-  );
 
   function onError() {
     console.log(errors);
@@ -32,25 +30,17 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { close } = useContext(ModalContext);
 
   function onSubmit(data) {
+    const formattedData = {
+      name: data.name,
+      date: data.date,
+      type: parseInt(data.typeId),
+      amount: parseFloat(data.amount),
+      description: data.description,
+    };
     if (isUpdateSession) {
-      updateTransaction({
-        id: editId,
-        name: data.name,
-        date: data.date,
-        type: "Test",
-        amount: data.amount,
-        description: data.description,
-        user: 2,
-      });
+      updateTransaction(editId, formattedData);
     } else {
-      createTransaction({
-        name: data.name,
-        date: data.date,
-        type_id: "Test",
-        amount: data.amount,
-        description: data.description,
-        user: 2,
-      });
+      createTransaction(formattedData);
     }
   }
 
@@ -66,7 +56,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
       onSubmit={handleSubmit(onSubmit, onError)}
       className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
     >
-      {isLoadingType ? (
+      {isLoadingType || isLoadingCategory ? (
         <Spinner />
       ) : (
         <>
@@ -86,7 +76,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           <div className="flex flex-col gap-1">
             <label htmlFor="amount">Amount</label>
             <input
-              type="number"
+              type="text"
               className="input-field"
               id="amount"
               {...register("amount", {
@@ -102,26 +92,23 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
           <div className="flex flex-col gap-1 col-span-2">
             <label htmlFor="category">Category</label>
-            <select
-              className="input-field"
-              {...register("category")}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
+            <select className="input-field" {...register("category")}>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
             <label htmlFor="typeId">Type</label>
             <select className="input-field" {...register("typeId")}>
-              {type
-                .filter((option) => option.category === category)
-                .map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
+              {types.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name}
+                </option>
+              ))}
             </select>
             <p className="text-xs text-red-500">{errors?.typeId?.message}</p>
           </div>

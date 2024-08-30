@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useSearchParams } from "react-router-dom";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
 import TimeFilter from "../ui/TimeFilter";
@@ -16,10 +16,13 @@ import { useExpenseTransactions } from "../features/transactions/useExpenseTrans
 import Spinner from "../ui/Spinner";
 
 function Dashboard() {
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+
   const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions();
+    useIncomeTransactions(time);
   const { expenseTransactions, isLoading: isLoadingExpense } =
-    useExpenseTransactions();
+    useExpenseTransactions(time);
 
   if (isLoadingIncome || isLoadingExpense) return <Spinner />;
 

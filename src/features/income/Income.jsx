@@ -1,12 +1,16 @@
 import Spinner from "../../ui/Spinner";
 import PieChartCard from "../dashboard/PieChartCard";
 import PieChartComponent from "../../ui/PieChartComponent";
-import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import Table from "../../ui/Table";
+import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
+import { useSearchParams } from "react-router-dom";
 
 function Income() {
-  const { incomeTransactions, isLoading } = useIncomeTransactions();
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+
+  const { incomeTransactions, isLoading } = useIncomeTransactions(time);
 
   const summary = summarizeAmountsByType(incomeTransactions);
   if (isLoading) return <Spinner />;

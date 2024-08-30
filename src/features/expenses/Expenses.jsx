@@ -1,12 +1,16 @@
+import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
+import { useSearchParams } from "react-router-dom";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import PieChartCard from "../dashboard/PieChartCard";
-import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 
 function Expenses() {
-  const { expenseTransactions, isLoading } = useExpenseTransactions();
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+
+  const { expenseTransactions, isLoading } = useExpenseTransactions(time);
 
   if (isLoading) return <Spinner />;
   console.log(expenseTransactions);
