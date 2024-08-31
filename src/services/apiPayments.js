@@ -22,10 +22,10 @@ export async function deletePayment(id) {
   }
 }
 
-export async function createPayment(id, paymentData) {
+export async function createPayment(paymentData) {
   try {
     const response = await axios.post(
-      `http://127.0.0.1:8000/api/savings/create_payment/${id}`,
+      `http://127.0.0.1:8000/api/savings/create_payment`,
       paymentData
     );
     return response.data;

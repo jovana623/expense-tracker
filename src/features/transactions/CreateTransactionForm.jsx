@@ -137,7 +137,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
             <Button type="secondary" onClick={onCancel}>
               Cancel
             </Button>
-            <Button type="primary">Add transaction</Button>
+            <Button type="primary">
+              {isUpdateSession ? "Update transaction" : "Add transaction"}
+            </Button>
           </div>
         </>
       )}

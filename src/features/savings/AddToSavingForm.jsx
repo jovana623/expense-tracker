@@ -1,54 +1,42 @@
 import { useContext } from "react";
 import { useCreateSavingPayment } from "../payments/useCreateSavingPayment";
+import { useCreateTransaction } from "../transactions/useCreateTransaction";
 import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
-import { useUpdateSaving } from "./useUpdateSaving";
-import { useCreateTransaction } from "../transactions/useCreateTransaction";
 
 import Spinner from "../../ui/Spinner";
 import Button from "../../ui/Button";
+import { useType } from "../type/useType";
 
 /* eslint-disable react/prop-types */
 function AddToSavingForm({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
-  const { handleSubmit, register, formState } = useForm();
-  const { createTransaction, isLoading: isCreatingExpense } =
-    useCreateTransaction();
+  const { createTransaction, isLoading: isCreating } = useCreateTransaction();
+  const { type, isLoading: isLoadingType } = useType(16);
 
-  const { updateSaving, isLoading: isUpdating } = useUpdateSaving();
+  const { handleSubmit, register, formState } = useForm();
 
   const { errors } = formState;
   const { close } = useContext(ModalContext);
-
-  console.log(saving);
 
   function onCancel() {
     close();
   }
 
-  function onSubmit(data) {
-    createPayment({
-      amount: data.amount,
-      date: data.date,
-      savingId: saving.id,
-    });
-    createTransaction({
-      name: `${saving.name} payment`,
-      typeId: 9,
-      amount: data.amount,
-      description: `Added ${data.amount.toLocaleString()}&euro; to ${
-        saving.name
-      }`,
+  console.log(type);
 
+  function onSubmit(data) {
+    const formattedData = {
+      amount: data.amount,
       date: data.date,
-    });
-    updateSaving({
-      id: saving.id,
-      name: saving.name,
-      amount: Number(saving.amount) + Number(data.amount),
-      target_Date: saving.target_Date,
-      description: saving.description,
-      userId: saving.userId,
+      saving: saving.id,
+    };
+    createPayment(formattedData);
+    createTransaction({
+      ...formattedData,
+      name: `${saving.name} deposit`,
+      type: type.id,
+      description: `Payment to ${saving.name}`,
     });
   }
 
@@ -56,7 +44,7 @@ function AddToSavingForm({ saving }) {
     console.log(errors);
   }
 
-  if (isLoading || isCreatingExpense || isUpdating) return <Spinner />;
+  if (isLoading || isCreating || isLoadingType) return <Spinner />;
 
   return (
     <form

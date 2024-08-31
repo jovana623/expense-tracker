@@ -13,7 +13,6 @@ function Expenses() {
   const { expenseTransactions, isLoading } = useExpenseTransactions(time);
 
   if (isLoading) return <Spinner />;
-  console.log(expenseTransactions);
 
   const summarizedByType = summarizeAmountsByType(expenseTransactions);
 

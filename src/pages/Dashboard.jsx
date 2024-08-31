@@ -4,6 +4,7 @@ import SummaryCard from "../features/dashboard/SummaryCard";
 import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../features/transactions/AddTransaction";
 import AddSavingGoal from "../ui/AddSavingGoal";
+import Spinner from "../ui/Spinner";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -13,7 +14,7 @@ import { MdOutlineEuroSymbol } from "react-icons/md";
 import { summary } from "../helpers/sortTransactions";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
-import Spinner from "../ui/Spinner";
+import { useSavings } from "../features/savings/useSavings";
 
 function Dashboard() {
   const [searchParams] = useSearchParams();
@@ -23,15 +24,16 @@ function Dashboard() {
     useIncomeTransactions(time);
   const { expenseTransactions, isLoading: isLoadingExpense } =
     useExpenseTransactions(time);
+  const { savings, isLoading: isLoadingSavings } = useSavings();
 
-  if (isLoadingIncome || isLoadingExpense) return <Spinner />;
+  if (isLoadingIncome || isLoadingExpense || isLoadingSavings)
+    return <Spinner />;
 
   const incomeSummary = summary(incomeTransactions);
 
   const expensesSummary = summary(expenseTransactions);
-  console.log(expenseTransactions);
 
-  const savingsSummary = 240;
+  const savingsSummary = summary(savings);
 
   const balance = incomeSummary - expensesSummary;
 

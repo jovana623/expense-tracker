@@ -3,9 +3,9 @@ import PaymentItem from "./PaymentItem";
 
 /* eslint-disable react/prop-types */
 function PaymentsList({ saving }) {
-  const { Payments } = saving;
+  const { payments } = saving;
 
-  if (Payments.length === 0)
+  if (payments.length === 0)
     return <Empty>You did not make any payment for {saving.name}</Empty>;
 
   return (
@@ -15,7 +15,7 @@ function PaymentsList({ saving }) {
         <div>Amount</div>
         <div></div>
       </div>
-      {Payments.map((payment) => (
+      {payments.map((payment) => (
         <PaymentItem key={payment.id} payment={payment} />
       ))}
     </div>

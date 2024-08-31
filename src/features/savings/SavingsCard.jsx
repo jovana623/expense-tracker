@@ -15,7 +15,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
 
   const { id } = saving;
 
-  const daysLeft = calculateDaysLeft(saving.target_Date);
+  const daysLeft = calculateDaysLeft(saving.target_date);
   const percentage = ((saving.amount * 100) / saving.goal).toFixed(0);
 
   const firstLetter = saving.name.charAt(0);

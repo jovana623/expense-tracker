@@ -4,20 +4,12 @@ import Spinner from "../ui/Spinner";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";
 import SortByTable from "../ui/SortByTable";
-
-import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
-import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
+import { useTransactions } from "../features/transactions/useTransactions";
 
 function Transactions() {
-  const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions();
+  const { transactions, isLoading } = useTransactions();
 
-  const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpenseTransactions();
-
-  if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
-  const allTransactions = incomeTransactions?.concat(expensesTransactions);
-  console.log(allTransactions);
+  if (isLoading) return <Spinner />;
 
   return (
     <div>
@@ -27,8 +19,8 @@ function Transactions() {
       </div>
       <div className="mx-10 h-[75vh]">
         <Table
-          data={allTransactions}
-          isLoading={isLoadingIncome || isLoadingExpenses}
+          data={transactions}
+          isLoading={isLoading}
           arrow={<FiArrowUpRight />}
         />
       </div>
