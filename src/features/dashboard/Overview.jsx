@@ -28,8 +28,6 @@ function Overview() {
   if (!month) monthData = getCurrentMonthData(transactions);
   else monthData = OneMonth(transactions);
 
-  console.log("Single month", monthData);
-
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">
       <PieChartCard title="Income vs. Expenses bar">

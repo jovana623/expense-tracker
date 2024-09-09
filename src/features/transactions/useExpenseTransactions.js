@@ -6,5 +6,11 @@ export function useExpenseTransactions(time, month) {
     queryFn: () => getExpenseTransactions(time, month),
     queryKey: ["expense", time, month],
   });
-  return { expenseTransactions, isLoading };
+  const totalExpense =
+    expenseTransactions?.reduce(
+      (sum, transaction) => sum + parseFloat(transaction.amount),
+      0
+    ) || 0;
+
+  return { expenseTransactions, totalExpense, isLoading };
 }

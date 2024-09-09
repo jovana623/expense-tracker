@@ -4,7 +4,7 @@ import {
   calculateBalance,
   calculateDailyBalance,
   getCurrentMonthData,
-  monthySummary,
+  sortByMonth,
 } from "../../helpers/sortTransactions";
 import PieChartCard from "../dashboard/PieChartCard";
 import AreaChartComponent from "./AreaChartComponent";
@@ -12,22 +12,27 @@ import { useTransactions } from "../transactions/useTransactions";
 
 function Balance() {
   const [searchParams] = useSearchParams();
-  const { transactions, isLoading } = useTransactions();
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
+
+  const { transactions, isLoading } = useTransactions(time, month);
 
   if (isLoading) return <Spinner />;
 
-  const sortedByMonth = monthySummary();
-  const timeValue = searchParams.get("time");
+  const sortedByMonth = sortByMonth(transactions);
+
   const monthData = getCurrentMonthData(transactions);
   const adjustedMonthData = calculateDailyBalance(monthData);
   const balance = calculateBalance(sortedByMonth);
+
+  console.log(monthData);
 
   return (
     <div className="flex gap-12 h-80">
       <PieChartCard>
         <AreaChartComponent
           data={balance}
-          timeValue={timeValue}
+          timeValue={time}
           monthData={adjustedMonthData}
         />
       </PieChartCard>

@@ -1,8 +1,13 @@
 import { BsThreeDots } from "react-icons/bs";
 import { BsArrowUpRight } from "react-icons/bs";
+import { BsArrowDownRight } from "react-icons/bs";
+import { useSearchParams } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 function SummaryCard({ icon, name, amount, percentage, isActive }) {
+  const [searchParams] = useSearchParams();
+  let time = searchParams.get("time") || "";
+  let month = searchParams.get("month") || "";
   return (
     <div
       className={`shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-xl transition-all duration-200 ${
@@ -32,16 +37,24 @@ function SummaryCard({ icon, name, amount, percentage, isActive }) {
         <p className="flex items-center gap-1">
           <span
             className={`flex items-center gap-1 ${
-              isActive ? "text-lightBg" : "text-green-500"
+              isActive
+                ? "text-lightBg"
+                : percentage > 0
+                ? "text-green-500"
+                : "text-red-500"
             }`}
           >
-            <BsArrowUpRight />
+            {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
             <span className="hover:text-lightBg">{percentage}&#x25;</span>
           </span>{" "}
           <span
             className={`${isActive ? "text-lightBg" : ""} hover:text-lightBg`}
           >
-            vs last 30 days
+            {month
+              ? "vs same month last year"
+              : time === "year"
+              ? "vs last year"
+              : "vs last month"}
           </span>
         </p>
       </div>

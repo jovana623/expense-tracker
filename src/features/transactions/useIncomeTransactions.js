@@ -6,5 +6,10 @@ export function useIncomeTransactions(time, month) {
     queryFn: () => getIncomeTransactions(time, month),
     queryKey: ["income", time, month],
   });
-  return { incomeTransactions, isLoading };
+  const totalIncome =
+    incomeTransactions?.reduce(
+      (sum, transaction) => sum + parseFloat(transaction.amount),
+      0
+    ) || 0;
+  return { incomeTransactions, totalIncome, isLoading };
 }

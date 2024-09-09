@@ -6,5 +6,6 @@ export function useTransactions(time, month) {
     queryFn: () => getTransactions(time, month),
     queryKey: ["transactions", time, month],
   });
+
   return { transactions, isLoading };
 }

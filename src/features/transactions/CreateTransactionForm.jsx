@@ -1,18 +1,19 @@
-import { useType } from "../type/useType";
+import { useTypes } from "../type/useTypes";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { ModalContext } from "../../ui/Modal";
 import { useCreateTransaction } from "./useCreateTransaction";
 import { useUpdateTransaction } from "./useUpdateTransaction";
+import { useCategories } from "../category/useCategories";
+
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
-import { useCategories } from "../category/useCategories";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { createTransaction, isLoading: isCreating } = useCreateTransaction();
   const { updateTransaction, isLoading } = useUpdateTransaction();
-  const { types, isLoading: isLoadingType } = useType();
+  const { types, isLoading: isLoadingType } = useTypes();
   const { categories, isLoading: isLoadingCategory } = useCategories();
 
   const { id: editId, ...editValues } = transactionToUpdate;

@@ -16,6 +16,7 @@ import { useIncomeTransactions } from "../features/transactions/useIncomeTransac
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
 import MonthFilter from "../ui/MonthFilter";
+import { useIncomeDifference } from "../hooks/useIncomeDifference";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,22 +29,32 @@ function Dashboard() {
     setSearchParams(newSearchParams);
   }
 
-  const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions(time, month);
-  const { expenseTransactions, isLoading: isLoadingExpense } =
-    useExpenseTransactions(time, month);
+  const { totalIncome, isLoading: isLoadingIncome } = useIncomeTransactions(
+    time,
+    month
+  );
+  const { totalExpense, isLoading: isLoadingExpense } = useExpenseTransactions(
+    time,
+    month
+  );
+  const { percentage: percentageIncome, isLoadingPercentageI } =
+    useIncomeDifference(time, month);
+  const { percentage: percentageExpense, isLoadingPercentageE } =
+    useIncomeDifference(time, month);
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
-  if (isLoadingIncome || isLoadingExpense || isLoadingSavings)
+  if (
+    isLoadingIncome ||
+    isLoadingExpense ||
+    isLoadingSavings ||
+    isLoadingPercentageE ||
+    isLoadingPercentageI
+  )
     return <Spinner />;
-
-  const incomeSummary = summary(incomeTransactions);
-
-  const expensesSummary = summary(expenseTransactions);
 
   const savingsSummary = summary(savings);
 
-  const balance = incomeSummary - expensesSummary;
+  const balance = totalIncome - totalExpense;
 
   return (
     <div className="py-2 px-7 overflow-y-scroll">
@@ -63,8 +74,8 @@ function Dashboard() {
           <SummaryCard
             icon={<MdOutlineEuroSymbol />}
             name="Total income"
-            amount={incomeSummary}
-            percentage="6"
+            amount={totalIncome}
+            percentage={percentageIncome}
             isActive={location.pathname === "/dashboard/income"}
           />
         </NavLink>
@@ -72,8 +83,8 @@ function Dashboard() {
           <SummaryCard
             icon={<BiReceipt />}
             name="Total expenses"
-            amount={expensesSummary}
-            percentage="6"
+            amount={totalExpense}
+            percentage={percentageExpense}
             isActive={location.pathname === "/dashboard/expenses"}
           />
         </NavLink>
