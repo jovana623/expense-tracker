@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import {
   CartesianGrid,
   Legend,
@@ -9,11 +10,15 @@ import {
 } from "recharts";
 
 /* eslint-disable react/prop-types */
-function LineChartComponent({ data, timeValue, monthData }) {
+function LineChartComponent({ data, monthData }) {
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
+
   if (!data) return null;
   let adjustedData = {};
 
-  if (timeValue === "month") {
+  if (time === "month" || month) {
     adjustedData = monthData;
   } else adjustedData = data;
 
@@ -27,7 +32,7 @@ function LineChartComponent({ data, timeValue, monthData }) {
 
     return (
       <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
-        {timeValue === "month" ? (
+        {time === "month" ? (
           <p>
             {day} {currentMonth}
           </p>
@@ -49,11 +54,7 @@ function LineChartComponent({ data, timeValue, monthData }) {
         margin={{ top: 5, right: 10, left: 30, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        {timeValue === "month" ? (
-          <XAxis dataKey="day" />
-        ) : (
-          <XAxis dataKey="month" />
-        )}
+        {time === "month" ? <XAxis dataKey="day" /> : <XAxis dataKey="month" />}
 
         <YAxis tickFormatter={euroFormatter} />
         <Tooltip content={renderTooltip} />

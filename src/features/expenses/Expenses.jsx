@@ -9,8 +9,12 @@ import PieChartCard from "../dashboard/PieChartCard";
 function Expenses() {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
 
-  const { expenseTransactions, isLoading } = useExpenseTransactions(time);
+  const { expenseTransactions, isLoading } = useExpenseTransactions(
+    time,
+    month
+  );
 
   if (isLoading) return <Spinner />;
 

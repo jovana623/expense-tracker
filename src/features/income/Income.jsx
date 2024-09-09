@@ -9,8 +9,9 @@ import { useSearchParams } from "react-router-dom";
 function Income() {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
 
-  const { incomeTransactions, isLoading } = useIncomeTransactions(time);
+  const { incomeTransactions, isLoading } = useIncomeTransactions(time, month);
 
   const summary = summarizeAmountsByType(incomeTransactions);
   if (isLoading) return <Spinner />;

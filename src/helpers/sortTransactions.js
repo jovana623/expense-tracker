@@ -57,6 +57,28 @@ export function getCurrentMonthData(transactions) {
   return dailySummary;
 }
 
+export function OneMonth(transactions) {
+  const daysInMonth = 31;
+
+  const dailySummary = Array.from({ length: daysInMonth }, (_, i) => ({
+    day: i + 1,
+    income: 0,
+    expenses: 0,
+  }));
+
+  transactions.forEach((transaction) => {
+    const date = new Date(transaction.date);
+    const day = date.getDate();
+    const category = transaction.type?.category?.name;
+    const daySummary = dailySummary.find((d) => d.day === day);
+
+    if (category === "Income") {
+      daySummary.income += parseFloat(transaction.amount);
+    } else daySummary.expenses -= parseFloat(transaction.amount);
+  });
+  return dailySummary;
+}
+
 export function summary(transactions) {
   let total = 0;
 

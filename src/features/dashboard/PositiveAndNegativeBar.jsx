@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import {
   BarChart,
   Bar,
@@ -11,10 +12,14 @@ import {
 } from "recharts";
 
 /* eslint-disable react/prop-types */
-function PositiveAndNegativeBar({ data, timeValue, monthData }) {
+function PositiveAndNegativeBar({ data, monthData }) {
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
+
   let adjustedData = {};
 
-  if (timeValue === "month") {
+  if (time === "month" || month) {
     adjustedData = monthData;
   } else adjustedData = data;
 
@@ -33,7 +38,7 @@ function PositiveAndNegativeBar({ data, timeValue, monthData }) {
 
     return (
       <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
-        {timeValue === "month" ? (
+        {time === "month" ? (
           <p>
             {day} {currentMonth}
           </p>
@@ -58,11 +63,7 @@ function PositiveAndNegativeBar({ data, timeValue, monthData }) {
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        {timeValue === "month" ? (
-          <XAxis dataKey="day" />
-        ) : (
-          <XAxis dataKey="month" />
-        )}
+        {time === "month" ? <XAxis dataKey="day" /> : <XAxis dataKey="month" />}
         <YAxis tickFormatter={euroFormatter} />
         <Tooltip content={renderTooltip} />
         <Legend />

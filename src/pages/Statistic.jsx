@@ -3,7 +3,7 @@ import {
   summarizeAmountsByType,
 } from "../helpers/sortTransactions";
 
-import StatisticFilter from "../features/statistics/StatisticFilter";
+import MonthFilter from "../ui/MonthFilter";
 import Spinner from "../ui/Spinner";
 import StatisticsContainer from "../features/statistics/StatisticsContainer";
 import InfoCards from "../features/statistics/InfoCards";
@@ -31,7 +31,7 @@ function Statistic() {
   return (
     <div className="py-2 px-7">
       <div className="flex justify-end ">
-        <StatisticFilter />
+        <MonthFilter />
       </div>
       <div className="grid grid-cols-[2fr_1.5fr_1fr] gap-10 h-[100%]">
         <div className="flex flex-col gap-5">

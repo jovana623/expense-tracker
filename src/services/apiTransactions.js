@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export async function getTransactions(time) {
+export async function getTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/",
       {
-        params: { time },
+        params: { time, month },
       }
     );
     return response.data;
@@ -14,11 +14,11 @@ export async function getTransactions(time) {
   }
 }
 
-export async function getIncomeTransactions(time) {
+export async function getIncomeTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/income/",
-      { params: { time } }
+      { params: { time, month } }
     );
     return response.data;
   } catch (error) {
@@ -26,11 +26,11 @@ export async function getIncomeTransactions(time) {
   }
 }
 
-export async function getExpenseTransactions(time) {
+export async function getExpenseTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/expense/",
-      { params: { time } }
+      { params: { time, month } }
     );
     return response.data;
   } catch (error) {

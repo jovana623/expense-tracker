@@ -15,15 +15,23 @@ import { summary } from "../helpers/sortTransactions";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
+import MonthFilter from "../ui/MonthFilter";
 
 function Dashboard() {
-  const [searchParams] = useSearchParams();
-  const time = searchParams.get("time") || "";
+  const [searchParams, setSearchParams] = useSearchParams();
+  let time = searchParams.get("time") || "";
+  let month = searchParams.get("month") || "";
+
+  if (month && time) {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete("time");
+    setSearchParams(newSearchParams);
+  }
 
   const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions(time);
+    useIncomeTransactions(time, month);
   const { expenseTransactions, isLoading: isLoadingExpense } =
-    useExpenseTransactions(time);
+    useExpenseTransactions(time, month);
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   if (isLoadingIncome || isLoadingExpense || isLoadingSavings)
@@ -45,7 +53,10 @@ function Dashboard() {
         ) : (
           <AddTransaction />
         )}
-        <TimeFilter />
+        <div className="flex gap-2">
+          <MonthFilter />
+          <TimeFilter />
+        </div>
       </div>
       <div className="flex justify-between gap-7">
         <NavLink to="income" className="w-full">

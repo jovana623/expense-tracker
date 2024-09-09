@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-function StatisticFilter() {
+function MonthFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleMonthChange(value) {
@@ -19,4 +19,4 @@ function StatisticFilter() {
   );
 }
 
-export default StatisticFilter;
+export default MonthFilter;
