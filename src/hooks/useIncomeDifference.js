@@ -29,14 +29,26 @@ export function useIncomeDifference(time, month) {
   const { totalIncome: lastMonthIncome, isLoading: isLoadingPrev } =
     useIncomeTransactions(prevTime || time, prevMonth);
 
-  if (lastMonthIncome !== undefined && lastMonthIncome > 0) {
-    percentage = ((thisMonthIncome - lastMonthIncome) / lastMonthIncome) * 100;
-  } else if (lastMonthIncome === 0) {
-    percentage = thisMonthIncome > 0 ? 100 : 0;
+  if (
+    isLoading ||
+    isLoadingPrev ||
+    thisMonthIncome === undefined ||
+    lastMonthIncome === undefined
+  ) {
+    return { percentage: "0", isLoading: true };
+  }
+
+  const thisIncome = parseFloat(thisMonthIncome) || 0;
+  const prevIncome = parseFloat(lastMonthIncome) || 0;
+
+  if (prevIncome > 0) {
+    percentage = ((thisIncome - prevIncome) / prevIncome) * 100;
+  } else if (prevIncome === 0) {
+    percentage = thisIncome > 0 ? 100 : 0;
   }
 
   return {
     percentage: percentage.toFixed(0),
-    isLoading: isLoading || isLoadingPrev,
+    isLoading: false,
   };
 }

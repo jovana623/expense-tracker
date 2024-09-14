@@ -1,8 +1,8 @@
 import SavingsChart from "./SavingsChart";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import AddToSavingForm from "./AddToSavingForm";
 import PaymentsList from "../payments/PaymentsList";
+import AddPayment from "../payments/AddPayment";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ saving }) {
@@ -40,7 +40,7 @@ function SavingsDetailCard({ saving }) {
               <Button type="primary">Add to this saving</Button>
             </Modal.OpenButton>
             <Modal.Window name="add-saving">
-              <AddToSavingForm saving={saving} />
+              <AddPayment saving={saving} />
             </Modal.Window>
           </Modal>
         )}

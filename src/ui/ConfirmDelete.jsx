@@ -6,6 +6,11 @@ import { ModalContext } from "./Modal";
 function ConfirmDelete({ nameModal, onConfirm }) {
   const { close } = useContext(ModalContext);
 
+  function handleConfirm() {
+    onConfirm();
+    close();
+  }
+
   return (
     <div className="px-2 py-2 flex flex-col gap-3">
       <h2 className="font-semibold text-xl">Delete {nameModal}</h2>
@@ -14,7 +19,7 @@ function ConfirmDelete({ nameModal, onConfirm }) {
         <Button type="secondary" onClick={close}>
           Cancel
         </Button>
-        <Button type="danger" onClick={onConfirm}>
+        <Button type="danger" onClick={handleConfirm}>
           Delete
         </Button>
       </div>

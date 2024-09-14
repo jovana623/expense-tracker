@@ -10,7 +10,8 @@ export function useUpdateSaving() {
       toast.success("Saving updated");
       queryClient.invalidateQueries("savings");
     },
-    onErorr: (error) => {
+    onError: (error) => {
+      console.error("Error Response:", error.response?.data);
       toast.error(error.message);
     },
   });

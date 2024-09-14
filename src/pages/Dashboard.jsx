@@ -5,6 +5,7 @@ import TimeFilter from "../ui/TimeFilter";
 import AddTransaction from "../features/transactions/AddTransaction";
 import AddSavingGoal from "../ui/AddSavingGoal";
 import Spinner from "../ui/Spinner";
+import MonthFilter from "../ui/MonthFilter";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -15,7 +16,6 @@ import { summary } from "../helpers/sortTransactions";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
-import MonthFilter from "../ui/MonthFilter";
 import { useIncomeDifference } from "../hooks/useIncomeDifference";
 
 function Dashboard() {
@@ -33,14 +33,17 @@ function Dashboard() {
     time,
     month
   );
+
   const { totalExpense, isLoading: isLoadingExpense } = useExpenseTransactions(
     time,
     month
   );
+
   const { percentage: percentageIncome, isLoadingPercentageI } =
     useIncomeDifference(time, month);
   const { percentage: percentageExpense, isLoadingPercentageE } =
     useIncomeDifference(time, month);
+
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   if (
@@ -55,6 +58,10 @@ function Dashboard() {
   const savingsSummary = summary(savings);
 
   const balance = totalIncome - totalExpense;
+
+  const numOfSavings = savings.filter(
+    (saving) => saving.status === "In progress"
+  ).length;
 
   return (
     <div className="py-2 px-7 overflow-y-scroll">
@@ -102,7 +109,7 @@ function Dashboard() {
             icon={<MdOutlineSavings />}
             name="Savings"
             amount={savingsSummary}
-            percentage="6"
+            percentage={numOfSavings}
             isActive={location.pathname === "/dashboard/savings"}
           />
         </NavLink>

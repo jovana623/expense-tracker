@@ -9,6 +9,8 @@ export default function useDeleteSaving() {
     onSuccess: () => {
       toast.success("Saving successfully deleted");
       queryClient.invalidateQueries({ queryKey: ["savings"] });
+      queryClient.refetchQueries({ queryKey: ["savings"] });
+      window.location.reload();
     },
     onError: (error) => {
       toast.error(error.message);

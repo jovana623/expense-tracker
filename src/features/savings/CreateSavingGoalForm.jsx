@@ -21,23 +21,21 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
   const { close } = useContext(ModalContext);
 
   function onSubmit(data) {
+    const formattedData = {
+      name: data.name,
+      goal: data.goal,
+      target_date: data.target_date,
+      description: data.description,
+      color: data.color,
+      status: "In progress",
+    };
+    console.log("Formatted Data: ", formattedData);
     if (isUpdateSession) {
-      updateSaving({
-        id: editId,
-        name: data.name,
-        amount: savingToUpdate.amount,
-        goal: data.goal,
-        target_date: data.target_Date,
-        description: data.description,
-      });
+      updateSaving(editId, formattedData);
     } else {
-      createSaving({
-        name: data.name,
-        goal: data.goal,
-        target_date: data.target_Date,
-        description: data.description,
-      });
+      createSaving(formattedData);
     }
+    close();
   }
 
   function onCancel() {
@@ -75,8 +73,8 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         <input
           type="date"
           className="input-field"
-          id="target_Date"
-          {...register("target_Date")}
+          id="target_date"
+          {...register("target_date")}
         ></input>
       </div>
 
@@ -88,6 +86,10 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
           id="description"
           {...register("description")}
         ></textarea>
+      </div>
+      <div className="col-span-2 flex flex-col gap-1">
+        <label htmlFor="color">Color</label>
+        <input type="color" id="color" {...register("color")}></input>
       </div>
 
       <div className="flex gap-2 col-start-2 mt-4">

@@ -3,6 +3,7 @@ import { calculateDaysLeft } from "../../helpers/dateFunctions";
 import Menu from "../../ui/Menu";
 import Modal from "../../ui/Modal";
 import { AiOutlineDelete } from "react-icons/ai";
+import { GiProgression } from "react-icons/gi";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
@@ -68,6 +69,11 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
                       <Modal.OpenButton opens="delete-saving">
                         <Menu.Button icon={<AiOutlineDelete />}>
                           Delete
+                        </Menu.Button>
+                      </Modal.OpenButton>
+                      <Modal.OpenButton opens="change-status">
+                        <Menu.Button icon={<GiProgression />}>
+                          Change Status
                         </Menu.Button>
                       </Modal.OpenButton>
                     </Menu.List>

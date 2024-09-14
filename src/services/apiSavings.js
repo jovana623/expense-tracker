@@ -21,7 +21,7 @@ export async function getSaving(id) {
 export async function createSaving(savingData) {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/savings/",
+      "http://127.0.0.1:8000/api/savings/create_saving",
       savingData
     );
     return response.data;
@@ -31,6 +31,9 @@ export async function createSaving(savingData) {
 }
 
 export async function updateSaving(id, savingData) {
+  console.log("Updating ID:", id); // Ensure correct ID
+  console.log("Saving Data:", savingData); // Ensure correct data format
+
   try {
     const response = await axios.put(
       `http://127.0.0.1:8000/api/savings/${id}`,
@@ -38,7 +41,8 @@ export async function updateSaving(id, savingData) {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Update Saving Error: ", error); // Log full error object
+    throw new Error(error.response?.data || error.message); // Log full response data if available
   }
 }
 

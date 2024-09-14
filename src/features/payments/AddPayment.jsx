@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useCreateSavingPayment } from "../payments/useCreateSavingPayment";
+import { useCreateSavingPayment } from "./useCreateSavingPayment";
 import { useCreateTransaction } from "../transactions/useCreateTransaction";
 import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
@@ -9,7 +9,7 @@ import Button from "../../ui/Button";
 import { useType } from "../type/useType";
 
 /* eslint-disable react/prop-types */
-function AddToSavingForm({ saving }) {
+function AddPayment({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
   const { createTransaction, isLoading: isCreating } = useCreateTransaction();
   const { type, isLoading: isLoadingType } = useType(16);
@@ -109,4 +109,4 @@ function AddToSavingForm({ saving }) {
   );
 }
 
-export default AddToSavingForm;
+export default AddPayment;
