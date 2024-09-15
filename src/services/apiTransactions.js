@@ -1,11 +1,14 @@
 import axios from "axios";
 
+const getToken = () => localStorage.getItem("access_token");
+
 export async function getTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/",
       {
         params: { time, month },
+        headers: { Authorization: `Bearer ${getToken()}` },
       }
     );
     return response.data;
@@ -18,7 +21,10 @@ export async function getIncomeTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/income/",
-      { params: { time, month } }
+      {
+        params: { time, month },
+        headers: { Authorization: `Bearer ${getToken()}` },
+      }
     );
     return response.data;
   } catch (error) {
@@ -30,7 +36,10 @@ export async function getExpenseTransactions(time, month) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/expense/",
-      { params: { time, month } }
+      {
+        params: { time, month },
+        headers: { Authorization: `Bearer ${getToken()}` },
+      }
     );
     return response.data;
   } catch (error) {

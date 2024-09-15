@@ -1,9 +1,11 @@
-import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
-import { useRegister } from "./useRegister";
+/*import { useForm } from "react-hook-form";
+import { useAuth } from "./useAuth";
+import Button from "../../ui/Button";*/
 
 function RegisterForm() {
-  const { registerUser, isLoading } = useRegister();
+  {
+    /*
+  const { registerUser } = useAuth();
   const { register, handleSubmit, reset } = useForm();
 
   function onSubmit({ username, email, password }) {
@@ -24,7 +26,6 @@ function RegisterForm() {
             type="text"
             id="username"
             className="input-field"
-            disabled={isLoading}
             {...register("username", { required: "This field is required" })}
           />
         </div>
@@ -34,7 +35,6 @@ function RegisterForm() {
             type="email"
             id="email"
             className="input-field"
-            disabled={isLoading}
             {...register("email", {
               required: "This field is required",
               pattern: {
@@ -50,7 +50,6 @@ function RegisterForm() {
             type="password"
             id="password"
             className="input-field"
-            disabled={isLoading}
             {...register("password", { required: "This field is required" })}
           />
         </div>
@@ -60,7 +59,6 @@ function RegisterForm() {
             type="password"
             id="confirmPassword"
             className="input-field"
-            disabled={isLoading}
             {...register("confirmPassword", {
               required: "This field is required",
             })}
@@ -70,6 +68,8 @@ function RegisterForm() {
       <Button type="primary">Register</Button>
     </form>
   );
+  */
+  }
 }
 
 export default RegisterForm;

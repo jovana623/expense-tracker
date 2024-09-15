@@ -1,26 +1,16 @@
 import { useState } from "react";
 import Button from "../../ui/Button";
-import { useLogin } from "./useLogin";
+import { useLogin } from "../authentification/useAuth";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { mutate } = useLogin();
 
-  const { login, isLoading } = useLogin();
-
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) return;
-    login(
-      { email, password },
-      {
-        onSettled: () => {
-          setEmail("");
-          setPassword("");
-        },
-      }
-    );
-  }
+    mutate({ email, password });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -33,7 +23,6 @@ function LoginForm() {
           className="input-field"
           id="email"
           value={email}
-          disabled={isLoading}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
@@ -46,7 +35,6 @@ function LoginForm() {
           className="input-field"
           id="password"
           value={password}
-          disabled={isLoading}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
