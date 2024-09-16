@@ -1,14 +1,12 @@
 import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
-const getToken = () => localStorage.getItem("access_token");
-
-export async function getTransactions(time, month) {
+export async function getTransactions(time, month, sortBy) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/",
+      "http://localhost:8000/api/transactions/",
       {
-        params: { time, month },
-        headers: { Authorization: `Bearer ${getToken()}` },
+        params: { time, month, sortBy },
       }
     );
     return response.data;
@@ -17,30 +15,33 @@ export async function getTransactions(time, month) {
   }
 }
 
-export async function getIncomeTransactions(time, month) {
+export async function getIncomeTransactions(time, month, sortBy) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/income/",
+      "http://localhost:8000/api/transactions/income/",
       {
-        params: { time, month },
-        headers: { Authorization: `Bearer ${getToken()}` },
+        params: { time, month, sortBy },
       }
     );
     return response.data;
   } catch (error) {
+    console.error(
+      "Error fetching income transactions:",
+      error.response?.data || error.message
+    );
     throw new Error(error.message);
   }
 }
 
-export async function getExpenseTransactions(time, month) {
+export async function getExpenseTransactions(time, month, sortBy) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/expense/",
+      "http://localhost:8000/api/transactions/expense/",
       {
-        params: { time, month },
-        headers: { Authorization: `Bearer ${getToken()}` },
+        params: { time, month, sortBy },
       }
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -49,8 +50,8 @@ export async function getExpenseTransactions(time, month) {
 
 export async function createTransaction(transactionData) {
   try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/api/transactions/create_transaction/",
+    const response = await axiosInstance.post(
+      "/transactions/create_transaction/",
       transactionData
     );
     return response.data;
@@ -61,8 +62,8 @@ export async function createTransaction(transactionData) {
 
 export async function updateTransaction(id, transactionData) {
   try {
-    const response = await axios.put(
-      `http://127.0.0.1:8000/api/transactions/${id}`,
+    const response = await axiosInstance.put(
+      `/transactions/${id}`,
       transactionData
     );
     return response.data;
@@ -73,9 +74,7 @@ export async function updateTransaction(id, transactionData) {
 
 export async function deleteTransaction(id) {
   try {
-    const response = await axios.delete(
-      `http://127.0.0.1:8000/api/transactions/${id}`
-    );
+    const response = await axiosInstance.delete(`/transactions/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);

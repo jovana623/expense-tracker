@@ -10,8 +10,13 @@ function Income() {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
+  const sortBy = searchParams.get("sortBy") || "date-desc";
 
-  const { incomeTransactions, isLoading } = useIncomeTransactions(time, month);
+  const { incomeTransactions, isLoading } = useIncomeTransactions(
+    time,
+    month,
+    sortBy
+  );
 
   const summary = summarizeAmountsByType(incomeTransactions);
   if (isLoading) return <Spinner />;

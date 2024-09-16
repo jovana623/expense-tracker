@@ -10,10 +10,12 @@ function Expenses() {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
+  const sortBy = searchParams.get("sortBy") || "date-desc";
 
   const { expenseTransactions, isLoading } = useExpenseTransactions(
     time,
-    month
+    month,
+    sortBy
   );
 
   if (isLoading) return <Spinner />;

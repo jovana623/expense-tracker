@@ -1,12 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
-function SortBy({ options }) {
+function SortBy({ options, onChange }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleChange(e) {
     searchParams.set("sortBy", e.target.value);
     setSearchParams(searchParams);
+    if (onChange) onChange(e.target.value);
   }
 
   return (

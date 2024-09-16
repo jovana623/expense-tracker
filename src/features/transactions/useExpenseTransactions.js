@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getExpenseTransactions } from "../../services/apiTransactions";
 
-export function useExpenseTransactions(time, month) {
+export function useExpenseTransactions(time, month, sortBy) {
   const { data: expenseTransactions, isLoading } = useQuery({
-    queryFn: () => getExpenseTransactions(time, month),
-    queryKey: ["expense", time, month],
+    queryFn: () => getExpenseTransactions(time, month, sortBy),
+    queryKey: ["expense", time, month, sortBy],
   });
   const totalExpense =
     expenseTransactions?.reduce(

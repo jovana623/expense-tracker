@@ -1,15 +1,24 @@
+import { useSearchParams } from "react-router-dom";
 import SortBy from "./SortBy";
 
 function SortByTable() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  function handleSortChange(value) {
+    searchParams.set("sortBy", value);
+    setSearchParams(searchParams);
+  }
+
   return (
     <SortBy
       options={[
         { value: "name", label: "Sort by name" },
         { value: "amount-desc", label: "Sort by amount (high to low)" },
         { value: "amount-asc", label: "Sort by amount (low to high)" },
-        { value: "date-desc", label: "Sort by amount (new first)" },
-        { value: "date-asc", label: "Sort by amount (old first)" },
+        { value: "date-desc", label: "Sort by date (new first)" },
+        { value: "date-asc", label: "Sort by date (old first)" },
       ]}
+      onChange={handleSortChange}
     />
   );
 }

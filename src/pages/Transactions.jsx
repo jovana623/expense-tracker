@@ -1,13 +1,17 @@
 import { FiArrowUpRight } from "react-icons/fi";
-
 import Spinner from "../ui/Spinner";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";
 import SortByTable from "../ui/SortByTable";
 import { useTransactions } from "../features/transactions/useTransactions";
+import { useSearchParams } from "react-router-dom";
 
 function Transactions() {
-  const { transactions, isLoading } = useTransactions();
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
+  const sortBy = searchParams.get("sortBy") || "date-desc";
+  const { transactions, isLoading } = useTransactions(time, month, sortBy);
 
   if (isLoading) return <Spinner />;
 

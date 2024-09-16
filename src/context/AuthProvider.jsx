@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   const login = (data) => {
     setToken(data.access);
     localStorage.setItem("token", data.access);
+    localStorage.setItem("user", JSON.stringify(data.user));
     axiosInstance.defaults.headers.Authorization = `Bearer ${data.access}`;
     setUser(data.user);
   };
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     axiosInstance.defaults.headers.Authorization = null;
     queryClient.clear();
   };

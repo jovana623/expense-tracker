@@ -11,7 +11,7 @@ export const useAuth = () => {
 
 export const useRegister = () => {
   return useMutation(async (data) => {
-    const response = await axiosInstance.post("/register/", data);
+    const response = await axiosInstance.post("/users/register/", data);
     return response.data;
   });
 };
@@ -23,7 +23,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: async (data) => {
       try {
-        const response = await axiosInstance.post("/token/", data);
+        const response = await axiosInstance.post("/users/token/", data);
         login(response.data);
         return response.data;
       } catch (error) {
