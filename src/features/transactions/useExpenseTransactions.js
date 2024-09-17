@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { getExpenseTransactions } from "../../services/apiTransactions";
 
-export function useExpenseTransactions(time, month, sortBy) {
-  const { data: expenseTransactions, isLoading } = useQuery({
+export function useExpenseTransactions(time, month, sortBy, page, pageSize) {
+  const { data: expenseTransactions } = useQuery({
     queryFn: () => getExpenseTransactions(time, month, sortBy),
     queryKey: ["expense", time, month, sortBy],
+  });
+  const { data: paginatedTransactions } = useQuery({
+    queryFn: () => getExpenseTransactions(time, month, sortBy, page, pageSize),
+    queryKey: ["expense", time, month, sortBy, page, pageSize],
   });
   const totalExpense =
     expenseTransactions?.reduce(
@@ -12,5 +16,10 @@ export function useExpenseTransactions(time, month, sortBy) {
       0
     ) || 0;
 
-  return { expenseTransactions, totalExpense, isLoading };
+  return {
+    expenseTransactions,
+    paginatedTransactions,
+    totalExpense,
+    isLoading: !expenseTransactions || !paginatedTransactions,
+  };
 }

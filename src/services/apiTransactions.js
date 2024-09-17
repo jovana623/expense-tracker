@@ -1,12 +1,19 @@
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 
-export async function getTransactions(time, month, sortBy, search) {
+export async function getTransactions(
+  time,
+  month,
+  sortBy,
+  search,
+  page,
+  pageSize
+) {
   try {
     const response = await axios.get(
       "http://localhost:8000/api/transactions/",
       {
-        params: { time, month, sortBy, search },
+        params: { time, month, sortBy, search, page, page_size: pageSize },
       }
     );
     return response.data;
@@ -15,12 +22,18 @@ export async function getTransactions(time, month, sortBy, search) {
   }
 }
 
-export async function getIncomeTransactions(time, month, sortBy) {
+export async function getIncomeTransactions(
+  time,
+  month,
+  sortBy,
+  page,
+  pageSize
+) {
   try {
     const response = await axios.get(
       "http://localhost:8000/api/transactions/income/",
       {
-        params: { time, month, sortBy },
+        params: { time, month, sortBy, page, page_size: pageSize },
       }
     );
     return response.data;
@@ -33,12 +46,18 @@ export async function getIncomeTransactions(time, month, sortBy) {
   }
 }
 
-export async function getExpenseTransactions(time, month, sortBy) {
+export async function getExpenseTransactions(
+  time,
+  month,
+  sortBy,
+  page,
+  pageSize
+) {
   try {
     const response = await axios.get(
       "http://localhost:8000/api/transactions/expense/",
       {
-        params: { time, month, sortBy },
+        params: { time, month, sortBy, page, page_size: pageSize },
       }
     );
     console.log(response.data);

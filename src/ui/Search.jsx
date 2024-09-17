@@ -14,7 +14,7 @@ function Search() {
       placeholder="Search"
       onChange={handleChange}
       value={searchParams.get("search") || ""}
-      className="border border-stone-200 focus:outline-green-500 rounded-md h-8"
+      className="border border-stone-200 focus:outline-green-500 rounded-md h-8 pr-5 pl-2 py-2"
     />
   );
 }
