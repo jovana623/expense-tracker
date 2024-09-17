@@ -1,12 +1,12 @@
 import axios from "axios";
 import axiosInstance from "../utils/axiosInstance";
 
-export async function getTransactions(time, month, sortBy) {
+export async function getTransactions(time, month, sortBy, search) {
   try {
     const response = await axios.get(
       "http://localhost:8000/api/transactions/",
       {
-        params: { time, month, sortBy },
+        params: { time, month, sortBy, search },
       }
     );
     return response.data;

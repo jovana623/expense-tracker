@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../features/authentification/useAuth";
 
 /* eslint-disable react/prop-types */
 function ProtectedRoute({ children }) {
-  const { token } = useAuth();
+  const token = localStorage.getItem("token");
+  console.log(token);
 
   if (!token) {
     return <Navigate to="/login" />;
