@@ -60,7 +60,7 @@ export async function getExpenseTransactions(
         params: { time, month, sortBy, page, page_size: pageSize },
       }
     );
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
     throw new Error(error.message);

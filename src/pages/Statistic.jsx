@@ -1,38 +1,50 @@
-import {
-  calculateTotalAmount,
-  summarizeAmountsByType,
-} from "../helpers/sortTransactions";
-
-import MonthFilter from "../ui/MonthFilter";
-import Spinner from "../ui/Spinner";
-import StatisticsContainer from "../features/statistics/StatisticsContainer";
-import InfoCards from "../features/statistics/InfoCards";
-import SavingsContainer from "../features/statistics/SavingsContainer";
-
+import { useSearchParams } from "react-router-dom";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 
+import { summarizeAmountsByType } from "../helpers/sortTransactions";
+import Spinner from "../ui/Spinner";
+import MonthFilter from "../ui/MonthFilter";
+import InfoCards from "../features/statistics/InfoCards";
+import StatisticsContainer from "../features/statistics/StatisticsContainer";
+import SavingsContainer from "../features/statistics/SavingsContainer";
+import TimeFilter from "../ui/TimeFilter";
+
 function Statistic() {
-  const { incomeTransactions, isLoading: isLoadingIncome } =
-    useIncomeTransactions();
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
 
-  const { expensesTransactions, isLoading: isLoadingExpenses } =
-    useExpenseTransactions();
+  const {
+    incomeTransactions,
+    totalIncome,
+    isLoading: isLoadingIncome,
+  } = useIncomeTransactions(time, month, {
+    fetchRegular: true,
+    fetchPaginated: false,
+  });
 
-  if (!incomeTransactions || !expensesTransactions) return null;
+  const {
+    expenseTransactions,
+    totalExpense,
+    isLoading: isLoadingExpense,
+  } = useExpenseTransactions(time, month, {
+    fetchRegular: true,
+    fetchPaginated: false,
+  });
 
-  const totalIncome = calculateTotalAmount(incomeTransactions);
+  if (isLoadingIncome || isLoadingExpense) return <Spinner />;
+
   const incomeByType = summarizeAmountsByType(incomeTransactions);
+  const expenseByType = summarizeAmountsByType(expenseTransactions);
 
-  const totalExpense = calculateTotalAmount(expensesTransactions);
-  const expenseByType = summarizeAmountsByType(expensesTransactions);
-
-  if (isLoadingIncome || isLoadingExpenses) return <Spinner />;
   return (
     <div className="py-2 px-7">
-      <div className="flex justify-end ">
+      <div className="flex justify-end gap-4">
         <MonthFilter />
+        <TimeFilter />
       </div>
+
       <div className="grid grid-cols-[2fr_1.5fr_1fr] gap-10 h-[100%]">
         <div className="flex flex-col gap-5">
           <InfoCards totalIncome={totalIncome} totalExpense={totalExpense} />

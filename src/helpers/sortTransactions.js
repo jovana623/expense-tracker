@@ -79,7 +79,7 @@ export function OneMonth(transactions) {
   return dailySummary;
 }
 
-export function summary(transactions) {
+export function summary(transactions = []) {
   let total = 0;
 
   transactions.forEach((transaction) => {

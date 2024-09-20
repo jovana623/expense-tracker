@@ -46,22 +46,20 @@ function Dashboard() {
 
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
-  if (
+  const isLoading =
     isLoadingIncome ||
     isLoadingExpense ||
     isLoadingSavings ||
     isLoadingPercentageE ||
-    isLoadingPercentageI
-  )
-    return <Spinner />;
+    isLoadingPercentageI;
 
   const savingsSummary = summary(savings);
+  console.log(savings);
 
   const balance = totalIncome - totalExpense;
 
-  const numOfSavings = savings.filter(
-    (saving) => saving.status === "In progress"
-  ).length;
+  const numOfSavings =
+    savings?.filter((saving) => saving.status === "In progress").length || 0;
 
   return (
     <div className="py-2 px-7 overflow-y-scroll">
@@ -76,44 +74,48 @@ function Dashboard() {
           <TimeFilter />
         </div>
       </div>
-      <div className="flex justify-between gap-7">
-        <NavLink to="income" className="w-full">
-          <SummaryCard
-            icon={<MdOutlineEuroSymbol />}
-            name="Total income"
-            amount={totalIncome}
-            percentage={percentageIncome}
-            isActive={location.pathname === "/dashboard/income"}
-          />
-        </NavLink>
-        <NavLink to="expenses" className="w-full">
-          <SummaryCard
-            icon={<BiReceipt />}
-            name="Total expenses"
-            amount={totalExpense}
-            percentage={percentageExpense}
-            isActive={location.pathname === "/dashboard/expenses"}
-          />
-        </NavLink>
-        <NavLink to="balance" className="w-full">
-          <SummaryCard
-            icon={<BiWallet />}
-            name="Balance"
-            amount={balance}
-            percentage="6"
-            isActive={location.pathname === "/dashboard/balance"}
-          />
-        </NavLink>
-        <NavLink to="savings" className="w-full">
-          <SummaryCard
-            icon={<MdOutlineSavings />}
-            name="Savings"
-            amount={savingsSummary}
-            percentage={numOfSavings}
-            isActive={location.pathname === "/dashboard/savings"}
-          />
-        </NavLink>
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="flex justify-between gap-7">
+          <NavLink to="income" className="w-full">
+            <SummaryCard
+              icon={<MdOutlineEuroSymbol />}
+              name="Total income"
+              amount={totalIncome}
+              percentage={percentageIncome}
+              isActive={location.pathname === "/dashboard/income"}
+            />
+          </NavLink>
+          <NavLink to="expenses" className="w-full">
+            <SummaryCard
+              icon={<BiReceipt />}
+              name="Total expenses"
+              amount={totalExpense}
+              percentage={percentageExpense}
+              isActive={location.pathname === "/dashboard/expenses"}
+            />
+          </NavLink>
+          <NavLink to="balance" className="w-full">
+            <SummaryCard
+              icon={<BiWallet />}
+              name="Balance"
+              amount={balance}
+              percentage="6"
+              isActive={location.pathname === "/dashboard/balance"}
+            />
+          </NavLink>
+          <NavLink to="savings" className="w-full">
+            <SummaryCard
+              icon={<MdOutlineSavings />}
+              name="Savings"
+              amount={savingsSummary}
+              percentage={numOfSavings}
+              isActive={location.pathname === "/dashboard/savings"}
+            />
+          </NavLink>
+        </div>
+      )}
       <div className="mt-10">
         <Outlet />
       </div>
