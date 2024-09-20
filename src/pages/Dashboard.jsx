@@ -16,12 +16,20 @@ import { summary } from "../helpers/sortTransactions";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
-import { useIncomeDifference } from "../hooks/useIncomeDifference";
+import { useIncomeSummary } from "../features/transactions/useIncomeSummary";
+import {
+  calculateMonthPercentageDiff,
+  calculateTwoMonthDiff,
+  calculateYearPercentageDiff,
+} from "../helpers/statistics";
+import { useExpenseSummary } from "../features/transactions/useExpenseSummary";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
+  let incomePercentage;
+  let expensePercentage;
 
   if (month && time) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -38,23 +46,42 @@ function Dashboard() {
     time,
     month
   );
-
-  const { percentage: percentageIncome, isLoadingPercentageI } =
-    useIncomeDifference(time, month);
-  const { percentage: percentageExpense, isLoadingPercentageE } =
-    useIncomeDifference(time, month);
-
   const { savings, isLoading: isLoadingSavings } = useSavings();
+
+  const {
+    monthlyIncome,
+    yearlyIncome,
+    isLoading: isLoadingMI,
+  } = useIncomeSummary();
+
+  const {
+    monthlyExpense,
+    yearlyExpense,
+    isLoading: isLoadingEI,
+  } = useExpenseSummary();
 
   const isLoading =
     isLoadingIncome ||
     isLoadingExpense ||
     isLoadingSavings ||
-    isLoadingPercentageE ||
-    isLoadingPercentageI;
+    isLoadingMI ||
+    isLoadingEI;
+
+  if (month) {
+    incomePercentage = calculateTwoMonthDiff(monthlyIncome, month);
+    expensePercentage = calculateTwoMonthDiff(monthlyExpense, month);
+  } else if (time === "month") {
+    incomePercentage = calculateMonthPercentageDiff(monthlyIncome);
+    expensePercentage = calculateMonthPercentageDiff(monthlyExpense);
+  } else if (time === "year") {
+    incomePercentage = calculateYearPercentageDiff(yearlyIncome);
+    expensePercentage = calculateYearPercentageDiff(yearlyExpense);
+  } else {
+    incomePercentage = calculateMonthPercentageDiff(monthlyIncome);
+    expensePercentage = calculateMonthPercentageDiff(monthlyExpense);
+  }
 
   const savingsSummary = summary(savings);
-  console.log(savings);
 
   const balance = totalIncome - totalExpense;
 
@@ -83,7 +110,7 @@ function Dashboard() {
               icon={<MdOutlineEuroSymbol />}
               name="Total income"
               amount={totalIncome}
-              percentage={percentageIncome}
+              percentage={incomePercentage}
               isActive={location.pathname === "/dashboard/income"}
             />
           </NavLink>
@@ -92,7 +119,7 @@ function Dashboard() {
               icon={<BiReceipt />}
               name="Total expenses"
               amount={totalExpense}
-              percentage={percentageExpense}
+              percentage={expensePercentage}
               isActive={location.pathname === "/dashboard/expenses"}
             />
           </NavLink>

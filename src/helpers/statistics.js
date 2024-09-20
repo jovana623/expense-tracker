@@ -1,3 +1,83 @@
+export function calculateMonthPercentageDiff(monthlyTransactions) {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+
+  const currentMonthSummary = monthlyTransactions.find(
+    (item) =>
+      item.date__year === currentYear && item.date__month === currentMonth
+  );
+
+  const lastMonthSummary = monthlyTransactions.find(
+    (item) =>
+      item.date__year === currentYear && item.date__month === currentMonth - 1
+  );
+
+  const currentTotal = currentMonthSummary ? currentMonthSummary.total : 0;
+  const lastTotal = lastMonthSummary ? lastMonthSummary.total : 0;
+
+  if (lastTotal === 0) {
+    return currentTotal > 0 ? 100 : 0;
+  }
+
+  const diff = currentTotal - lastTotal;
+  const percentageDiff = (diff / lastTotal) * 100;
+
+  return percentageDiff.toFixed(2);
+}
+
+export function calculateYearPercentageDiff(yearlyTransactions) {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+
+  const currentYearSummary = yearlyTransactions.find(
+    (item) => item.date__year === currentYear
+  );
+  const lastYearSummary = yearlyTransactions.find(
+    (item) => item.date__year === currentYear - 1
+  );
+
+  const currentTotal = currentYearSummary ? currentYearSummary.total : 0;
+  const lastTotal = lastYearSummary ? lastYearSummary.total : 0;
+
+  if (lastTotal === 0) {
+    return currentTotal > 0 ? 100 : 0;
+  }
+
+  const diff = currentTotal - lastTotal;
+  const percentageDiff = (diff / lastTotal) * 100;
+
+  return percentageDiff.toFixed(2);
+}
+
+export function calculateTwoMonthDiff(monthlyTransactions, date) {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const [year, month] = date.split("-").map(Number);
+
+  const currentMonthSummary = monthlyTransactions.find(
+    (item) =>
+      item.date__year === currentYear && item.date__month === currentMonth
+  );
+
+  const lastMonthSummary = monthlyTransactions.find(
+    (item) => item.date__year === year && item.date__month === month
+  );
+
+  const currentTotal = currentMonthSummary ? currentMonthSummary.total : 0;
+  const lastTotal = lastMonthSummary ? lastMonthSummary.total : 0;
+
+  if (lastTotal === 0) {
+    return currentTotal > 0 ? 100 : 0;
+  }
+
+  const diff = lastTotal - currentTotal;
+  const percentageDiff = (diff / lastTotal) * 100;
+
+  return percentageDiff.toFixed(2);
+}
+
 export function calculateAverage(list) {
   if (list.length === 0) return 0;
 

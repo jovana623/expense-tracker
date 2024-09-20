@@ -51,7 +51,7 @@ function SummaryCard({ icon, name, amount, percentage, isActive }) {
             className={`${isActive ? "text-lightBg" : ""} hover:text-lightBg`}
           >
             {month
-              ? "vs same month last year"
+              ? "vs this month"
               : time === "year"
               ? "vs last year"
               : "vs last month"}

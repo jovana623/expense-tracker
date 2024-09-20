@@ -99,3 +99,25 @@ export async function deleteTransaction(id) {
     throw new Error(error.message);
   }
 }
+
+export async function getIncomeSummary() {
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/transactions/income/monthly/"
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getExpenseSummary() {
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:8000/api/transactions/expense/monthly/"
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
