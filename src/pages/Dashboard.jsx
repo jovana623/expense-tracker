@@ -23,6 +23,7 @@ import {
   calculateYearPercentageDiff,
 } from "../helpers/statistics";
 import { useExpenseSummary } from "../features/transactions/useExpenseSummary";
+import { useEffect } from "react";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +37,13 @@ function Dashboard() {
     newSearchParams.delete("time");
     setSearchParams(newSearchParams);
   }
+
+  useEffect(() => {
+    if (!time && !month) {
+      searchParams.set("time", "month");
+      setSearchParams(searchParams);
+    }
+  });
 
   const { totalIncome, isLoading: isLoadingIncome } = useIncomeTransactions(
     time,

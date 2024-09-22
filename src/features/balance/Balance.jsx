@@ -6,9 +6,9 @@ import {
   getCurrentMonthData,
   sortByMonth,
 } from "../../helpers/sortTransactions";
-import PieChartCard from "../dashboard/PieChartCard";
 import AreaChartComponent from "./AreaChartComponent";
 import { useTransactions } from "../transactions/useTransactions";
+import ChartCard from "../../ui/ChartCard";
 
 function Balance() {
   const [searchParams] = useSearchParams();
@@ -29,14 +29,15 @@ function Balance() {
 
   return (
     <div className="flex gap-12 h-80">
-      <PieChartCard>
+      <ChartCard>
+        <div></div>
         <AreaChartComponent
           data={balance}
           timeValue={time}
           monthData={adjustedMonthData}
         />
-      </PieChartCard>
-      <PieChartCard></PieChartCard>
+      </ChartCard>
+      <ChartCard></ChartCard>
       <div></div>
     </div>
   );

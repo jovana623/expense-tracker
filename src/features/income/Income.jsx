@@ -1,5 +1,4 @@
 import Spinner from "../../ui/Spinner";
-import PieChartCard from "../dashboard/PieChartCard";
 import PieChartComponent from "../../ui/PieChartComponent";
 import Table from "../../ui/Table";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
@@ -7,6 +6,7 @@ import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../ui/Pagination";
 import { useEffect, useState } from "react";
+import ChartCard from "../../ui/ChartCard";
 
 function Income() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,9 +31,9 @@ function Income() {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full">
-        <PieChartCard>
+        <ChartCard>
           <PieChartComponent data={summary}></PieChartComponent>
-        </PieChartCard>
+        </ChartCard>
         <div className="flex flex-col gap-4">
           <Table data={paginatedTransactions.results} isLoading={isLoading} />
           <div className="mt-4">

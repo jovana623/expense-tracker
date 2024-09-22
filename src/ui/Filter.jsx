@@ -11,7 +11,7 @@ function Filter({ field, options }) {
     setSearchParams(searchParams);
   }
 
-  const currentValue = searchParams.get(field) || options[2].value;
+  const currentValue = searchParams.get(field) || options[0].value;
 
   return (
     <FilterContainer>

@@ -4,9 +4,9 @@ import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
-import PieChartCard from "../dashboard/PieChartCard";
 import { useEffect, useState } from "react";
 import Pagination from "../../ui/Pagination";
+import ChartCard from "../../ui/ChartCard";
 
 function Expenses() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,9 +32,10 @@ function Expenses() {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <PieChartCard>
-          <PieChartComponent data={summarizedByType}></PieChartComponent>
-        </PieChartCard>
+        <ChartCard>
+          <div></div>
+          <PieChartComponent data={summarizedByType} />
+        </ChartCard>
         <div className="flex flex-col gap-4">
           <Table data={paginatedTransactions.results} isLoading={isLoading} />
           <div className="mt-4">

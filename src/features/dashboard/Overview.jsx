@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   getCurrentMonthData,
   OneMonth,
@@ -6,9 +7,10 @@ import {
 import Spinner from "../../ui/Spinner";
 import { useTransactions } from "../transactions/useTransactions";
 import LineChartComponent from "./LineChartComponent";
-import PieChartCard from "./PieChartCard";
+import ChartCard from "../../ui/ChartCard";
 import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
 import { useSearchParams } from "react-router-dom";
+import SelectCharts from "../../ui/SelectCharts";
 
 function Overview() {
   const [searchParams] = useSearchParams();
@@ -18,6 +20,8 @@ function Overview() {
     time,
     month
   );
+
+  const [chart, setChart] = useState("bar");
 
   let monthData = [];
 
@@ -30,15 +34,17 @@ function Overview() {
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-10">
-      <PieChartCard title="Income vs. Expenses bar">
-        <PositiveAndNegativeBar
-          data={sortedByMonth}
-          monthData={monthData}
-        ></PositiveAndNegativeBar>
-      </PieChartCard>
-      <PieChartCard title="Income vs. Expenses line">
-        <LineChartComponent data={sortedByMonth} monthData={monthData} />
-      </PieChartCard>
+      <ChartCard>
+        <SelectCharts onSetChart={setChart} />
+        {chart === "bar" ? (
+          <PositiveAndNegativeBar
+            data={sortedByMonth}
+            monthData={monthData}
+          ></PositiveAndNegativeBar>
+        ) : (
+          <LineChartComponent data={sortedByMonth} monthData={monthData} />
+        )}
+      </ChartCard>
     </div>
   );
 }
