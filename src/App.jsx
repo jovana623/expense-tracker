@@ -18,6 +18,7 @@ import Balance from "./features/balance/Balance";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "./context/AuthProvider";
+import Calendar from "./pages/Calendar";
 
 function App() {
   const queryClient = new QueryClient({
@@ -56,6 +57,7 @@ function App() {
               </Route>
               <Route path="budget" element={<Budget />} />
               <Route path="transactions" element={<Transactions />} />
+              <Route path="calendar" element={<Calendar />} />
               <Route path="statistic" element={<Statistic />} />
               <Route path="settings" element={<Settings />} />
               <Route path="profile" element={<Profile />} />

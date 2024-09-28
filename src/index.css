@@ -24,6 +24,7 @@
   }
 }
 
+/*Scrollbar*/
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -39,4 +40,61 @@
   border-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
+}
+
+/*Calendar*/
+.my-calendar {
+  padding: 1.25rem;
+  width: 100%;
+  border: none;
+}
+
+.my-calendar .react-calendar__tile {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  height: 6.8rem;
+  position: relative;
+}
+
+.my-calendar .react-calendar__tile abbr {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #4b5563;
+}
+
+.my-calendar .react-calendar__month-view__weekdays__weekday {
+  color: #6b7280;
+  font-size: 0.7rem;
+  text-align: right;
+  font-weight: 600;
+  padding: 0.5rem;
+  border-top: 1px solid #d1d5db;
+}
+
+.my-calendar .react-calendar__month-view__weekdays__weekday:first-child {
+  border-left: 1px solid #d1d5db;
+}
+
+.my-calendar .react-calendar__month-view__weekdays__weekday:last-child {
+  border-right: 1px solid #d1d5db;
+}
+
+.my-calendar .react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+.my-calendar .react-calendar__navigation {
+  background-color: #ffffff;
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.my-calendar .react-calendar__navigation__label {
+  font-size: 1.125rem;
+  font-weight: bold;
+  cursor: default;
 }

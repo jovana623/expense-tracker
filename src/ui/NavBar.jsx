@@ -6,6 +6,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { VscGraphLine } from "react-icons/vsc";
 import { RxGear } from "react-icons/rx";
 import { RxAvatar } from "react-icons/rx";
+import { CiCalendar } from "react-icons/ci";
 
 function NavBar() {
   return (
@@ -28,6 +29,15 @@ function NavBar() {
           >
             <GrTransaction />
             <span>Transactions</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="calendar"
+            className={({ isActive }) => (isActive ? "nav nav-active" : "nav")}
+          >
+            <CiCalendar />
+            <span>Calendar</span>
           </NavLink>
         </li>
         <li>
