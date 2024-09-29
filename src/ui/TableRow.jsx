@@ -31,6 +31,11 @@ function TableRow({ transaction }) {
 
   if (isLoading) return <Spinner />;
 
+  function shortDescription(desc) {
+    const words = desc.split(" ");
+    return words.length > 5 ? `${words.slice(0, 5).join(" ")}...` : desc;
+  }
+
   return (
     <div
       className={`grid  ${
@@ -50,7 +55,9 @@ function TableRow({ transaction }) {
       <div className="justufy-self-center">{amount.toLocaleString()}&euro;</div>
       <div>{type.name}</div>
       {isTransactionsPath ? (
-        <div className="justify-self-center">{description}</div>
+        <div className="justify-self-center">
+          {shortDescription(description)}
+        </div>
       ) : (
         ""
       )}
