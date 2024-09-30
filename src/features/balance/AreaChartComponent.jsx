@@ -55,33 +55,35 @@ function AreaChartComponent({ data, timeValue, monthData }) {
   const off = gradientOffset();
 
   return (
-    <AreaChart
-      width={500}
-      height={250}
-      data={adjustedData}
-      margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-    >
-      {timeValue === "month" ? (
-        <XAxis dataKey="day" />
-      ) : (
-        <XAxis dataKey="month" />
-      )}
-      <YAxis tickFormatter={euroFormatter} />
-      <CartesianGrid strokeDasharray="3 3" />
-      <Tooltip content={renderTooltip} />
-      <defs>
-        <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
-          <stop offset={off} stopColor="green" stopOpacity={1} />
-          <stop offset={off} stopColor="red" stopOpacity={1} />
-        </linearGradient>
-      </defs>
-      <Area
-        type="monotone"
-        dataKey="balance"
-        stroke="#8884d8"
-        fill="url(#splitColor)"
-      />
-    </AreaChart>
+    <div className="pl-0 ml-[-3rem] text-sm">
+      <AreaChart
+        width={500}
+        height={250}
+        data={adjustedData}
+        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+      >
+        {timeValue === "month" ? (
+          <XAxis dataKey="day" />
+        ) : (
+          <XAxis dataKey="month" />
+        )}
+        <YAxis tickFormatter={euroFormatter} />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip content={renderTooltip} />
+        <defs>
+          <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset={off} stopColor="green" stopOpacity={1} />
+            <stop offset={off} stopColor="red" stopOpacity={1} />
+          </linearGradient>
+        </defs>
+        <Area
+          type="monotone"
+          dataKey="balance"
+          stroke="#8884d8"
+          fill="url(#splitColor)"
+        />
+      </AreaChart>
+    </div>
   );
 }
 

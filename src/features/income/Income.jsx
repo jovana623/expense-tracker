@@ -32,6 +32,7 @@ function Income() {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full">
         <ChartCard>
+          <div></div>
           <PieChartComponent data={summary}></PieChartComponent>
         </ChartCard>
         <div className="flex flex-col gap-4">

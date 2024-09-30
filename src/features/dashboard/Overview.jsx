@@ -33,7 +33,7 @@ function Overview() {
   else monthData = OneMonth(transactions);
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-10">
+    <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard>
         <SelectCharts onSetChart={setChart} />
         {chart === "bar" ? (
@@ -45,6 +45,7 @@ function Overview() {
           <LineChartComponent data={sortedByMonth} monthData={monthData} />
         )}
       </ChartCard>
+      <ChartCard />
     </div>
   );
 }

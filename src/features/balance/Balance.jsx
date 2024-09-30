@@ -28,9 +28,8 @@ function Balance() {
   console.log(monthData);
 
   return (
-    <div className="flex gap-12 h-80">
+    <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard>
-        <div></div>
         <AreaChartComponent
           data={balance}
           timeValue={time}

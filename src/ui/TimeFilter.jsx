@@ -7,11 +7,11 @@ function TimeFilter() {
       options={[
         {
           value: "month",
-          label: "This month",
+          label: "Month",
         },
         {
           value: "year",
-          label: "This year",
+          label: "Year",
         },
         {
           value: "all",

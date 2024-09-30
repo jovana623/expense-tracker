@@ -34,7 +34,7 @@ function SummaryCard({ icon, name, amount, percentage, isActive }) {
           {amount.toLocaleString()}&euro;
         </p>
 
-        <p className="flex items-center gap-1">
+        <p className="flex items-center gap-1 h-4">
           <span
             className={`flex items-center gap-1 ${
               isActive

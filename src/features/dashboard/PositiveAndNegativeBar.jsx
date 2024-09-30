@@ -54,24 +54,30 @@ function PositiveAndNegativeBar({ data, monthData }) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart
-        width={500}
-        height={300}
-        data={finalData}
-        stackOffset="sign"
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        {time === "month" ? <XAxis dataKey="day" /> : <XAxis dataKey="month" />}
-        <YAxis tickFormatter={euroFormatter} />
-        <Tooltip content={renderTooltip} />
-        <Legend />
-        <ReferenceLine y={0} stroke="#000" />
-        <Bar dataKey="income" fill="#22c55e" stackId="stack" />
-        <Bar dataKey="expenses" fill="#ef4444" stackId="stack" />
-      </BarChart>
-    </ResponsiveContainer>
+    <div className="pl-0 ml-[-3rem] text-sm">
+      <ResponsiveContainer width="104%" height={300}>
+        <BarChart
+          width={500}
+          height={300}
+          data={finalData}
+          stackOffset="sign"
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          {time === "month" ? (
+            <XAxis dataKey="day" />
+          ) : (
+            <XAxis dataKey="month" />
+          )}
+          <YAxis tickFormatter={euroFormatter} />
+          <Tooltip content={renderTooltip} />
+          <Legend />
+          <ReferenceLine y={0} stroke="#000" />
+          <Bar dataKey="income" fill="#22c55e" stackId="stack" />
+          <Bar dataKey="expenses" fill="#ef4444" stackId="stack" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 

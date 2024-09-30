@@ -20,7 +20,7 @@ function Savings() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="grid grid-cols-2 gap-8 justify-between w-full h-full">
+    <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <SavingsDetailCard saving={saving} />
       <div>
         <SavingCard saving={saving} />

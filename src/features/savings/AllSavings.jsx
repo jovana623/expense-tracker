@@ -9,7 +9,7 @@ function AllSavings({ activeSaving, onCardChange }) {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid md:grid-cols-2 grid-cols-1 overflow-y-scroll">
       {savings.map((saving) => (
         <SavingCard
           saving={saving}

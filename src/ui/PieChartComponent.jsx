@@ -1,7 +1,22 @@
-import { PieChart, Pie, Cell, Legend } from "recharts";
+import { useEffect, useState } from "react";
+import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 /* eslint-disable react/prop-types */
 function PieChartComponent({ data }) {
+  const [isScreenSmall, setIsScreenSmall] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsScreenSmall(window.innerWidth < 540);
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   function renderLegend(props) {
     const { payload } = props;
 
@@ -27,28 +42,34 @@ function PieChartComponent({ data }) {
   }
 
   return (
-    <PieChart width={450} height={250}>
-      <Pie
-        data={data}
-        cx={90}
-        cy={120}
-        innerRadius={60}
-        outerRadius={80}
-        fill="#8884d8"
-        paddingAngle={5}
-        dataKey="amount"
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={entry.color} />
-        ))}
-      </Pie>
-      <Legend
-        content={renderLegend}
-        verticalAlign="middle"
-        align="right"
-        layout="vertical"
-      />
-    </PieChart>
+    <ResponsiveContainer
+      width={isScreenSmall ? 300 : 450}
+      height={isScreenSmall ? 400 : 250}
+    >
+      <PieChart>
+        <Pie
+          data={data}
+          cx={isScreenSmall ? 150 : 90}
+          cy={isScreenSmall ? 75 : 120}
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"
+          paddingAngle={5}
+          dataKey="amount"
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+
+        <Legend
+          content={renderLegend}
+          verticalAlign={isScreenSmall ? "bottom" : "middle"}
+          align={isScreenSmall ? "center" : "right"}
+          layout="vertical"
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
 }
 

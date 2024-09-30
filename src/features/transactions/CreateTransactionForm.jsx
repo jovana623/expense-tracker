@@ -55,13 +55,13 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg"
+      className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
     >
       {isLoadingType || isLoadingCategory ? (
         <Spinner />
       ) : (
         <>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
             <label htmlFor="name">Name</label>
             <input
               type="text"
@@ -74,7 +74,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
             ></input>
             <p className="text-xs text-red-500">{errors?.name?.message}</p>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
             <label htmlFor="amount">Amount</label>
             <input
               type="text"
@@ -134,7 +134,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
             />
             <p className="text-xs text-red-500">{errors?.date?.message}</p>
           </div>
-          <div className="flex gap-2 col-start-2 mt-4">
+          <div className="flex gap-2 col-start-2 mt-4 justify-self-end self-end">
             <Button type="secondary" onClick={onCancel}>
               Cancel
             </Button>

@@ -42,7 +42,7 @@ function TableRow({ transaction }) {
         isTransactionsPath
           ? "grid-cols-[0.5fr_1.5fr_1fr_1fr_2fr_1.2fr_0.3fr]"
           : "grid-cols-[0.5fr_2fr_1fr_1fr_1.5fr_0.3fr]"
-      } gap-3 items-center bg-lightBg h-14 mx-2 border-t-[1px] border-gray-200`}
+      } gap-3 items-center bg-lightBg h-14 mx-2 border-t-[1px] border-gray-200 sm:text-base text-sm`}
     >
       <div
         className={` w-5 h-5 justify-self-center text-xl ${

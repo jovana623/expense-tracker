@@ -97,14 +97,18 @@ function Dashboard() {
     savings?.filter((saving) => saving.status === "In progress").length || 0;
 
   return (
-    <div className="py-2 px-7 overflow-y-scroll">
-      <div className="flex justify-between items-center mb-3">
+    <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between items-center mb-3">
         {window.location.pathname === "/dashboard/savings" ? (
-          <AddSavingGoal />
+          <div className="w-15 m-auto md:m-0 sm:m-0">
+            <AddSavingGoal />
+          </div>
         ) : (
-          <AddTransaction />
+          <div className="w-15 m-auto md:m-0 sm:m-0">
+            <AddTransaction />
+          </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex gap-2 m-auto md:m-0 sm:m-0 md:justify-self-end">
           <MonthFilter />
           <TimeFilter />
         </div>
@@ -112,7 +116,7 @@ function Dashboard() {
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="flex justify-between gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
           <NavLink to="income" className="w-full">
             <SummaryCard
               icon={<MdOutlineEuroSymbol />}
