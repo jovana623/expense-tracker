@@ -9,15 +9,17 @@ function RadialBarChartComponent({ data }) {
         cy="50%"
         innerRadius="10%"
         outerRadius="100%"
-        barSize={10}
+        barSize={15}
         data={data}
+        startAngle={180} // Optional: start from the bottom
+        endAngle={-180} // Optional: makes a semi-circle chart
       >
         <RadialBar
           minAngle={15}
-          background
           clockWise
           dataKey="percentage"
-          fill="color"
+          background={{ fill: "#eee" }}
+          cornerRadius={10} // Optional: adds rounded edges to bars
         />
       </RadialBarChart>
     </ResponsiveContainer>

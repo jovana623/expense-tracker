@@ -135,3 +135,15 @@ export async function getCategoriesByMonth(type) {
     throw new Error(error.message);
   }
 }
+
+export async function getTransactionStatistic(time) {
+  try {
+    const response = await axios.get(
+      "http://localhost:8000/api/transactions/statistics/",
+      { params: { time } }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}

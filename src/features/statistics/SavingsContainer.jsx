@@ -9,7 +9,7 @@ function SavingsContainer() {
   if (!savings) return null;
   const adjustedData = savings.map((item) => ({
     ...item,
-    percentage: ((item.amount / item.goal) * 100).toFixed(1),
+    percentage: parseFloat(((item.amount / item.goal) * 100).toFixed(1)),
     fill: item.color,
   }));
 
