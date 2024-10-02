@@ -16,7 +16,10 @@ function AddTransaction() {
           </button>
         </Modal.OpenButton>
 
-        <Modal.Window name="transaction-form">
+        <Modal.Window
+          name="transaction-form"
+          onClick={(e) => e.stopPropagation()}
+        >
           <CreateTransactionForm />
         </Modal.Window>
       </Modal>

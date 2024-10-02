@@ -2,9 +2,12 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useTransactions } from "../transactions/useTransactions";
 import Spinner from "../../ui/Spinner";
+import DateDetailsButton from "./DateDetailsButton";
+import { useState } from "react";
 
 function CustomCalendar() {
   const { transactions, isLoading } = useTransactions();
+  const [currentDate, setCurrentDate] = useState(null);
 
   function showTransaction(date) {
     const dateCal = date.toISOString().split("T")[0];
@@ -12,21 +15,26 @@ function CustomCalendar() {
       (transaction) => transaction.date === dateCal
     );
     return dayTransactions.length > 0 ? (
-      <div className="flex flex-col space-y-1">
-        {dayTransactions.map((transaction) => (
-          <div
-            key={transaction.id}
-            className={`text-xs p-1 text-white ${
-              transaction.type.category.name === "Income"
-                ? "bg-green-500"
-                : "bg-red-500"
-            } rounded-md`}
-          >
-            {transaction.name}
-          </div>
-        ))}
-      </div>
-    ) : null;
+      <>
+        <div className="flex flex-col space-y-1 relative">
+          {dayTransactions.map((transaction) => (
+            <div
+              key={transaction.id}
+              className={`text-xs p-1 text-white ${
+                transaction.type.category.name === "Income"
+                  ? "bg-green-500"
+                  : "bg-red-500"
+              } rounded-md`}
+            >
+              {transaction.name}
+            </div>
+          ))}
+        </div>
+        <DateDetailsButton data={dayTransactions} date={currentDate} />
+      </>
+    ) : (
+      <DateDetailsButton date={currentDate} />
+    );
   }
 
   if (isLoading) return <Spinner />;
@@ -37,6 +45,10 @@ function CustomCalendar() {
         tileContent={({ date, view }) =>
           view === "month" ? showTransaction(date) : null
         }
+        onClickDay={(value) => {
+          const date = value.toISOString().split("T")[0];
+          setCurrentDate(date);
+        }}
       />
     </div>
   );
