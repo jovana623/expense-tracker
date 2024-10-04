@@ -1,6 +1,3 @@
-import { FiArrowUpRight } from "react-icons/fi";
-import Table from "../ui/Table";
-import TimeFilter from "../ui/TimeFilter";
 import SortByTable from "../ui/SortByTable";
 import { useTransactions } from "../features/transactions/useTransactions";
 import { useSearchParams } from "react-router-dom";
@@ -8,6 +5,8 @@ import Search from "../ui/Search";
 import { useEffect, useState } from "react";
 import Spinner from "../ui/Spinner";
 import Pagination from "../ui/Pagination";
+import Table from "../ui/Table";
+import TimeFilter from "../ui/TimeFilter";
 
 function Transactions() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,28 +31,27 @@ function Transactions() {
     setSearchParams({ time, month, sortBy, search, page });
   }, [time, month, sortBy, search, page, setSearchParams]);
 
-  if (isLoading) return <Spinner />;
-
-  const numOfPages = Math.ceil(transactions.count / pageSize);
-
   return (
     <div>
-      <div className="my-4 ml-11 flex justify-between">
+      <div className="my-4 pr-10 flex justify-end items-center gap-4">
         <Search />
-        <div className="flex mx-10 gap-5">
-          <SortByTable />
-          <TimeFilter />
+        <SortByTable />
+        <TimeFilter />
+      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <div className="mx-10 h-[75vh]">
+            <Table data={transactions.results} isLoading={isLoading} />
+          </div>
+          <Pagination
+            page={page}
+            numOfPages={Math.ceil(transactions.count / pageSize)}
+            setPage={setPage}
+          />
         </div>
-      </div>
-
-      <div className="mx-10 h-[75vh]">
-        <Table
-          data={transactions.results}
-          isLoading={isLoading}
-          arrow={<FiArrowUpRight />}
-        />
-      </div>
-      <Pagination page={page} numOfPages={numOfPages} setPage={setPage} />
+      )}
     </div>
   );
 }

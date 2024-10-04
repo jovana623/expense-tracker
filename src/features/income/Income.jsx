@@ -1,12 +1,12 @@
 import Spinner from "../../ui/Spinner";
 import PieChartComponent from "../../ui/PieChartComponent";
-import Table from "../../ui/Table";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../ui/Pagination";
 import { useEffect, useState } from "react";
 import ChartCard from "../../ui/ChartCard";
+import Table from "../../ui/Table";
 
 function Income() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +37,7 @@ function Income() {
         </ChartCard>
         <div className="flex flex-col gap-4">
           <Table data={paginatedTransactions.results} isLoading={isLoading} />
-          <div className="mt-4">
+          <div className="mt-4 justify-self-end">
             <Pagination page={page} numOfPages={numOfPages} setPage={setPage} />
           </div>
         </div>

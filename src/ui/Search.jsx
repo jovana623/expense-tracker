@@ -9,13 +9,27 @@ function Search() {
   }
 
   return (
-    <input
-      type="text"
-      placeholder="Search"
-      onChange={handleChange}
-      value={searchParams.get("search") || ""}
-      className="border border-stone-200 focus:outline-green-500 rounded-md h-8 pr-5 pl-2 py-2"
-    />
+    <div className="p-4 overflow-hidden w-[16px] h-[12px] hover:w-[270px] bg-gray-50 hover:bg-white hover:shadow-md hover:rounded-md flex group items-center hover:duration-300 duration-300">
+      <div className="flex items-center justify-center ">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="Isolation_Mode"
+          data-name="Isolation Mode"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+        >
+          <path d="M18.9,16.776A10.539,10.539,0,1,0,16.776,18.9l5.1,5.1L24,21.88ZM10.5,18A7.5,7.5,0,1,1,18,10.5,7.507,7.507,0,0,1,10.5,18Z"></path>
+        </svg>
+      </div>
+      <input
+        type="text"
+        className="outline-none text-[14px] bg-white w-full text-black font-normal px-4"
+        placeholder="Search"
+        onChange={handleChange}
+        value={searchParams.get("search") || ""}
+      />
+    </div>
   );
 }
 
