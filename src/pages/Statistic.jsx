@@ -7,6 +7,7 @@ import Spinner from "../ui/Spinner";
 import CategoryChart from "../features/statistics/CategoryChart";
 import TimeFilter from "../ui/TimeFilter";
 import FlipCard from "../features/statistics/FlipCard";
+import StatsTable from "../features/statistics/StatsTable";
 import { useTransactionStatistic } from "../features/transactions/useTransactionStatistic";
 
 function Statistic() {
@@ -19,10 +20,19 @@ function Statistic() {
 
   if (isLoading || isLoadingStats) return <Spinner />;
 
-  const { top_income, avg_income, top_expense, avg_expense } = statistic;
+  const {
+    top_income,
+    avg_income,
+    top_expense,
+    avg_expense,
+    top_income_types,
+    top_expense_types,
+  } = statistic;
+
+  console.log(statistic);
   return (
     <div className="py-8 px-7">
-      <div className="grid grid-cols-[1fr_2fr_1fr] gap-10 h-[100%]">
+      <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">
         <div className="flex flex-col gap-5">
           <ChartCard>
             <SelectType />
@@ -30,26 +40,44 @@ function Statistic() {
           </ChartCard>
           <ChartCard>
             <TimeFilter />
-            <div className="flex gap-3">
-              <FlipCard
-                titleFront="Average income"
-                titleBack="Top income"
-                transaction={top_income}
-                avg={avg_income}
-              />
-              <FlipCard
-                titleFront="Average expense"
-                titleBack="Top expense"
-                transaction={top_expense}
-                avg={avg_expense}
-              />
-            </div>
+            {isLoadingStats ? (
+              <Spinner />
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-3">
+                <FlipCard
+                  titleFront="Average income"
+                  titleBack="Top income"
+                  transaction={top_income}
+                  avg={avg_income}
+                />
+                <FlipCard
+                  titleFront="Average expense"
+                  titleBack="Top expense"
+                  transaction={top_expense}
+                  avg={avg_expense}
+                />
+              </div>
+            )}
           </ChartCard>
         </div>
         <div className="">
           <SavingsContainer />
         </div>
-        <div>Child 3</div>
+        <div>
+          <ChartCard>
+            <TimeFilter />
+            <div className="flex flex-col gap-3">
+              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                Top income types
+              </p>
+              <StatsTable data={top_income_types} />
+              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                Top expense types
+              </p>
+              <StatsTable data={top_expense_types} />
+            </div>
+          </ChartCard>
+        </div>
       </div>
     </div>
   );
