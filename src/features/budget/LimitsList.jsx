@@ -1,10 +1,21 @@
+import Spinner from "../../ui/Spinner";
+import AddBudget from "./AddBudget";
 import LimitsCard from "./LimitsCard";
+import { useUsedBudget } from "./useUsedBudget";
 
 function LimitsList() {
+  const { usedBudget, isLoading } = useUsedBudget();
+  if (isLoading) return <Spinner />;
   return (
-    <div className="rounded-md shadow h-[100%] flex flex-col px-4 py-7">
-      <p className="font-semibold text-xl text-center">Budget limits</p>
-      <LimitsCard />
+    <div className="rounded-md h-[100%]">
+      <div className="grid grid-cols-2 gap-2">
+        {usedBudget.map((budget) => (
+          <div key={budget.id}>
+            <LimitsCard data={budget} />
+          </div>
+        ))}
+        <AddBudget />
+      </div>
     </div>
   );
 }
