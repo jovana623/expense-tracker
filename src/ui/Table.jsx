@@ -7,11 +7,12 @@ import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import ConfirmDelete from "./ConfirmDelete";
-import { deleteTransaction } from "../services/apiTransactions";
+import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 import { formatDate } from "../helpers/dateFunctions";
 
 /* eslint-disable react/prop-types */
 function Table({ data, isLoading }) {
+  const { deleteTransaction } = useDeleteTransaction();
   if (isLoading) return <Spinner />;
   const isTransactionsPath = location.pathname === "/transactions";
   const category = "Income";

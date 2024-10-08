@@ -1,23 +1,53 @@
+import { BiSolidPencil } from "react-icons/bi";
+import { TbListDetails } from "react-icons/tb";
+import Menu from "../../ui/Menu";
+import Modal from "../../ui/Modal";
+import { AiOutlineDelete } from "react-icons/ai";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteBudget } from "./useDeleteBudget";
+import Spinner from "../../ui/Spinner";
+import CreateBudgetForm from "./CreateBudgetForm";
+import Table from "../../ui/Table";
+
 /* eslint-disable react/prop-types */
 function LimitsCard({ data }) {
+  const { deleteBudget, isLoading } = useDeleteBudget();
+  if (isLoading) return <Spinner />;
+  console.log(data);
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <div className="px-5 py-3 flex justify-between items-center">
         <h3 className="text-zinc-900 text-lg">{data.type}</h3>
-        <svg
-          strokeWidth="2"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="h-6 w-6 text-zinc-900"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          ></path>
-        </svg>
+        <Modal>
+          <Menu>
+            <Menu.Toggle id={data.id} />
+            <Menu.List id={data.id}>
+              <Modal.OpenButton opens="update-budget">
+                <Menu.Button icon={<BiSolidPencil />}>Update</Menu.Button>
+              </Modal.OpenButton>
+              <Modal.OpenButton opens="delete-budget">
+                <Menu.Button icon={<AiOutlineDelete />}>Delete</Menu.Button>
+              </Modal.OpenButton>
+              <Modal.OpenButton opens="budget-details">
+                <Menu.Button icon={<TbListDetails />}>Details</Menu.Button>
+              </Modal.OpenButton>
+            </Menu.List>
+            <Modal.Window name="update-budget">
+              <CreateBudgetForm budgetToUpdate={data} />
+            </Modal.Window>
+            <Modal.Window name="delete-budget">
+              <ConfirmDelete
+                nameModal="budget"
+                onConfirm={() => {
+                  deleteBudget(data.id);
+                }}
+              />
+            </Modal.Window>
+            <Modal.Window name="budget-details">
+              <Table data={data.transactions} />
+            </Modal.Window>
+          </Menu>
+        </Modal>
       </div>
       <div className="px-5 pb-5">
         <div className="w-full bg-zinc-200 rounded-full h-2.5">
@@ -35,7 +65,7 @@ function LimitsCard({ data }) {
             {data.percentage.toFixed(0)}&#x25;
           </span>
           <span className="text-sm text-zinc-600">
-            {data.total.toLocaleString()}&euro;/{data.budget.toLocaleString()}
+            {data.total.toLocaleString()}&euro;/{data.amount.toLocaleString()}
             &euro;
           </span>
         </div>

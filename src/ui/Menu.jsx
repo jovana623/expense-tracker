@@ -30,8 +30,8 @@ function Toggle({ id }) {
 
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      x: rect.left,
+      y: rect.bottom + 8,
     });
 
     openId === "" || openId !== id ? open(id) : close();
@@ -53,7 +53,7 @@ function List({ id, children }) {
     /* eslint-disable-next-line react/no-unknown-property */
     <ul
       ref={ref}
-      className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md"
+      className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md z-2"
       style={{ top: position?.y, left: position?.x }}
     >
       {children}

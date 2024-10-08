@@ -1,10 +1,9 @@
-import LimitsList from "../features/budget/LimitsList";
+import Limits from "../features/budget/Limits";
 
 function Budget() {
   return (
-    <div className="grid grid-cols-2">
-      <LimitsList />
-      <div></div>
+    <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
+      <Limits />
     </div>
   );
 }

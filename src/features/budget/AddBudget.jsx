@@ -1,22 +1,23 @@
-import { CiCirclePlus } from "react-icons/ci";
+import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "../../ui/Modal";
 import CreateBudgetForm from "./CreateBudgetForm";
+
 function AddBudget() {
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
-      <div className="px-5 py-9 flex justify-center items-center">
-        <Modal>
-          <Modal.OpenButton opens="create_budget">
-            <button className="text-2xl">
-              <CiCirclePlus />
-            </button>
-          </Modal.OpenButton>
-          <Modal.Window name="create_budget">
-            <CreateBudgetForm />
-          </Modal.Window>
-        </Modal>
-      </div>
-    </div>
+    <Modal>
+      <Modal.OpenButton opens="create_budget">
+        <button className="flex items-center gap-2 bg-green-500 text-lightBg px-3 py-2 rounded-md hover:bg-green-600">
+          <span className="px-0.5 py-0.5 bg-lightBg rounded-full text-green-500">
+            {" "}
+            <AiOutlinePlus />
+          </span>
+          <span>Add budget</span>
+        </button>
+      </Modal.OpenButton>
+      <Modal.Window name="create_budget">
+        <CreateBudgetForm />
+      </Modal.Window>
+    </Modal>
   );
 }
 

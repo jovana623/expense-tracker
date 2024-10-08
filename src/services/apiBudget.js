@@ -44,3 +44,26 @@ export async function getUsedBudget() {
     throw new Error(err.message);
   }
 }
+
+export async function deleteBudget(id) {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8000/api/transactions/budget/${id}`
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function updateBudget(id, budgetData) {
+  try {
+    const response = await axios.put(
+      `http://localhost:8000/api/transactions/budget/${id}`,
+      budgetData
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}

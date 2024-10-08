@@ -3,21 +3,35 @@ import { useTypes } from "../type/useTypes";
 import Spinner from "../../ui/Spinner";
 import Button from "../../ui/Button";
 import { useCreateBudget } from "./useCreateBudget";
+import { useUpdateBudget } from "./useUpdateBudget";
 
-function CreateBudgetForm() {
-  const { register, handleSubmit, reset } = useForm();
+/* eslint-disable react/prop-types */
+function CreateBudgetForm({ budgetToUpdate = {} }) {
+  console.log(budgetToUpdate);
   const { types, isLoading: isLoadingType } = useTypes();
   const { createBudget, isLoading } = useCreateBudget();
+  const { updateBudget, isLoading: isUpdating } = useUpdateBudget();
 
-  if (isLoadingType || isLoading) return <Spinner />;
+  const { id: editId, ...editValues } = budgetToUpdate;
+  const isUpdateSession = Boolean(editId);
+
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: isUpdateSession ? editValues : {},
+  });
+
+  if (isLoadingType || isLoading || isUpdating) return <Spinner />;
 
   function onSubmit(data) {
     const formattedData = {
-      type: parseInt(data.typeId),
+      type: parseInt(data.type),
       amount: data.amount,
-      period: "Monthly",
+      period: data.period,
     };
-    createBudget(formattedData);
+    if (isUpdateSession) {
+      updateBudget(editId, formattedData);
+    } else {
+      createBudget(formattedData);
+    }
   }
 
   function onCancel() {
@@ -31,17 +45,17 @@ function CreateBudgetForm() {
       className="m-0 sm:m-10 px-10 py-3 w-full bg-lightBg sm:text-base text-xs flex flex-col gap-2"
     >
       <div className="flex flex-col gap-1 col-span-2">
-        <label htmlFor="typeId">Type</label>
-        <select className="input-field" {...register("typeId")}>
+        <label htmlFor="type">Type</label>
+        <select className="input-field" {...register("type")}>
           {types.map((type) => (
-            <option key={type.id} value={type.id}>
+            <option key={type.name} value={type.id}>
               {type.name}
             </option>
           ))}
         </select>
       </div>
       <div className="flex flex-col gap-1 col-span-2">
-        <label htmlFor="amount">Amount</label>
+        <label htmlFor="amount">Budget</label>
         <input
           type="text"
           className="input-field"
@@ -55,12 +69,21 @@ function CreateBudgetForm() {
           })}
         ></input>
       </div>
+      <div className="flex flex-col gap-1 col-span-2">
+        <label htmlFor="period">Period</label>
+        <select className="input-field" id="period" {...register("period")}>
+          <option value="Monthly">Monthly</option>
+          <option value="Yearly">Yearly</option>
+        </select>
+      </div>
 
       <div className="flex gap-2 col-start-2 mt-4 justify-self-end self-end">
         <Button type="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="primary">Add budget</Button>
+        <Button type="primary">
+          {isUpdateSession ? "Update budget" : "Add budget"}
+        </Button>
       </div>
     </form>
   );
