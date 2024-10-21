@@ -8,6 +8,7 @@ function Filter({ field, options }) {
 
   function handleClick(value) {
     searchParams.set(field, value);
+    searchParams.delete("month");
     setSearchParams(searchParams);
   }
 

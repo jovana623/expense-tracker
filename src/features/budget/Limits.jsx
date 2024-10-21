@@ -1,5 +1,4 @@
 import Spinner from "../../ui/Spinner";
-import AddBudget from "./AddBudget";
 import LimitsCard from "./LimitsCard";
 import { useUsedBudget } from "./useUsedBudget";
 
@@ -8,7 +7,6 @@ function Limits() {
   if (isLoading) return <Spinner />;
   return (
     <div className="rounded-md h-[100%]">
-      <AddBudget />
       <div className="grid grid-cols-2 gap-20 mt-5">
         <div className="grid grid-cols-2 gap-2">
           {usedBudget

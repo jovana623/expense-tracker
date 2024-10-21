@@ -1,4 +1,6 @@
-export function calculateMonthPercentageDiff(monthlyTransactions) {
+/*calculate percentage difference between current 
+and last month*/
+export function calculateMonthlyPercentageChange(monthlyTransactions) {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -26,7 +28,9 @@ export function calculateMonthPercentageDiff(monthlyTransactions) {
   return percentageDiff.toFixed(2);
 }
 
-export function calculateYearPercentageDiff(yearlyTransactions) {
+/*calculate percentage difference between current 
+and last year*/
+export function calculateYearlyPercentageChange(yearlyTransactions) {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
 
@@ -50,10 +54,13 @@ export function calculateYearPercentageDiff(yearlyTransactions) {
   return percentageDiff.toFixed(2);
 }
 
-export function calculateTwoMonthDiff(monthlyTransactions, date) {
+/*calculate percentage difference between current 
+month and same month last year*/
+export function calculateTwoMonthsPercentageChange(monthlyTransactions, date) {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
+
   const [year, month] = date.split("-").map(Number);
 
   const currentMonthSummary = monthlyTransactions.find(
@@ -69,7 +76,7 @@ export function calculateTwoMonthDiff(monthlyTransactions, date) {
   const lastTotal = lastMonthSummary ? lastMonthSummary.total : 0;
 
   if (lastTotal === 0) {
-    return currentTotal > 0 ? 100 : 0;
+    return currentTotal > 0 ? -100 : 0;
   }
 
   const diff = lastTotal - currentTotal;

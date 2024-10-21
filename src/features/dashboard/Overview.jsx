@@ -4,18 +4,28 @@ import {
   OneMonth,
   sortByMonth,
 } from "../../helpers/sortTransactions";
-import Spinner from "../../ui/Spinner";
+
 import { useTransactions } from "../transactions/useTransactions";
+import { useSearchParams } from "react-router-dom";
+import { useSaving } from "../savings/useSaving";
+import { useSavings } from "../savings/useSavings";
+
+import SavingsGoalChart from "./SavingsGoalChart";
+import Select from "../../ui/Select";
+import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
 import LineChartComponent from "./LineChartComponent";
 import ChartCard from "../../ui/ChartCard";
-import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
-import { useSearchParams } from "react-router-dom";
-import SelectCharts from "../../ui/SelectCharts";
-import SelectSaving from "../../ui/SelectSaving";
-import { useSaving } from "../savings/useSaving";
-import SavingsGoalChart from "./SavingsGoalChart";
+import Spinner from "../../ui/Spinner";
+
+const charts = [
+  { id: 1, value: "bar", name: "Bar chart" },
+  { id: 2, value: "line", name: "Line chart" },
+];
+
 function Overview() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [chart, setChart] = useState(1);
+
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
   const savingParam = searchParams.get("saving") || 4;
@@ -25,34 +35,52 @@ function Overview() {
   );
 
   const { saving, isLoading: isLoadingSaving } = useSaving(savingParam);
-
-  const [chart, setChart] = useState("bar");
+  const { savings, isLoading: isLoadingSavings } = useSavings();
 
   let monthData = [];
+  let sortedByMonth = [];
 
-  if (isLoadingTransactions || isLoadingSaving) return <Spinner />;
+  if (!isLoadingTransactions) {
+    sortedByMonth = sortByMonth(transactions);
+    if (!month) monthData = getCurrentMonthData(transactions);
+    else monthData = OneMonth(transactions, month);
+  }
 
-  const sortedByMonth = sortByMonth(transactions);
+  function handleSavingChange(e) {
+    searchParams.set("saving", e.target.value);
+    setSearchParams(searchParams);
+  }
 
-  if (!month) monthData = getCurrentMonthData(transactions);
-  else monthData = OneMonth(transactions);
+  function handleGraphChange(e) {
+    setChart(Number(e.target.value));
+  }
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard>
-        <SelectCharts onSetChart={setChart} />
-        {chart === "bar" ? (
-          <PositiveAndNegativeBar
-            data={sortedByMonth}
-            monthData={monthData}
-          ></PositiveAndNegativeBar>
+        <Select data={charts} onChange={handleGraphChange} />
+        {isLoadingTransactions ? (
+          <Spinner />
         ) : (
-          <LineChartComponent data={sortedByMonth} monthData={monthData} />
+          <>
+            {chart === 1 ? (
+              <PositiveAndNegativeBar
+                data={sortedByMonth}
+                monthData={monthData}
+              ></PositiveAndNegativeBar>
+            ) : (
+              <LineChartComponent data={sortedByMonth} monthData={monthData} />
+            )}
+          </>
         )}
       </ChartCard>
       <ChartCard>
-        <SelectSaving />
-        <SavingsGoalChart data={saving} />
+        {isLoadingSavings ? (
+          <Spinner />
+        ) : (
+          <Select data={savings} onChange={handleSavingChange} />
+        )}
+        {isLoadingSaving ? <Spinner /> : <SavingsGoalChart data={saving} />}
       </ChartCard>
     </div>
   );

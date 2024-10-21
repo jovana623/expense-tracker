@@ -2,10 +2,9 @@ import { NavLink, Outlet, useSearchParams } from "react-router-dom";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
 import TimeFilter from "../ui/TimeFilter";
-import AddTransaction from "../features/transactions/AddTransaction";
-import AddSavingGoal from "../ui/AddSavingGoal";
-import Spinner from "../ui/Spinner";
+import AddForm from "../ui/AddForm";
 import MonthFilter from "../ui/MonthFilter";
+import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -18,12 +17,13 @@ import { useExpenseTransactions } from "../features/transactions/useExpenseTrans
 import { useSavings } from "../features/savings/useSavings";
 import { useIncomeSummary } from "../features/transactions/useIncomeSummary";
 import {
-  calculateMonthPercentageDiff,
-  calculateTwoMonthDiff,
-  calculateYearPercentageDiff,
+  calculateMonthlyPercentageChange,
+  calculateTwoMonthsPercentageChange,
+  calculateYearlyPercentageChange,
 } from "../helpers/statistics";
 import { useExpenseSummary } from "../features/transactions/useExpenseSummary";
 import { useEffect } from "react";
+import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,38 +56,28 @@ function Dashboard() {
   );
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
-  const {
-    monthlyIncome,
-    yearlyIncome,
-    isLoading: isLoadingMI,
-  } = useIncomeSummary();
+  const { monthlyIncome, yearlyIncome } = useIncomeSummary();
 
-  const {
-    monthlyExpense,
-    yearlyExpense,
-    isLoading: isLoadingEI,
-  } = useExpenseSummary();
-
-  const isLoading =
-    isLoadingIncome ||
-    isLoadingExpense ||
-    isLoadingSavings ||
-    isLoadingMI ||
-    isLoadingEI;
+  const { monthlyExpense, yearlyExpense } = useExpenseSummary();
 
   if (month) {
-    incomePercentage = calculateTwoMonthDiff(monthlyIncome, month);
-    expensePercentage = calculateTwoMonthDiff(monthlyExpense, month);
+    incomePercentage = calculateTwoMonthsPercentageChange(monthlyIncome, month);
+    expensePercentage = calculateTwoMonthsPercentageChange(
+      monthlyExpense,
+      month
+    );
   } else if (time === "month") {
-    incomePercentage = calculateMonthPercentageDiff(monthlyIncome);
-    expensePercentage = calculateMonthPercentageDiff(monthlyExpense);
+    incomePercentage = calculateMonthlyPercentageChange(monthlyIncome);
+    expensePercentage = calculateMonthlyPercentageChange(monthlyExpense);
   } else if (time === "year") {
-    incomePercentage = calculateYearPercentageDiff(yearlyIncome);
-    expensePercentage = calculateYearPercentageDiff(yearlyExpense);
+    incomePercentage = calculateYearlyPercentageChange(yearlyIncome);
+    expensePercentage = calculateYearlyPercentageChange(yearlyExpense);
   } else {
-    incomePercentage = calculateMonthPercentageDiff(monthlyIncome);
-    expensePercentage = calculateMonthPercentageDiff(monthlyExpense);
+    incomePercentage = calculateMonthlyPercentageChange(monthlyIncome);
+    expensePercentage = calculateMonthlyPercentageChange(monthlyExpense);
   }
+
+  console.log(savings);
 
   const savingsSummary = summary(savings);
 
@@ -101,11 +91,15 @@ function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between items-center mb-3">
         {window.location.pathname === "/dashboard/savings" ? (
           <div className="w-15 m-auto md:m-0 sm:m-0">
-            <AddSavingGoal />
+            <AddForm title="saving goal">
+              <CreateSavingGoalForm />
+            </AddForm>
           </div>
         ) : (
           <div className="w-15 m-auto md:m-0 sm:m-0">
-            <AddTransaction />
+            <AddForm title="transaction">
+              <CreateTransactionForm />
+            </AddForm>
           </div>
         )}
         <div className="flex gap-2 m-auto md:m-0 sm:m-0 md:justify-self-end">
@@ -113,48 +107,49 @@ function Dashboard() {
           <TimeFilter />
         </div>
       </div>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
-          <NavLink to="income" className="w-full">
-            <SummaryCard
-              icon={<MdOutlineEuroSymbol />}
-              name="Total income"
-              amount={totalIncome}
-              percentage={incomePercentage}
-              isActive={location.pathname === "/dashboard/income"}
-            />
-          </NavLink>
-          <NavLink to="expenses" className="w-full">
-            <SummaryCard
-              icon={<BiReceipt />}
-              name="Total expenses"
-              amount={totalExpense}
-              percentage={expensePercentage}
-              isActive={location.pathname === "/dashboard/expenses"}
-            />
-          </NavLink>
-          <NavLink to="balance" className="w-full">
-            <SummaryCard
-              icon={<BiWallet />}
-              name="Balance"
-              amount={balance}
-              percentage="6"
-              isActive={location.pathname === "/dashboard/balance"}
-            />
-          </NavLink>
-          <NavLink to="savings" className="w-full">
-            <SummaryCard
-              icon={<MdOutlineSavings />}
-              name="Savings"
-              amount={savingsSummary}
-              percentage={numOfSavings}
-              isActive={location.pathname === "/dashboard/savings"}
-            />
-          </NavLink>
-        </div>
-      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
+        <NavLink to="income" className="w-full">
+          <SummaryCard
+            icon={<MdOutlineEuroSymbol />}
+            name="Total income"
+            amount={totalIncome}
+            percentage={incomePercentage}
+            isActive={location.pathname === "/dashboard/income"}
+            isLoading={isLoadingIncome}
+          />
+        </NavLink>
+        <NavLink to="expenses" className="w-full">
+          <SummaryCard
+            icon={<BiReceipt />}
+            name="Total expenses"
+            amount={totalExpense}
+            percentage={expensePercentage}
+            isActive={location.pathname === "/dashboard/expenses"}
+            isLoading={isLoadingExpense}
+          />
+        </NavLink>
+        <NavLink to="balance" className="w-full">
+          <SummaryCard
+            icon={<BiWallet />}
+            name="Balance"
+            amount={balance}
+            percentage="6"
+            isActive={location.pathname === "/dashboard/balance"}
+            isLoading={isLoadingIncome || isLoadingExpense}
+          />
+        </NavLink>
+        <NavLink to="savings" className="w-full">
+          <SummaryCard
+            icon={<MdOutlineSavings />}
+            name="Savings"
+            amount={savingsSummary}
+            percentage={numOfSavings}
+            isActive={location.pathname === "/dashboard/savings"}
+            isLoading={isLoadingSavings}
+          />
+        </NavLink>
+      </div>
       <div className="mt-10">
         <Outlet />
       </div>

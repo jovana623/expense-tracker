@@ -1,30 +1,45 @@
+/*Sums transactions by month, in form monthYear,income,expenses */
 export function sortByMonth(transactions) {
+  if (!Array.isArray(transactions)) {
+    throw new Error("Invalid input,expected array of transactions");
+  }
   const monthlySummary = {};
 
   transactions.forEach((transaction) => {
     const date = new Date(transaction.date);
-    const month = date.toLocaleString("default", { month: "long" });
+    const monthYear = date.toLocaleString("en-US", {
+      month: "long",
+      year: "numeric",
+    });
     const category = transaction.type.category.name;
 
-    if (!monthlySummary[month]) {
-      monthlySummary[month] = { income: 0, expenses: 0 };
+    if (!monthlySummary[monthYear]) {
+      monthlySummary[monthYear] = { income: 0, expenses: 0 };
     }
 
     if (category === "Income") {
-      monthlySummary[month].income += parseFloat(transaction.amount);
-    } else {
-      monthlySummary[month].expenses -= parseFloat(transaction.amount);
+      monthlySummary[monthYear].income += parseFloat(transaction.amount);
+    } else if (category === "Expense") {
+      monthlySummary[monthYear].expenses -= parseFloat(transaction.amount);
     }
   });
-  return Object.entries(monthlySummary).map(
-    ([month, { income, expenses }]) => ({
-      month,
+
+  const sortedSummary = Object.entries(monthlySummary)
+    .map(([monthYear, { income, expenses }]) => ({
+      monthYear,
       income,
       expenses,
-    })
-  );
+    }))
+    .sort((a, b) => {
+      const dateA = new Date(a.monthYear);
+      const dateB = new Date(b.monthYear);
+      return dateA - dateB;
+    });
+
+  return sortedSummary;
 }
 
+/*Sums transactions for current month, in form day,income,expenses*/
 export function getCurrentMonthData(transactions) {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
@@ -57,8 +72,11 @@ export function getCurrentMonthData(transactions) {
   return dailySummary;
 }
 
-export function OneMonth(transactions) {
-  const daysInMonth = 31;
+/*Sums transactions for one month in form day,income,expenses,
+second argument is month in form yyyy-mm*/
+export function OneMonth(transactions, month) {
+  const [year, monthIndex] = month.split("-").map(Number);
+  const daysInMonth = new Date(year, monthIndex, 0).getDate();
 
   const dailySummary = Array.from({ length: daysInMonth }, (_, i) => ({
     day: i + 1,
@@ -68,17 +86,25 @@ export function OneMonth(transactions) {
 
   transactions.forEach((transaction) => {
     const date = new Date(transaction.date);
-    const day = date.getDate();
-    const category = transaction.type?.category?.name;
-    const daySummary = dailySummary.find((d) => d.day === day);
+    const transactionMonth = date.getMonth() + 1;
+    const transactionYear = date.getFullYear();
 
-    if (category === "Income") {
-      daySummary.income += parseFloat(transaction.amount);
-    } else daySummary.expenses -= parseFloat(transaction.amount);
+    if (transactionMonth === monthIndex && transactionYear === year) {
+      const day = date.getDate();
+      const category = transaction.type?.category?.name;
+      const daySummary = dailySummary.find((d) => d.day === day);
+
+      if (category === "Income") {
+        daySummary.income += parseFloat(transaction.amount);
+      } else if (category === "Expense") {
+        daySummary.expenses -= parseFloat(transaction.amount);
+      }
+    }
   });
   return dailySummary;
 }
 
+/*Sum amount of given transactions*/
 export function summary(transactions = []) {
   let total = 0;
 

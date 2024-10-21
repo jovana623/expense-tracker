@@ -122,7 +122,7 @@ export async function getExpenseSummary() {
   }
 }
 
-export async function getCategoriesByMonth(type) {
+export async function getTypeByMonth(type) {
   try {
     const response = await axios.get(
       "http://127.0.0.1:8000/api/transactions/spending/month/",

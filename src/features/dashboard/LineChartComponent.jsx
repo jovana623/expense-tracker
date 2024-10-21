@@ -14,12 +14,12 @@ import {
 function LineChartComponent({ data, monthData }) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
-  const month = searchParams.get("month") || "";
+  const monthParam = searchParams.get("month") || "";
 
   if (!data) return null;
   let adjustedData = {};
 
-  if (time === "month" || month) {
+  if (time === "month" || monthParam) {
     adjustedData = monthData;
   } else adjustedData = data;
 
@@ -28,8 +28,12 @@ function LineChartComponent({ data, monthData }) {
   function renderTooltip({ active, payload }) {
     if (!active || !payload || !payload[0]) return null;
 
-    const { day, month, income, expenses } = payload[0].payload;
+    const { day, monthYear, income, expenses } = payload[0].payload;
     const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
+    const [year, month] = monthParam.split("-");
+    const monthLong = new Date(year, month - 1).toLocaleString("en-US", {
+      month: "long",
+    });
 
     return (
       <div className="bg-lightBg px-0 py-2 rounded-md border border-stone-200 w-full">
@@ -37,8 +41,12 @@ function LineChartComponent({ data, monthData }) {
           <p>
             {day} {currentMonth}
           </p>
+        ) : monthParam ? (
+          <p>
+            {day} {monthLong}
+          </p>
         ) : (
-          <p>{month}</p>
+          <p>{monthYear}</p>
         )}
         <p className="text-green-500">Income: {income.toLocaleString()}€</p>{" "}
         <p className="text-red-500">Expenses: {expenses.toLocaleString()}€</p>
@@ -54,10 +62,10 @@ function LineChartComponent({ data, monthData }) {
           margin={{ top: 5, right: 10, left: 30, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          {time === "month" ? (
+          {time === "month" || monthParam ? (
             <XAxis dataKey="day" />
           ) : (
-            <XAxis dataKey="month" />
+            <XAxis dataKey="monthYear" />
           )}
 
           <YAxis tickFormatter={euroFormatter} />

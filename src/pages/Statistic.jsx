@@ -1,22 +1,28 @@
 import { useSearchParams } from "react-router-dom";
-import { useCategoryByMonth } from "../features/statistics/useCategoryByMonth";
+import { useTypeByMonth } from "../features/statistics/useTypeByMonth";
+import { useTransactionStatistic } from "../features/transactions/useTransactionStatistic";
+import { useTypes } from "../features/type/useTypes";
+
 import SavingsContainer from "../features/statistics/SavingsContainer";
-import SelectType from "../features/statistics/SelectType";
 import ChartCard from "../ui/ChartCard";
 import Spinner from "../ui/Spinner";
 import CategoryChart from "../features/statistics/CategoryChart";
 import TimeFilter from "../ui/TimeFilter";
 import FlipCard from "../features/statistics/FlipCard";
 import StatsTable from "../features/statistics/StatsTable";
-import { useTransactionStatistic } from "../features/transactions/useTransactionStatistic";
+import Select from "../ui/Select";
 
 function Statistic() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get("type") || "Salary";
   const time = searchParams.get("time") || "";
-  const { data: typeData, isLoading } = useCategoryByMonth(type);
+
+  const { data: typeData, isLoading } = useTypeByMonth(type);
+
   const { statistic, isLoading: isLoadingStats } =
     useTransactionStatistic(time);
+
+  const { types, isLoading: isLoadingTypes } = useTypes();
 
   if (isLoading || isLoadingStats) return <Spinner />;
 
@@ -29,13 +35,21 @@ function Statistic() {
     top_expense_types,
   } = statistic;
 
-  console.log(statistic);
+  function handleTypeChange(e) {
+    searchParams.set("type", e.target.value);
+    setSearchParams(searchParams);
+  }
+
   return (
     <div className="py-8 px-7">
       <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">
         <div className="flex flex-col gap-5">
           <ChartCard>
-            <SelectType />
+            {isLoadingTypes ? (
+              <Spinner />
+            ) : (
+              <Select data={types} onChange={handleTypeChange} />
+            )}
             {isLoading ? <Spinner /> : <CategoryChart data={typeData} />}
           </ChartCard>
           <ChartCard>
