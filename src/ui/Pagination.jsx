@@ -1,6 +1,8 @@
 import PageNumber from "../ui/PageNumber";
-import { MdOutlineArrowCircleLeft } from "react-icons/md";
-import { MdOutlineArrowCircleRight } from "react-icons/md";
+import {
+  MdOutlineArrowCircleLeft,
+  MdOutlineArrowCircleRight,
+} from "react-icons/md";
 
 /* eslint-disable react/prop-types */
 function Pagination({ page, numOfPages, setPage }) {
@@ -15,6 +17,36 @@ function Pagination({ page, numOfPages, setPage }) {
   function handlePageNumClick(number) {
     setPage(number);
   }
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (numOfPages <= maxVisiblePages) {
+      for (let i = 1; i <= numOfPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+
+      if (page > 3) pages.push("...");
+
+      for (
+        let i = Math.max(3, page - 1);
+        i <= Math.min(numOfPages - 1, page + 1);
+        i++
+      ) {
+        pages.push(i);
+      }
+
+      if (page < numOfPages - 2) pages.push("...");
+
+      pages.push(numOfPages);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="flex justify-center">
       <div className="inline-flex border items-center rounded-md">
@@ -31,15 +63,22 @@ function Pagination({ page, numOfPages, setPage }) {
         >
           <MdOutlineArrowCircleLeft className="text-green-500 mt-1" /> Previous
         </button>
-        {Array.from({ length: numOfPages }, (_, index) => (
-          <PageNumber
-            key={index + 1}
-            number={index + 1}
-            onClick={() => {
-              handlePageNumClick(index + 1);
-            }}
-          />
-        ))}
+
+        {getPageNumbers().map((pageNumber, index) =>
+          pageNumber === "..." ? (
+            <span key={index} className="px-2 text-gray-400">
+              ...
+            </span>
+          ) : (
+            <PageNumber
+              key={pageNumber}
+              number={pageNumber}
+              isActive={page === pageNumber}
+              onClick={() => handlePageNumClick(pageNumber)}
+            />
+          )
+        )}
+
         <button
           className={`px-3 flex items-center justify-center gap-1 
             ${

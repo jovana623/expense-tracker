@@ -1,12 +1,12 @@
 import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 import { useSearchParams } from "react-router-dom";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
-import PieChartComponent from "../../ui/PieChartComponent";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import { useEffect, useState } from "react";
 import Pagination from "../../ui/Pagination";
 import ChartCard from "../../ui/ChartCard";
+import DetailedPieChart from "../../ui/DetailedPieChart";
 
 function Expenses() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,7 +26,7 @@ function Expenses() {
 
   if (isLoading) return <Spinner />;
 
-  const summarizedByType = summarizeAmountsByType(expenseTransactions);
+  const summary = summarizeAmountsByType(expenseTransactions);
   const numOfPages = Math.ceil(paginatedTransactions.count / pageSize);
 
   return (
@@ -34,11 +34,13 @@ function Expenses() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <ChartCard>
           <div></div>
-          <PieChartComponent data={summarizedByType} />
+          <DetailedPieChart data={summary} />
         </ChartCard>
         <div className="flex flex-col gap-4">
-          <Table data={paginatedTransactions.results} isLoading={isLoading} />
-          <div className="mt-4">
+          <div className="flex-grow">
+            <Table data={paginatedTransactions.results} isLoading={isLoading} />
+          </div>
+          <div className="mt-auto self-center">
             <Pagination page={page} numOfPages={numOfPages} setPage={setPage} />
           </div>
         </div>

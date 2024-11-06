@@ -30,7 +30,7 @@ function Toggle({ id }) {
 
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
-      x: rect.left,
+      x: rect.left - 20,
       y: rect.bottom + 8,
     });
 

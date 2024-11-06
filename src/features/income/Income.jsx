@@ -1,5 +1,4 @@
 import Spinner from "../../ui/Spinner";
-import PieChartComponent from "../../ui/PieChartComponent";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
 import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 import { useSearchParams } from "react-router-dom";
@@ -7,6 +6,7 @@ import Pagination from "../../ui/Pagination";
 import { useEffect, useState } from "react";
 import ChartCard from "../../ui/ChartCard";
 import Table from "../../ui/Table";
+import DetailedPieChart from "../../ui/DetailedPieChart";
 
 function Income() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,11 +33,13 @@ function Income() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full">
         <ChartCard>
           <div></div>
-          <PieChartComponent data={summary}></PieChartComponent>
+          <DetailedPieChart data={summary} />
         </ChartCard>
         <div className="flex flex-col gap-4">
-          <Table data={paginatedTransactions.results} isLoading={isLoading} />
-          <div className="mt-4 justify-self-end">
+          <div className="flex-grow">
+            <Table data={paginatedTransactions.results} isLoading={isLoading} />
+          </div>
+          <div className="mt-auto self-center">
             <Pagination page={page} numOfPages={numOfPages} setPage={setPage} />
           </div>
         </div>
