@@ -8,7 +8,7 @@ import {
 describe("calculateMonthlyPercentageChange", () => {
   it("should return 100 when previous month total is 0 and current month total is greater than 0", () => {
     const transaction = [
-      { date__year: 2024, date__month: 9, total: 100 },
+      { date__year: 2024, date__month: 9, total: 0 },
       { date__year: 2024, date__month: 10, total: 200 },
     ];
     const result = calculateMonthlyPercentageChange(transaction);

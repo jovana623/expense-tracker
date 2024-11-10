@@ -115,6 +115,7 @@ export function summary(transactions = []) {
   return total;
 }
 
+/*Sum transactions by type, returns amount, color and typeName*/
 export function summarizeAmountsByType(transactions) {
   const summary = {};
 
@@ -141,6 +142,22 @@ export function summarizeAmountsByType(transactions) {
   }));
 
   return result;
+}
+
+/*calculate balance by day for a single month*/
+export function calculateDailyBalance(data) {
+  return data.map((item) => ({
+    day: item.day,
+    balance: item.income - item.expenses,
+  }));
+}
+
+/*calculate balance by month*/
+export function calculateBalance(data) {
+  return data.map((item) => ({
+    monthYear: item.monthYear,
+    balance: item.income - item.expenses,
+  }));
 }
 
 export function summarizeAmountsByCategory(transactions) {
@@ -183,20 +200,6 @@ export function calculateTotalAmountSavings(savings) {
   }, 0);
 
   return totalAmountSaved;
-}
-
-export function calculateBalance(data) {
-  return data.map((item) => ({
-    month: item.month,
-    balance: item.income - item.expenses,
-  }));
-}
-
-export function calculateDailyBalance(data) {
-  return data.map((item) => ({
-    day: item.day,
-    balance: item.income - item.expenses,
-  }));
 }
 
 export function findLargestIncomeAndExpense(data) {

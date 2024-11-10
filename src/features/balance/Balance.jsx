@@ -1,13 +1,15 @@
 import { useSearchParams } from "react-router-dom";
-import Spinner from "../../ui/Spinner";
 import {
   calculateBalance,
   calculateDailyBalance,
   getCurrentMonthData,
+  OneMonth,
   sortByMonth,
 } from "../../helpers/sortTransactions";
-import AreaChartComponent from "./AreaChartComponent";
+import Spinner from "../../ui/Spinner";
 import { useTransactions } from "../transactions/useTransactions";
+
+import AreaChartComponent from "./AreaChartComponent";
 import ChartCard from "../../ui/ChartCard";
 
 function Balance() {
@@ -16,24 +18,28 @@ function Balance() {
   const month = searchParams.get("month") || "";
 
   const { transactions, isLoading } = useTransactions(time, month);
+  let monthData = [];
+  let sortedByMonth = [];
 
   if (isLoading) return <Spinner />;
 
-  const sortedByMonth = sortByMonth(transactions);
+  if (!isLoading) {
+    sortedByMonth = sortByMonth(transactions);
+    if (!month) monthData = getCurrentMonthData(transactions);
+    else monthData = OneMonth(transactions, month);
+  }
 
-  const monthData = getCurrentMonthData(transactions);
-  const adjustedMonthData = calculateDailyBalance(monthData);
+  const dailyBalance = calculateDailyBalance(monthData);
   const balance = calculateBalance(sortedByMonth);
-
-  console.log(monthData);
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard>
+        <div></div>
         <AreaChartComponent
           data={balance}
           timeValue={time}
-          monthData={adjustedMonthData}
+          monthData={dailyBalance}
         />
       </ChartCard>
       <ChartCard></ChartCard>

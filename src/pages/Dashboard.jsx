@@ -76,9 +76,6 @@ function Dashboard() {
     incomePercentage = calculateMonthlyPercentageChange(monthlyIncome);
     expensePercentage = calculateMonthlyPercentageChange(monthlyExpense);
   }
-
-  console.log(savings);
-
   const savingsSummary = summary(savings);
 
   const balance = totalIncome - totalExpense;

@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { OneMonth, sortByMonth, summary } from "./sortTransactions";
+import {
+  OneMonth,
+  sortByMonth,
+  summarizeAmountsByType,
+  summary,
+  calculateDailyBalance,
+  calculateBalance,
+} from "./sortTransactions";
 
 describe("sortByMonth", () => {
   it("should return empty array for no transactions", () => {
@@ -178,5 +185,162 @@ describe("summary", () => {
     ];
     const result = summary(transactions);
     expect(result).toBe(350.0);
+  });
+});
+
+describe("summarizeAmountsByType", () => {
+  it("should return empty array when no transaction is provided", () => {
+    const result = summarizeAmountsByType([]);
+    expect(result).toEqual([]);
+  });
+
+  it("should return summary with one transaction type", () => {
+    const transactions = [
+      {
+        id: 1,
+        name: "Salary",
+        date: "2024-11-03",
+        amount: "1821.54",
+        type: {
+          id: 1,
+          name: "Salary",
+          color: "#16a34a",
+        },
+        description: "November salary",
+      },
+    ];
+    const result = summarizeAmountsByType(transactions);
+    expect(result).toEqual([
+      { typeName: "Salary", amount: 1821.54, color: "#16a34a" },
+    ]);
+  });
+
+  it("should summarize multiple transaction of the same type", () => {
+    const transactions = [
+      {
+        id: 1,
+        name: "Salary",
+        date: "2024-11-03",
+        amount: "1821.54",
+        type: {
+          id: 1,
+          name: "Salary",
+          color: "#16a34a",
+        },
+        description: "November salary",
+      },
+      {
+        id: 2,
+        name: "Salary",
+        date: "2024-10-01",
+        amount: "1820.13",
+        type: {
+          id: 1,
+          name: "Salary",
+          color: "#16a34a",
+        },
+        description: "October salary",
+      },
+    ];
+    const result = summarizeAmountsByType(transactions);
+    expect(result).toEqual([
+      { typeName: "Salary", amount: 3641.67, color: "#16a34a" },
+    ]);
+  });
+
+  it("should summarize multiple transaction types", () => {
+    const transactions = [
+      {
+        id: 1,
+        name: "Salary",
+        date: "2024-11-03",
+        amount: "1821.54",
+        type: {
+          id: 1,
+          name: "Salary",
+          color: "#16a34a",
+        },
+        description: "November salary",
+      },
+      {
+        id: 2,
+        name: "Consulting",
+        date: "2024-09-11",
+        amount: "250.00",
+        type: {
+          id: 6,
+          name: "Consulting fees",
+          color: "#0f766e",
+        },
+        description: "Consulting fees",
+      },
+    ];
+    const result = summarizeAmountsByType(transactions);
+    expect(result).toEqual([
+      { typeName: "Salary", amount: 1821.54, color: "#16a34a" },
+      { typeName: "Consulting fees", amount: 250.0, color: "#0f766e" },
+    ]);
+  });
+});
+
+describe("calculateDailyBalance", () => {
+  it("should calculate balance correctly for each day", () => {
+    const transactions = [
+      { day: 1, income: 100, expenses: 50 },
+      { day: 2, income: 200, expenses: 100 },
+    ];
+    const result = calculateDailyBalance(transactions);
+    expect(result).toEqual([
+      { day: 1, balance: 50 },
+      { day: 2, balance: 100 },
+    ]);
+  });
+  it("should handle days with 0 income or expense", () => {
+    const transactions = [
+      { day: 1, income: 0, expenses: 50 },
+      { day: 2, income: 200, expenses: 0 },
+    ];
+    const result = calculateDailyBalance(transactions);
+    expect(result).toEqual([
+      { day: 1, balance: -50 },
+      { day: 2, balance: 200 },
+    ]);
+  });
+  it("should handle no data", () => {
+    const transactions = [];
+    const result = calculateDailyBalance(transactions);
+    expect(result).toEqual([]);
+  });
+});
+
+describe("calculateBalance", () => {
+  it("should calculate balance correctly for each month", () => {
+    const transactions = [
+      { monthYear: "May 2024", income: 4570, expenses: -2804.75 },
+      { monthYear: "June 2024", income: 2460.26, expenses: -1494.31 },
+    ];
+    const result = calculateBalance(transactions);
+    expect(result).toEqual([
+      { monthYear: "May 2024", balance: 7374.75 },
+      { monthYear: "June 2024", balance: 3954.57 },
+    ]);
+  });
+
+  it("should handle no data", () => {
+    const transactions = [];
+    const result = calculateBalance(transactions);
+    expect(result).toEqual([]);
+  });
+
+  it("should handle months with 0 income or expense", () => {
+    const transactions = [
+      { monthYear: "December 2024", income: -100, expenses: -200 },
+      { monthYear: "January 2025", income: -300, expenses: -400 },
+    ];
+    const result = calculateBalance(transactions);
+    expect(result).toEqual([
+      { monthYear: "December 2024", balance: 100 },
+      { monthYear: "January 2025", balance: 100 },
+    ]);
   });
 });

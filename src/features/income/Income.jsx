@@ -28,6 +28,8 @@ function Income() {
   const summary = summarizeAmountsByType(incomeTransactions);
   const numOfPages = Math.ceil(paginatedTransactions.count / pageSize);
 
+  console.log(incomeTransactions);
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full">

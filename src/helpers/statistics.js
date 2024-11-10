@@ -10,10 +10,18 @@ export function calculateMonthlyPercentageChange(monthlyTransactions) {
       item.date__year === currentYear && item.date__month === currentMonth
   );
 
-  const lastMonthSummary = monthlyTransactions.find(
-    (item) =>
-      item.date__year === currentYear && item.date__month === currentMonth - 1
-  );
+  let lastMonthSummary;
+
+  if (currentMonth === 1) {
+    lastMonthSummary = monthlyTransactions.find(
+      (item) => item.date__year === currentYear - 1 && item.date__month === 12
+    );
+  } else {
+    lastMonthSummary = monthlyTransactions.find(
+      (item) =>
+        item.date__year === currentYear && item.date__month === currentMonth - 1
+    );
+  }
 
   const currentTotal = currentMonthSummary ? currentMonthSummary.total : 0;
   const lastTotal = lastMonthSummary ? lastMonthSummary.total : 0;
@@ -54,7 +62,7 @@ export function calculateYearlyPercentageChange(yearlyTransactions) {
   return percentageDiff.toFixed(2);
 }
 
-/*calculate percentage difference between current 
+/*calculate percentage difference between current  q
 month and same month last year*/
 export function calculateTwoMonthsPercentageChange(monthlyTransactions, date) {
   const currentDate = new Date();
