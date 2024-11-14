@@ -1,13 +1,17 @@
-import { BiSolidPencil } from "react-icons/bi";
 import { calculateDaysLeft } from "../../helpers/dateFunctions";
+
+import { BiSolidPencil } from "react-icons/bi";
+import { CiPause1 } from "react-icons/ci";
+import { RxResume } from "react-icons/rx";
+import { AiOutlineDelete } from "react-icons/ai";
+
 import Menu from "../../ui/Menu";
 import Modal from "../../ui/Modal";
-import { AiOutlineDelete } from "react-icons/ai";
-import { GiProgression } from "react-icons/gi";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
 import CreateSavingGoalForm from "./CreateSavingGoalForm";
+import ChangeStatus from "./ChangeStatus";
 
 /* eslint-disable react/prop-types */
 function SavingCard({ saving, onCardChange, activeSaving }) {
@@ -24,7 +28,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
   const statusBg =
     saving.status === "In progress"
       ? "bg-blue-500"
-      : saving.Status === "Completed"
+      : saving.status === "Completed"
       ? "bg-green-500"
       : "bg-yellow-500";
 
@@ -47,15 +51,17 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
             </p>
           </div>
           <div>
-            <div className="flex items-center gap-3 pb-4">
-              <p className=" text-stone-900 text-xl font-semibold">
-                {saving.name}
-              </p>
-              <p
-                className={`py-1 px-2 text-xs rounded-md text-lightBg ${statusBg}`}
-              >
-                {saving.status}
-              </p>
+            <div className="flex items-center justify-between gap-3 pb-4">
+              <div className="flex items-center gap-3 justify-center">
+                <p className="text-stone-900 text-xl font-semibold">
+                  {saving.name}
+                </p>
+                <p
+                  className={`py-1 px-2 text-xs rounded-md text-lightBg ${statusBg}`}
+                >
+                  {saving.status}
+                </p>
+              </div>
               <div className="justify-self-end self-end">
                 <Modal>
                   <Menu>
@@ -72,8 +78,18 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
                         </Menu.Button>
                       </Modal.OpenButton>
                       <Modal.OpenButton opens="change-status">
-                        <Menu.Button icon={<GiProgression />}>
-                          Change Status
+                        <Menu.Button
+                          icon={
+                            saving.status === "In progress" ? (
+                              <CiPause1 />
+                            ) : (
+                              <RxResume />
+                            )
+                          }
+                        >
+                          {saving.status === "In progress"
+                            ? "Put on hold"
+                            : "Resume"}
                         </Menu.Button>
                       </Modal.OpenButton>
                     </Menu.List>
@@ -85,6 +101,9 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
                         nameModal="saving goal"
                         onConfirm={() => deleteSaving(id)}
                       />
+                    </Modal.Window>
+                    <Modal.Window name="change-status">
+                      <ChangeStatus saving={saving} />
                     </Modal.Window>
                   </Menu>
                 </Modal>

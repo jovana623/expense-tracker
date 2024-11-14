@@ -1,14 +1,14 @@
-import SavingsChart from "./SavingsChart";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import PaymentsList from "../payments/PaymentsList";
 import AddPayment from "../payments/AddPayment";
+import ProgressPercentage from "./ProgressPercentage";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ saving }) {
   const { amount, goal } = saving;
   return (
-    <div className="relative shadow rounded-md flex flex-col items-center py-3">
+    <div className="relative shadow rounded-md flex flex-col items-center py-3 gap-5">
       <div className="flex flex-col items-center gap-1">
         <p className="text-stone-500">You have reached</p>
         <h1 className="text-2xl font-semibold">
@@ -18,7 +18,7 @@ function SavingsDetailCard({ saving }) {
           of your {goal.toLocaleString()}&euro; saving goal
         </p>
       </div>
-      <SavingsChart saving={saving} />
+      <ProgressPercentage saving={saving} />
       <div
         className={`flex gap-2 ${
           saving.status === "Completed" ? "flex-col items-center" : ""
@@ -34,6 +34,8 @@ function SavingsDetailCard({ saving }) {
         </Modal>
         {saving.status === "Completed" ? (
           <p className="text-stone-500">You have reached goal amount</p>
+        ) : saving.status === "On hold" ? (
+          <></>
         ) : (
           <Modal>
             <Modal.OpenButton opens="add-saving">

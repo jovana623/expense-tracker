@@ -1,15 +1,19 @@
 import { formatDate } from "../../helpers/dateFunctions";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDeletePayment } from "./useDeletePayment";
+import { useContext } from "react";
+import { ModalContext } from "../../ui/Modal";
 
 /* eslint-disable react/prop-types */
 function PaymentItem({ payment }) {
   const { deletePayment, isDeletingPayment } = useDeletePayment();
 
   const { id } = payment;
+  const { close } = useContext(ModalContext);
 
   function handleDelete(id) {
     deletePayment(id);
+    close();
   }
 
   return (

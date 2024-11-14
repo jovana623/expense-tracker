@@ -20,6 +20,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "./context/AuthProvider";
 import Calendar from "./pages/Calendar";
 
+
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {

@@ -11,9 +11,11 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@mui/joy": "^5.0.0-beta.48",
     "@supabase/supabase-js": "^2.39.8",
     "@tanstack/react-query": "^5.28.4",
     "@tanstack/react-query-devtools": "^5.56.2",
+    "antd": "^5.22.0",
     "axios": "^1.7.3",
     "date-fns": "^3.6.0",
     "jwt-decode": "^4.0.0",

@@ -40,6 +40,8 @@ function Statistic() {
     setSearchParams(searchParams);
   }
 
+  console.log(types);
+
   return (
     <div className="py-8 px-7">
       <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">

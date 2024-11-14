@@ -38,6 +38,7 @@ function AddPayment({ saving }) {
       type: type.id,
       description: `Payment to ${saving.name}`,
     });
+    close();
   }
 
   function onError(errors) {
