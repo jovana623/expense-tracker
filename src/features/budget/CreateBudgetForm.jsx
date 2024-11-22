@@ -1,25 +1,36 @@
 import { useForm } from "react-hook-form";
 import { useTypes } from "../type/useTypes";
-import Spinner from "../../ui/Spinner";
-import Button from "../../ui/Button";
 import { useCreateBudget } from "./useCreateBudget";
 import { useUpdateBudget } from "./useUpdateBudget";
+import { useBudgets } from "./useBudgets";
+
+import Spinner from "../../ui/Spinner";
+import Button from "../../ui/Button";
+import toast from "react-hot-toast";
+import { useContext } from "react";
+import { ModalContext } from "../../ui/Modal";
 
 /* eslint-disable react/prop-types */
 function CreateBudgetForm({ budgetToUpdate = {} }) {
   console.log(budgetToUpdate);
   const { types, isLoading: isLoadingType } = useTypes();
-  const { createBudget, isLoading } = useCreateBudget();
+
+  const { createBudget, isLoading: isCreating } = useCreateBudget();
   const { updateBudget, isLoading: isUpdating } = useUpdateBudget();
+  const { budgets, isLoading } = useBudgets();
 
   const { id: editId, ...editValues } = budgetToUpdate;
   const isUpdateSession = Boolean(editId);
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isUpdateSession ? editValues : {},
   });
 
-  if (isLoadingType || isLoading || isUpdating) return <Spinner />;
+  const { close } = useContext(ModalContext);
+  const { errors } = formState;
+
+  if (isLoadingType || isUpdating || isCreating || isLoading)
+    return <Spinner />;
 
   function onSubmit(data) {
     const formattedData = {
@@ -27,10 +38,23 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
       amount: data.amount,
       period: data.period,
     };
-    if (isUpdateSession) {
-      updateBudget(editId, formattedData);
+
+    const isDuplicate = budgets.some(
+      (budget) =>
+        budget.type === formattedData.type &&
+        budget.period === formattedData.period
+    );
+
+    if (isDuplicate) {
+      toast.error("That budet already exist");
     } else {
-      createBudget(formattedData);
+      if (isUpdateSession) {
+        updateBudget(editId, formattedData);
+        close();
+      } else {
+        createBudget(formattedData);
+        close();
+      }
     }
   }
 
@@ -68,6 +92,11 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
             },
           })}
         ></input>
+        {errors?.amount?.message ? (
+          <p className="text-xs text-red-500">Budget can't be less than 0</p>
+        ) : (
+          ""
+        )}
       </div>
       <div className="flex flex-col gap-1 col-span-2">
         <label htmlFor="period">Period</label>

@@ -11,9 +11,7 @@ export function formatMonthYear(date) {
 }
 
 //Days left
-export function calculateDaysLeft(endDateStr) {
-  const startDate = new Date();
-
+export function calculateDaysLeft(startDate, endDateStr) {
   const [year, month, day] = endDateStr.split("-").map(Number);
   const endDate = new Date(year, month - 1, day);
 
@@ -22,7 +20,11 @@ export function calculateDaysLeft(endDateStr) {
 
   const difference = endMillis - startMillis;
 
-  const daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
+  let daysLeft = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+  if (Object.is(daysLeft, -0)) {
+    daysLeft = 0;
+  }
 
   return daysLeft;
 }

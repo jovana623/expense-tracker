@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useSaving } from "./useSaving";
+import { useSavings } from "./useSavings";
 import Spinner from "../../ui/Spinner";
 import SavingsDetailCard from "./SavingsDetailCard";
-import { useSaving } from "./useSaving";
 import VerticalCarousel from "./VerticalCarousel";
-import { useSavings } from "./useSavings";
+import CardSkeleton from "../../ui/CardSkeleton";
 
 function Savings() {
   const [activeSaving, setActiveSaving] = useState(1);
@@ -18,17 +19,23 @@ function Savings() {
     setActiveSaving(value);
   }
 
-  if (isLoading || isLoadingSavings) return <Spinner />;
-
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
-      <SavingsDetailCard saving={saving} />
+      {isLoading || isLoadingSavings ? (
+        <Spinner />
+      ) : (
+        <SavingsDetailCard saving={saving} />
+      )}
       <div>
-        <VerticalCarousel
-          savings={savings || []}
-          onCardChange={handleCardChange}
-          activeSaving={activeSaving}
-        />
+        {isLoading || isLoadingSavings ? (
+          <CardSkeleton />
+        ) : (
+          <VerticalCarousel
+            savings={savings || []}
+            onCardChange={handleCardChange}
+            activeSaving={activeSaving}
+          />
+        )}
       </div>
     </div>
   );

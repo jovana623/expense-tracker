@@ -1,8 +1,9 @@
 import { useContext } from "react";
-import Button from "../../ui/Button";
-import Spinner from "../../ui/Spinner";
 import { useUpdateStatus } from "./useUpdateStatus";
 import { ModalContext } from "../../ui/Modal";
+
+import Button from "../../ui/Button";
+import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */
 function ChangeStatus({ saving }) {

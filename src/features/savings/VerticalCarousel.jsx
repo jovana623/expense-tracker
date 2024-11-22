@@ -3,19 +3,33 @@ import SavingsCard from "./SavingsCard";
 
 /* eslint-disable react/prop-types */
 function VerticalCarousel({ savings, onCardChange, activeSaving }) {
+  const SamplePrevArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <div
+        onClick={onClick}
+        className={`arrow ${className}  bg-blue-500  flex items-center justify-center rounded-full opacity-90 hover:bg-[#2574f5] hover:opacity-100`}
+      ></div>
+    );
+  };
+
+  const SampleNextArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <div
+        onClick={onClick}
+        className={`arrow ${className} bg-blue-500  flex items-center justify-center rounded-full opacity-90 hover:bg-[#2574f5] hover:opacity-100`}
+      ></div>
+    );
+  };
   const settings = {
-    dots: true,
     infinite: true,
     slidesToShow: 2,
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
-    beforeChange: function (currentSlide, nextSlide) {
-      console.log("before change", currentSlide, nextSlide);
-    },
-    afterChange: function (currentSlide) {
-      console.log("after change", currentSlide);
-    },
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
   return (
     <div className="slider-container">

@@ -3,21 +3,77 @@ import Modal from "../../ui/Modal";
 import PaymentsList from "../payments/PaymentsList";
 import AddPayment from "../payments/AddPayment";
 import ProgressPercentage from "./ProgressPercentage";
+import Menu from "../../ui/Menu";
+import { BiSolidPencil } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { CiPause1 } from "react-icons/ci";
+import { RxResume } from "react-icons/rx";
+import CreateSavingGoalForm from "./CreateSavingGoalForm";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import useDeleteSaving from "./useDeleteSaving";
+import Spinner from "../../ui/Spinner";
+import ChangeStatus from "./ChangeStatus";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ saving }) {
   const { amount, goal } = saving;
+  const { mutate: deleteSaving, isLoading } = useDeleteSaving();
+
+  if (isLoading) return <Spinner />;
   return (
     <div className="relative shadow rounded-md flex flex-col items-center py-3 gap-5">
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-stone-500">You have reached</p>
-        <h1 className="text-2xl font-semibold">
-          {amount.toLocaleString()}&euro;
-        </h1>
-        <p className="text-stone-500">
-          of your {goal.toLocaleString()}&euro; saving goal
-        </p>
+      <div className="flex">
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-stone-500">You have reached</p>
+          <h1 className="text-2xl font-semibold">
+            {amount.toLocaleString()}&euro;
+          </h1>
+          <p className="text-stone-500">
+            of your {goal.toLocaleString()}&euro; saving goal
+          </p>
+        </div>
+        <div className="absolute top-6 right-5">
+          <Modal>
+            <Menu>
+              <Menu.Toggle id={saving.id} />
+              <Menu.List id={saving.id}>
+                <Modal.OpenButton opens="update-saving">
+                  <Menu.Button icon={<BiSolidPencil />}>Update</Menu.Button>
+                </Modal.OpenButton>
+                <Modal.OpenButton opens="delete-saving">
+                  <Menu.Button icon={<AiOutlineDelete />}>Delete</Menu.Button>
+                </Modal.OpenButton>
+                <Modal.OpenButton opens="change-status">
+                  <Menu.Button
+                    icon={
+                      saving.status === "In progress" ? (
+                        <CiPause1 />
+                      ) : (
+                        <RxResume />
+                      )
+                    }
+                  >
+                    {saving.status === "In progress" ? "Put on hold" : "Resume"}
+                  </Menu.Button>
+                </Modal.OpenButton>
+              </Menu.List>
+              <Modal.Window name="update-saving">
+                <CreateSavingGoalForm savingToUpdate={saving} />
+              </Modal.Window>
+              <Modal.Window name="delete-saving">
+                <ConfirmDelete
+                  nameModal="saving goal"
+                  onConfirm={() => deleteSaving(saving.id)}
+                />
+              </Modal.Window>
+              <Modal.Window name="change-status">
+                <ChangeStatus saving={saving} />
+              </Modal.Window>
+            </Menu>
+          </Modal>
+        </div>
       </div>
+
       <ProgressPercentage saving={saving} />
       <div
         className={`flex gap-2 ${

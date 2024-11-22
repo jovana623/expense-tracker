@@ -15,6 +15,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { updateTransaction, isLoading } = useUpdateTransaction();
   const { types, isLoading: isLoadingType } = useTypes();
   const { categories, isLoading: isLoadingCategory } = useCategories();
+  console.log("Transaction to update", transactionToUpdate);
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);

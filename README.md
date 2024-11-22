@@ -2,8 +2,6 @@
 
 Expense tracking app built with React, Vite, and Tailwind CSS. This application enables users to efficiently manage their finances by tracking income and expenses, setting and monitoring savings goals, creating budgets, and viewing detailed statistics. It includes a calendar feature for tracking transaction dates and provides insights into monthly and yearly financial data.
 
----
-
 ## 📑 **Table of Contents**
 
 - [💸 Expense Tracker App](#-expense-tracker-app)
@@ -13,14 +11,10 @@ Expense tracking app built with React, Vite, and Tailwind CSS. This application 
 - [✨ Demo](#demo)
 - [🛠️ Technologies Used](#-technologies-used)
 
----
-
 ## 🔗 **Backend Repository**
 
 Please note, the backend for this application is located in a separate repository. You can access it here:  
 👉 [Backend Repository Link](https://github.com/jovana623/expense_tracker_api)
-
----
 
 ## 📋 **Features**
 
@@ -30,8 +24,6 @@ Please note, the backend for this application is located in a separate repositor
 - **Detailed Statistics**: View financial trends, summaries, and category-wise expenses.
 - **Calendar**: Keep track of your transactions by date.
 - **Responsive Design**: Fully responsive design, optimized for both desktop and mobile use.
-
----
 
 ## 🎨 **Gallery**
 
@@ -49,15 +41,11 @@ Check out the interface and features of the app below:
   <img src="./images/menu-responsive.png" alt="Menu responsive" width="30%" />
 </div>
 
----
-
 ## ✨ **Demo**
 
 Here’s a quick demo of the app in action:
 
 ![App Demo](./images/demo.gif)
-
----
 
 ## 🛠️ **Technologies Used**
 

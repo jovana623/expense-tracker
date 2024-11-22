@@ -1,26 +1,12 @@
 import { calculateDaysLeft } from "../../helpers/dateFunctions";
 
-import { BiSolidPencil } from "react-icons/bi";
-import { CiPause1 } from "react-icons/ci";
-import { RxResume } from "react-icons/rx";
-import { AiOutlineDelete } from "react-icons/ai";
-
-import Menu from "../../ui/Menu";
-import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import useDeleteSaving from "./useDeleteSaving";
-import Spinner from "../../ui/Spinner";
-import CreateSavingGoalForm from "./CreateSavingGoalForm";
-import ChangeStatus from "./ChangeStatus";
-
 /* eslint-disable react/prop-types */
 function SavingCard({ saving, onCardChange, activeSaving }) {
-  const { mutate: deleteSaving, isLoading } = useDeleteSaving();
   if (!saving) return null;
 
-  const { id } = saving;
+  const startDate = new Date();
 
-  const daysLeft = calculateDaysLeft(saving.target_date);
+  const daysLeft = calculateDaysLeft(startDate, saving.target_date);
   const percentage = ((saving.amount * 100) / saving.goal).toFixed(0);
 
   const firstLetter = saving.name.charAt(0);
@@ -31,8 +17,6 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
       : saving.status === "Completed"
       ? "bg-green-500"
       : "bg-yellow-500";
-
-  if (isLoading) return <Spinner />;
 
   return (
     <div className="flex justify-center">
@@ -52,7 +36,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
           </div>
           <div>
             <div className="flex items-center justify-between gap-3 pb-4">
-              <div className="flex items-center gap-3 justify-center">
+              <div className="flex items-center gap-5 justify-center">
                 <p className="text-stone-900 text-xl font-semibold">
                   {saving.name}
                 </p>
@@ -62,52 +46,7 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
                   {saving.status}
                 </p>
               </div>
-              <div className="justify-self-end self-end">
-                <Modal>
-                  <Menu>
-                    <Menu.Toggle id={saving.id} />
-                    <Menu.List id={saving.id}>
-                      <Modal.OpenButton opens="update-saving">
-                        <Menu.Button icon={<BiSolidPencil />}>
-                          Update
-                        </Menu.Button>
-                      </Modal.OpenButton>
-                      <Modal.OpenButton opens="delete-saving">
-                        <Menu.Button icon={<AiOutlineDelete />}>
-                          Delete
-                        </Menu.Button>
-                      </Modal.OpenButton>
-                      <Modal.OpenButton opens="change-status">
-                        <Menu.Button
-                          icon={
-                            saving.status === "In progress" ? (
-                              <CiPause1 />
-                            ) : (
-                              <RxResume />
-                            )
-                          }
-                        >
-                          {saving.status === "In progress"
-                            ? "Put on hold"
-                            : "Resume"}
-                        </Menu.Button>
-                      </Modal.OpenButton>
-                    </Menu.List>
-                    <Modal.Window name="update-saving">
-                      <CreateSavingGoalForm savingToUpdate={saving} />
-                    </Modal.Window>
-                    <Modal.Window name="delete-saving">
-                      <ConfirmDelete
-                        nameModal="saving goal"
-                        onConfirm={() => deleteSaving(id)}
-                      />
-                    </Modal.Window>
-                    <Modal.Window name="change-status">
-                      <ChangeStatus saving={saving} />
-                    </Modal.Window>
-                  </Menu>
-                </Modal>
-              </div>
+              <div className="justify-self-end self-end"></div>
             </div>
             <div
               style={{
@@ -136,7 +75,11 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
               <p>{percentage}&#x25;</p>
             </div>
             <div className="flex justify-end mt-3 text-stone-600">
-              <p>{daysLeft} days left</p>
+              <p>
+                {daysLeft > 0
+                  ? `${daysLeft} days left`
+                  : "Savings goal deadline reached"}
+              </p>
             </div>
           </div>
         </div>

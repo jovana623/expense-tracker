@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
-import { useCreateSaving } from "./useCreateSaving";
-import Spinner from "../../ui/Spinner";
 import { useContext } from "react";
 import { ModalContext } from "../../ui/Modal";
 import { useUpdateSaving } from "./useUpdateSaving";
+import { useCreateSaving } from "./useCreateSaving";
+
+import Spinner from "../../ui/Spinner";
+import Button from "../../ui/Button";
 
 /* eslint-disable react/prop-types */
 function CreateSavingGoalForm({ savingToUpdate = {} }) {
@@ -14,19 +15,16 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
   const { id: editId, ...editValues } = savingToUpdate;
   const isUpdateSession = Boolean(editId);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     defaultValues: isUpdateSession ? editValues : {},
   });
 
+  const { errors } = formState;
   const { close } = useContext(ModalContext);
 
   function onSubmit(data) {
     const formattedData = {
-      name: data.name,
-      goal: data.goal,
-      target_date: data.target_date,
-      description: data.description,
-      color: data.color,
+      ...data,
       status: "In progress",
     };
     console.log("Formatted Data: ", formattedData);
@@ -53,9 +51,10 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         <input
           type="text"
           id="name"
-          {...register("name")}
+          {...register("name", { required: "This field is required" })}
           className="input-field"
         ></input>
+        <p className="text-xs text-red-500">{errors?.name?.message}</p>
       </div>
 
       <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
@@ -64,8 +63,9 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
           type="number"
           className="input-field"
           id="goal"
-          {...register("goal")}
+          {...register("goal", { required: "This field is required" })}
         ></input>
+        <p className="text-xs text-red-500">{errors?.goal?.message}</p>
       </div>
 
       <div className="col-span-2 flex flex-col gap-1">
@@ -74,7 +74,8 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
           type="date"
           className="input-field"
           id="target_date"
-          {...register("target_date")}
+          {...register("target_date", { required: "This field is required" })}
+          min={new Date().toISOString().split("T")[0]}
         ></input>
       </div>
 
@@ -88,8 +89,13 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         ></textarea>
       </div>
       <div className="col-span-2 flex flex-col gap-1">
-        <label htmlFor="color">Color</label>
-        <input type="color" id="color" {...register("color")}></input>
+        <label htmlFor="color">Pick a color</label>
+        <input
+          type="color"
+          className="p-1 h-10 block bg-white border border-gray-200 cursor-pointer rounded-lg w-1/2"
+          id="color"
+          {...register("color")}
+        ></input>
       </div>
 
       <div className="flex gap-2 col-start-2 mt-4 justify-self-end self-end">

@@ -12,9 +12,9 @@ function ProgressPercentage({ saving }) {
       <Progress
         type="dashboard"
         percent={percentage}
-        width={150} // Increase the size of the Progress circle
-        strokeWidth={10} // Increase the thickness of the progress stroke
-        style={{ fontSize: "24px" }} // Increase font size inside the circle
+        width={150}
+        strokeWidth={10}
+        style={{ fontSize: "24px" }}
       />
     </Flex>
   );
