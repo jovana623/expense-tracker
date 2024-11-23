@@ -93,7 +93,7 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
           })}
         ></input>
         {errors?.amount?.message ? (
-          <p className="text-xs text-red-500">Budget can't be less than 0</p>
+          <p className="text-xs text-red-500">Budget can not be less than 0</p>
         ) : (
           ""
         )}

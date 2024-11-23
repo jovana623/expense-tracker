@@ -10,7 +10,7 @@ import CategoryChart from "../features/statistics/CategoryChart";
 import TimeFilter from "../ui/TimeFilter";
 import FlipCard from "../features/statistics/FlipCard";
 import StatsTable from "../features/statistics/StatsTable";
-import Select from "../ui/Select";
+import SelectType from "../features/statistics/SelectType";
 
 function Statistic() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,23 +24,10 @@ function Statistic() {
 
   const { types, isLoading: isLoadingTypes } = useTypes();
 
-  if (isLoading || isLoadingStats) return <Spinner />;
-
-  const {
-    top_income,
-    avg_income,
-    top_expense,
-    avg_expense,
-    top_income_types,
-    top_expense_types,
-  } = statistic;
-
   function handleTypeChange(e) {
     searchParams.set("type", e.target.value);
     setSearchParams(searchParams);
   }
-
-  console.log(types);
 
   return (
     <div className="py-8 px-7">
@@ -50,7 +37,7 @@ function Statistic() {
             {isLoadingTypes ? (
               <Spinner />
             ) : (
-              <Select data={types} onChange={handleTypeChange} />
+              <SelectType data={types} onChange={handleTypeChange} />
             )}
             {isLoading ? <Spinner /> : <CategoryChart data={typeData} />}
           </ChartCard>
@@ -63,14 +50,14 @@ function Statistic() {
                 <FlipCard
                   titleFront="Average income"
                   titleBack="Top income"
-                  transaction={top_income}
-                  avg={avg_income}
+                  transaction={statistic.top_income}
+                  avg={statistic.avg_income}
                 />
                 <FlipCard
                   titleFront="Average expense"
                   titleBack="Top expense"
-                  transaction={top_expense}
-                  avg={avg_expense}
+                  transaction={statistic.top_expense}
+                  avg={statistic.avg_expense}
                 />
               </div>
             )}
@@ -82,16 +69,20 @@ function Statistic() {
         <div>
           <ChartCard>
             <TimeFilter />
-            <div className="flex flex-col gap-3">
-              <p className="text-xs text-gray-700 uppercase bg-gray-50">
-                Top income types
-              </p>
-              <StatsTable data={top_income_types} />
-              <p className="text-xs text-gray-700 uppercase bg-gray-50">
-                Top expense types
-              </p>
-              <StatsTable data={top_expense_types} />
-            </div>
+            {isLoadingStats ? (
+              <Spinner />
+            ) : (
+              <div className="flex flex-col gap-3">
+                <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                  Top income types
+                </p>
+                <StatsTable data={statistic.top_income_types} />
+                <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                  Top expense types
+                </p>
+                <StatsTable data={statistic.top_expense_types} />
+              </div>
+            )}
           </ChartCard>
         </div>
       </div>

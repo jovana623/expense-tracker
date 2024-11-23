@@ -13,7 +13,7 @@ import { formatMonthYear } from "../../helpers/dateFunctions";
 /* eslint-disable react/prop-types */
 function CategoryChart({ data }) {
   const formattedData = data.map((item) => ({
-    month: formatMonthYear(`${item.date__year}-${item.date__month}-01`), // Using the first day of the month
+    month: formatMonthYear(`${item.date__year}-${item.date__month}-01`),
     total: item.total,
   }));
 
