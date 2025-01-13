@@ -126,12 +126,21 @@ function Table({ data, isLoading }) {
                           Update
                         </Menu.Button>
                       </Modal.OpenButton>
-
-                      <Modal.OpenButton opens="delete">
-                        <Menu.Button icon={<AiOutlineDelete />}>
-                          Delete
-                        </Menu.Button>
-                      </Modal.OpenButton>
+                      {item.type.name === "Savings" ? (
+                        <button
+                          title="Can't delete saving in transaction table"
+                          disabled="True"
+                          className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                        >
+                          <AiOutlineDelete /> Delete
+                        </button>
+                      ) : (
+                        <Modal.OpenButton opens="delete">
+                          <Menu.Button icon={<AiOutlineDelete />}>
+                            Delete
+                          </Menu.Button>
+                        </Modal.OpenButton>
+                      )}
                     </Menu.List>
 
                     <Modal.Window name="update">
@@ -144,8 +153,6 @@ function Table({ data, isLoading }) {
                           nameModal="income"
                           onConfirm={() => deleteTransaction(item.id)}
                         />
-                      ) : category === "savings" ? (
-                        "Delete saving payment in savings"
                       ) : (
                         <ConfirmDelete
                           nameModal="expense"

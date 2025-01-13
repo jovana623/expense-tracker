@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useCreateSavingPayment } from "./useCreateSavingPayment";
-import { useCreateTransaction } from "../transactions/useCreateTransaction";
 import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
 
@@ -11,7 +10,6 @@ import { useType } from "../type/useType";
 /* eslint-disable react/prop-types */
 function AddPayment({ saving }) {
   const { createPayment, isLoading } = useCreateSavingPayment();
-  const { createTransaction, isLoading: isCreating } = useCreateTransaction();
   const { type, isLoading: isLoadingType } = useType(16);
 
   const { handleSubmit, register, formState } = useForm();
@@ -32,12 +30,6 @@ function AddPayment({ saving }) {
       saving: saving.id,
     };
     createPayment(formattedData);
-    createTransaction({
-      ...formattedData,
-      name: `${saving.name} deposit`,
-      type: type.id,
-      description: `Payment to ${saving.name}`,
-    });
     close();
   }
 
@@ -45,7 +37,7 @@ function AddPayment({ saving }) {
     console.log(errors);
   }
 
-  if (isLoading || isCreating || isLoadingType) return <Spinner />;
+  if (isLoading || isLoadingType) return <Spinner />;
 
   return (
     <form

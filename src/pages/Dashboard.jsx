@@ -99,10 +99,14 @@ function Dashboard() {
             </AddForm>
           </div>
         )}
-        <div className="flex gap-2 m-auto md:m-0 sm:m-0 md:justify-self-end">
-          <MonthFilter />
-          <TimeFilter />
-        </div>
+        {window.location.pathname === "/dashboard/savings" ? (
+          <div></div>
+        ) : (
+          <div className="flex gap-2 m-auto md:m-0 sm:m-0 md:justify-self-end">
+            <MonthFilter />
+            <TimeFilter />
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
