@@ -79,12 +79,22 @@ export async function createTransaction(transactionData) {
   }
 }
 
-export async function updateTransaction(id, transactionData) {
+export async function updateTransaction(
+  id,
+  name,
+  date,
+  type,
+  amount,
+  description
+) {
   try {
-    const response = await axiosInstance.put(
-      `/transactions/${id}`,
-      transactionData
-    );
+    const response = await axiosInstance.patch(`/transactions/${id}`, {
+      name,
+      date,
+      type,
+      amount,
+      description,
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);

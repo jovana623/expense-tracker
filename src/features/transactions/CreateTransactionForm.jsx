@@ -15,13 +15,19 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { updateTransaction, isLoading } = useUpdateTransaction();
   const { types, isLoading: isLoadingType } = useTypes();
   const { categories, isLoading: isLoadingCategory } = useCategories();
-  console.log("Transaction to update", transactionToUpdate);
+  console.log(transactionToUpdate);
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: isUpdateSession ? editValues : {},
+    defaultValues: isUpdateSession
+      ? {
+          ...editValues,
+          typeId: transactionToUpdate.type?.id,
+          category: transactionToUpdate.type.category?.id,
+        }
+      : {},
   });
 
   function onError() {
@@ -39,11 +45,13 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
       amount: parseFloat(data.amount),
       description: data.description,
     };
+    const updatedData = { id: editId, ...formattedData };
     if (isUpdateSession) {
-      updateTransaction(editId, formattedData);
+      updateTransaction(updatedData);
     } else {
       createTransaction(formattedData);
     }
+    close();
   }
 
   function onCancel() {

@@ -27,9 +27,18 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       ...data,
       status: "In progress",
     };
-    console.log("Formatted Data: ", formattedData);
+    const updatedData = {
+      id: editId,
+      name: data.name,
+      goal: data.goal,
+      target_date: data.target_date,
+      description: data.description,
+      color: data.color,
+    };
+    console.log("Updated data:", updatedData);
+
     if (isUpdateSession) {
-      updateSaving(editId, formattedData);
+      updateSaving(updatedData);
     } else {
       createSaving(formattedData);
     }

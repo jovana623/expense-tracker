@@ -121,11 +121,21 @@ function Table({ data, isLoading }) {
                   <Menu>
                     <Menu.Toggle id={item.id} />
                     <Menu.List id={item.id}>
-                      <Modal.OpenButton opens="update">
-                        <Menu.Button icon={<BiSolidPencil />}>
-                          Update
-                        </Menu.Button>
-                      </Modal.OpenButton>
+                      {item.type.name === "Savings" ? (
+                        <button
+                          title="Can't update saving in transaction table"
+                          disabled="True"
+                          className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                        >
+                          <BiSolidPencil /> Update
+                        </button>
+                      ) : (
+                        <Modal.OpenButton opens="update">
+                          <Menu.Button icon={<BiSolidPencil />}>
+                            Update
+                          </Menu.Button>
+                        </Modal.OpenButton>
+                      )}
                       {item.type.name === "Savings" ? (
                         <button
                           title="Can't delete saving in transaction table"

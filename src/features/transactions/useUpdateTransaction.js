@@ -5,7 +5,8 @@ import toast from "react-hot-toast";
 export function useUpdateTransaction() {
   const queryClient = useQueryClient();
   const { mutate: updateTransaction, isLoading } = useMutation({
-    mutationFn: updateTransactionAPI,
+    mutationFn: ({ id, name, date, type, amount, description }) =>
+      updateTransactionAPI(id, name, date, type, amount, description),
     onSuccess: () => {
       toast.success("Transaction updated");
       queryClient.invalidateQueries(["transactions"]);

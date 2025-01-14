@@ -30,14 +30,18 @@ export async function createSaving(savingData) {
   }
 }
 
-export async function updateSaving(id, savingData) {
-  console.log("Updating ID:", id);
-  console.log("Saving Data:", savingData);
-
+export async function updateSaving(
+  id,
+  name,
+  goal,
+  target_date,
+  description,
+  color
+) {
   try {
-    const response = await axios.put(
+    const response = await axios.patch(
       `http://127.0.0.1:8000/api/savings/${id}`,
-      savingData
+      { name, goal, target_date, description, color }
     );
     return response.data;
   } catch (error) {
