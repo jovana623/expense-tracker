@@ -4,16 +4,18 @@ import { useTransactions } from "../transactions/useTransactions";
 import Spinner from "../../ui/Spinner";
 import DateDetailsButton from "./DateDetailsButton";
 import { useState } from "react";
+import DateNoTransactions from "./DateNoTransactions";
 
 function CustomCalendar() {
   const { transactions, isLoading } = useTransactions();
   const [currentDate, setCurrentDate] = useState(null);
 
   function showTransaction(date) {
-    const dateCal = date.toISOString().split("T")[0];
+    const dateCal = date.toLocaleDateString("en-CA");
     const dayTransactions = transactions.filter(
       (transaction) => transaction.date === dateCal
     );
+
     return dayTransactions.length > 0 ? (
       <>
         <div className="flex flex-col space-y-1 relative">
@@ -33,7 +35,7 @@ function CustomCalendar() {
         <DateDetailsButton data={dayTransactions} date={currentDate} />
       </>
     ) : (
-      <DateDetailsButton date={currentDate} />
+      <DateNoTransactions />
     );
   }
 
