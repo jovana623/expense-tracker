@@ -12,7 +12,6 @@ import { ModalContext } from "../../ui/Modal";
 
 /* eslint-disable react/prop-types */
 function CreateBudgetForm({ budgetToUpdate = {} }) {
-  console.log(budgetToUpdate);
   const { types, isLoading: isLoadingType } = useTypes();
 
   const { createBudget, isLoading: isCreating } = useCreateBudget();
@@ -23,7 +22,9 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
   const isUpdateSession = Boolean(editId);
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: isUpdateSession ? editValues : {},
+    defaultValues: isUpdateSession
+      ? { ...editValues, type: budgetToUpdate.type?.id }
+      : {},
   });
 
   const { close } = useContext(ModalContext);
@@ -38,24 +39,28 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
       amount: data.amount,
       period: data.period,
     };
+    const updatedData = {
+      id: editId,
+      amount: data.amount,
+      period: data.period,
+    };
+    if (!isUpdateSession) {
+      const isDuplicate = budgets.some(
+        (budget) =>
+          budget.type === formattedData.type &&
+          budget.period === formattedData.period
+      );
 
-    const isDuplicate = budgets.some(
-      (budget) =>
-        budget.type === formattedData.type &&
-        budget.period === formattedData.period
-    );
-
-    if (isDuplicate) {
-      toast.error("That budet already exist");
-    } else {
-      if (isUpdateSession) {
-        updateBudget(editId, formattedData);
-        close();
-      } else {
-        createBudget(formattedData);
-        close();
+      if (isDuplicate) {
+        toast.error("That budet already exist");
       }
     }
+    if (isUpdateSession) {
+      updateBudget(updatedData);
+    } else {
+      createBudget(formattedData);
+    }
+    close();
   }
 
   function onCancel() {
@@ -66,11 +71,15 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="m-0 sm:m-10 px-10 py-3 w-full bg-lightBg sm:text-base text-xs flex flex-col gap-2"
+      className="m-0 sm:m-10 px-10 py-3 w-95% bg-lightBg sm:text-base text-xs flex flex-col gap-2"
     >
       <div className="flex flex-col gap-1 col-span-2">
         <label htmlFor="type">Type</label>
-        <select className="input-field" {...register("type")}>
+        <select
+          className="input-field"
+          {...register("type")}
+          disabled={isUpdateSession}
+        >
           {types.map((type) => (
             <option key={type.name} value={type.id}>
               {type.name}

@@ -56,11 +56,11 @@ export async function deleteBudget(id) {
   }
 }
 
-export async function updateBudget(id, budgetData) {
+export async function updateBudget(id, amount, period) {
   try {
-    const response = await axios.put(
+    const response = await axios.patch(
       `http://localhost:8000/api/transactions/budget/${id}`,
-      budgetData
+      { amount, period }
     );
     return response.data;
   } catch (err) {

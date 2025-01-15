@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export function useUpdateBudget() {
   const queryClient = useQueryClient();
   const { mutate: updateBudget, isLoading } = useMutation({
-    mutationFn: updateBudgetAPI,
+    mutationFn: ({ id, amount, period }) => updateBudgetAPI(id, amount, period),
     onSuccess: () => {
       toast.success("Budget updated");
       queryClient.invalidateQueries(["budgets"]);

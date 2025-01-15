@@ -16,6 +16,7 @@ function Table({ data, isLoading }) {
   if (isLoading) return <Spinner />;
   const isTransactionsPath = location.pathname === "/transactions";
   const category = "Income";
+  console.log(data);
 
   function shortDescription(desc) {
     const words = desc.split(" ");
@@ -117,61 +118,65 @@ function Table({ data, isLoading }) {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
-                <Modal>
-                  <Menu>
-                    <Menu.Toggle id={item.id} />
-                    <Menu.List id={item.id}>
-                      {item.type.name === "Savings" ? (
-                        <button
-                          title="Can't update saving in transaction table"
-                          disabled="True"
-                          className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
-                        >
-                          <BiSolidPencil /> Update
-                        </button>
-                      ) : (
-                        <Modal.OpenButton opens="update">
-                          <Menu.Button icon={<BiSolidPencil />}>
-                            Update
-                          </Menu.Button>
-                        </Modal.OpenButton>
-                      )}
-                      {item.type.name === "Savings" ? (
-                        <button
-                          title="Can't delete saving in transaction table"
-                          disabled="True"
-                          className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
-                        >
-                          <AiOutlineDelete /> Delete
-                        </button>
-                      ) : (
-                        <Modal.OpenButton opens="delete">
-                          <Menu.Button icon={<AiOutlineDelete />}>
-                            Delete
-                          </Menu.Button>
-                        </Modal.OpenButton>
-                      )}
-                    </Menu.List>
+                {location.pathname === "/budget" ? (
+                  <div></div>
+                ) : (
+                  <Modal>
+                    <Menu>
+                      <Menu.Toggle id={item.id} />
+                      <Menu.List id={item.id}>
+                        {item.type.name === "Savings" ? (
+                          <button
+                            title="Can't update saving in transaction table"
+                            disabled="True"
+                            className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                          >
+                            <BiSolidPencil /> Update
+                          </button>
+                        ) : (
+                          <Modal.OpenButton opens="update">
+                            <Menu.Button icon={<BiSolidPencil />}>
+                              Update
+                            </Menu.Button>
+                          </Modal.OpenButton>
+                        )}
+                        {item.type.name === "Savings" ? (
+                          <button
+                            title="Can't delete saving in transaction table"
+                            disabled="True"
+                            className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                          >
+                            <AiOutlineDelete /> Delete
+                          </button>
+                        ) : (
+                          <Modal.OpenButton opens="delete">
+                            <Menu.Button icon={<AiOutlineDelete />}>
+                              Delete
+                            </Menu.Button>
+                          </Modal.OpenButton>
+                        )}
+                      </Menu.List>
 
-                    <Modal.Window name="update">
-                      <CreateTransactionForm transactionToUpdate={item} />
-                    </Modal.Window>
+                      <Modal.Window name="update">
+                        <CreateTransactionForm transactionToUpdate={item} />
+                      </Modal.Window>
 
-                    <Modal.Window name="delete">
-                      {category === "Income" ? (
-                        <ConfirmDelete
-                          nameModal="income"
-                          onConfirm={() => deleteTransaction(item.id)}
-                        />
-                      ) : (
-                        <ConfirmDelete
-                          nameModal="expense"
-                          onConfirm={() => deleteTransaction(item.id)}
-                        />
-                      )}
-                    </Modal.Window>
-                  </Menu>
-                </Modal>
+                      <Modal.Window name="delete">
+                        {category === "Income" ? (
+                          <ConfirmDelete
+                            nameModal="income"
+                            onConfirm={() => deleteTransaction(item.id)}
+                          />
+                        ) : (
+                          <ConfirmDelete
+                            nameModal="expense"
+                            onConfirm={() => deleteTransaction(item.id)}
+                          />
+                        )}
+                      </Modal.Window>
+                    </Menu>
+                  </Modal>
+                )}
               </th>
             </tr>
           ))}
