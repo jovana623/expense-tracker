@@ -1,11 +1,20 @@
-import { BsThreeDots } from "react-icons/bs";
 import { BsArrowUpRight } from "react-icons/bs";
 import { BsArrowDownRight } from "react-icons/bs";
-import { useSearchParams } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
+import { HiOutlineDocumentReport } from "react-icons/hi";
 import CardSkeleton from "../../ui/CardSkeleton";
+import Menu from "../../ui/Menu";
 
 /* eslint-disable react/prop-types */
-function SummaryCard({ icon, name, amount, percentage, isActive, isLoading }) {
+function SummaryCard({
+  icon,
+  name,
+  amount,
+  percentage,
+  isActive,
+  isLoading,
+  reportPath,
+}) {
   const [searchParams] = useSearchParams();
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
@@ -24,9 +33,31 @@ function SummaryCard({ icon, name, amount, percentage, isActive, isLoading }) {
             <div className="text-5xl bg-slate-50 p-4 rounded-full text-green-500">
               {icon}
             </div>
-            <button className="bg-transparent">
-              <BsThreeDots />
-            </button>
+            {!isActive ? (
+              <div></div>
+            ) : (
+              <Menu>
+                <Menu.Toggle
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                />
+                <Menu.List>
+                  <NavLink
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const reportUrl = `/report/${reportPath}?time=${time}&month=${month}`;
+                      window.open(reportUrl, "_blank");
+                    }}
+                    to={`/report/${reportPath}?time=${time}&month=${month}`}
+                    className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                  >
+                    <HiOutlineDocumentReport />
+                    <span>Check report</span>
+                  </NavLink>
+                </Menu.List>
+              </Menu>
+            )}
           </div>
           <div className="mt-4">
             <p

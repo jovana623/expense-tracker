@@ -115,6 +115,14 @@ export function summary(transactions = []) {
   return total;
 }
 
+export function goalSummary(savings = []) {
+  let total = 0;
+  savings.forEach((saving) => {
+    total += parseFloat(saving.goal);
+  });
+  return total;
+}
+
 /*Sum transactions by type, returns amount, color and typeName*/
 export function summarizeAmountsByType(transactions) {
   const summary = {};

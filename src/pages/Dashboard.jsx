@@ -118,6 +118,7 @@ function Dashboard() {
             percentage={incomePercentage}
             isActive={location.pathname === "/dashboard/income"}
             isLoading={isLoadingIncome}
+            reportPath="income"
           />
         </NavLink>
         <NavLink to="expenses" className="w-full">
@@ -128,6 +129,7 @@ function Dashboard() {
             percentage={expensePercentage}
             isActive={location.pathname === "/dashboard/expenses"}
             isLoading={isLoadingExpense}
+            reportPath="expense"
           />
         </NavLink>
         <NavLink to="balance" className="w-full">
@@ -138,6 +140,7 @@ function Dashboard() {
             percentage="6"
             isActive={location.pathname === "/dashboard/balance"}
             isLoading={isLoadingIncome || isLoadingExpense}
+            reportPath="balance"
           />
         </NavLink>
         <NavLink to="savings" className="w-full">
@@ -148,6 +151,7 @@ function Dashboard() {
             percentage={numOfSavings}
             isActive={location.pathname === "/dashboard/savings"}
             isLoading={isLoadingSavings}
+            reportPath="savings"
           />
         </NavLink>
       </div>

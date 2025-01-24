@@ -12,6 +12,7 @@ import {
 
 /* eslint-disable react/prop-types */
 function LineChartComponent({ data, monthData }) {
+  console.log(monthData);
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";

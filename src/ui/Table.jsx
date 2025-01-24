@@ -15,8 +15,12 @@ function Table({ data, isLoading }) {
   const { deleteTransaction } = useDeleteTransaction();
   if (isLoading) return <Spinner />;
   const isTransactionsPath = location.pathname === "/transactions";
+  const isReportPage = location.pathname.includes("/report");
   const category = "Income";
-  console.log(data);
+
+  if (data) {
+    console.log("Data", data);
+  } else console.log("No data");
 
   function shortDescription(desc) {
     const words = desc.split(" ");
@@ -40,7 +44,7 @@ function Table({ data, isLoading }) {
             <th scope="col" className="px-6 py-3">
               Amount
             </th>
-            {isTransactionsPath ? (
+            {isTransactionsPath || isReportPage ? (
               <th scope="col" className="px-6 py-3">
                 Type
               </th>
@@ -48,7 +52,7 @@ function Table({ data, isLoading }) {
               <div></div>
             )}
 
-            {isTransactionsPath ? (
+            {isTransactionsPath || isReportPage ? (
               <th scope="col" className="px-6 py-3">
                 Description
               </th>
@@ -81,13 +85,10 @@ function Table({ data, isLoading }) {
                 {shortName(item.name)}
               </th>
               <th className="px-6 py-4">
-                {item.amount.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                {item.amount.toLocaleString()}
                 &euro;
               </th>
-              {isTransactionsPath ? (
+              {isTransactionsPath || isReportPage ? (
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -98,7 +99,7 @@ function Table({ data, isLoading }) {
                 <div></div>
               )}
 
-              {isTransactionsPath ? (
+              {isTransactionsPath || isReportPage ? (
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -118,7 +119,7 @@ function Table({ data, isLoading }) {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
-                {location.pathname === "/budget" ? (
+                {location.pathname === "/budget" || isReportPage ? (
                   <div></div>
                 ) : (
                   <Modal>

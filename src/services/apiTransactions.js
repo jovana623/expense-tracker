@@ -146,11 +146,11 @@ export async function getTypeByMonth(type) {
   }
 }
 
-export async function getTransactionStatistic(time) {
+export async function getTransactionStatistic(time, month) {
   try {
     const response = await axios.get(
       "http://localhost:8000/api/transactions/statistics/",
-      { params: { time } }
+      { params: { time, month } }
     );
     return response.data;
   } catch (error) {

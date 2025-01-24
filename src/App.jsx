@@ -19,7 +19,11 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "./context/AuthProvider";
 import Calendar from "./pages/Calendar";
-
+import ReportPage from "./pages/ReportPage";
+import IncomeReport from "./features/reports/IncomeReport";
+import ExpenseReport from "./features/reports/ExpenseReport";
+import SavingsReport from "./features/reports/SavingsReport";
+import BalanceReport from "./features/reports/BalanceReport";
 
 function App() {
   const queryClient = new QueryClient({
@@ -62,6 +66,12 @@ function App() {
               <Route path="statistic" element={<Statistic />} />
               <Route path="settings" element={<Settings />} />
               <Route path="profile" element={<Profile />} />
+            </Route>
+            <Route path="report" element={<ReportPage />}>
+              <Route path="income" element={<IncomeReport />} />
+              <Route path="expense" element={<ExpenseReport />} />
+              <Route path="savings" element={<SavingsReport />} />
+              <Route path="balance" element={<BalanceReport />} />
             </Route>
           </Routes>
         </BrowserRouter>

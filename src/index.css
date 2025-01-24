@@ -118,3 +118,11 @@
 .card__back {
   transform: rotateY(0.5turn);
 }
+
+.desktop-view {
+  @apply w-[1024px] lg:w-[1024px] !overflow-visible;
+}
+
+.desktop-view .mobile-only {
+  @apply hidden;
+}
