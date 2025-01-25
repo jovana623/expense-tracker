@@ -1,26 +1,27 @@
 import Spinner from "./Spinner";
 import { FiArrowUpRight } from "react-icons/fi";
 import { FiArrowDownLeft } from "react-icons/fi";
-import Modal from "./Modal";
-import Menu from "./Menu";
+import { TbListDetails } from "react-icons/tb";
 import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
-import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
-import ConfirmDelete from "./ConfirmDelete";
 import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 import { formatDate } from "../helpers/dateFunctions";
+
+import Modal from "./Modal";
+import Menu from "./Menu";
+import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
+import ConfirmDelete from "./ConfirmDelete";
+import TransactionDetails from "../features/transactions/TransactionDetails";
 
 /* eslint-disable react/prop-types */
 function Table({ data, isLoading }) {
   const { deleteTransaction } = useDeleteTransaction();
+
   if (isLoading) return <Spinner />;
+  console.log(data);
+
   const isTransactionsPath = location.pathname === "/transactions";
   const isReportPage = location.pathname.includes("/report");
-  const category = "Income";
-
-  if (data) {
-    console.log("Data", data);
-  } else console.log("No data");
 
   function shortDescription(desc) {
     const words = desc.split(" ");
@@ -72,10 +73,14 @@ function Table({ data, isLoading }) {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
-                {category === "Income" ? (
-                  <FiArrowDownLeft />
+                {item.type.category.name === "Income" ? (
+                  <div className="text-green-500">
+                    <FiArrowDownLeft />
+                  </div>
                 ) : (
-                  <FiArrowUpRight />
+                  <div className="text-red-500">
+                    <FiArrowUpRight />
+                  </div>
                 )}
               </th>
               <th
@@ -156,6 +161,11 @@ function Table({ data, isLoading }) {
                             </Menu.Button>
                           </Modal.OpenButton>
                         )}
+                        <Modal.OpenButton opens="details">
+                          <Menu.Button icon={<TbListDetails />}>
+                            Details
+                          </Menu.Button>
+                        </Modal.OpenButton>
                       </Menu.List>
 
                       <Modal.Window name="update">
@@ -163,7 +173,7 @@ function Table({ data, isLoading }) {
                       </Modal.Window>
 
                       <Modal.Window name="delete">
-                        {category === "Income" ? (
+                        {item.type.category.name === "Income" ? (
                           <ConfirmDelete
                             nameModal="income"
                             onConfirm={() => deleteTransaction(item.id)}
@@ -174,6 +184,9 @@ function Table({ data, isLoading }) {
                             onConfirm={() => deleteTransaction(item.id)}
                           />
                         )}
+                      </Modal.Window>
+                      <Modal.Window name="details">
+                        <TransactionDetails item={item} />
                       </Modal.Window>
                     </Menu>
                   </Modal>
