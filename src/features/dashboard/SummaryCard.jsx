@@ -21,7 +21,7 @@ function SummaryCard({
 
   return (
     <div
-      className={`shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-xl transition-all duration-200 ${
+      className={`group shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-xl transition-all duration-200 ${
         isActive ? "bg-green-500 text-lightBg" : "bg-lightBg"
       }`}
     >
@@ -63,7 +63,7 @@ function SummaryCard({
             <p
               className={`text-sm hover:text-lightBg${
                 isActive ? "text-lightBg" : "text-stone-500"
-              }`}
+              }  group-hover:text-lightBg`}
             >
               {name.toUpperCase()}
             </p>
@@ -77,8 +77,8 @@ function SummaryCard({
                   isActive
                     ? "text-lightBg"
                     : percentage > 0
-                    ? "text-green-500"
-                    : "text-red-500"
+                    ? "text-green-500 group-hover:text-lightBg"
+                    : "text-red-500  group-hover:text-lightBg"
                 }`}
               >
                 {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}

@@ -1,21 +1,5 @@
-import { useSearchParams } from "react-router-dom";
-import { handleDownloadPDF } from "../../helpers/pdfDownload";
-import { useTransactions } from "../transactions/useTransactions";
-import Spinner from "../../ui/Spinner";
-import {
-  calculateBalance,
-  calculateDailyBalance,
-  getCurrentMonthData,
-  OneMonth,
-  sortByMonth,
-} from "../../helpers/sortTransactions";
-import ChartCard from "../../ui/ChartCard";
-import AreaChartComponent from "../balance/AreaChartComponent";
-import PositiveAndNegativeBar from "../dashboard/PositiveAndNegativeBar";
-import LineChartComponent from "../dashboard/LineChartComponent";
-import Table from "../../ui/Table";
-
 function BalanceReport() {
+  /*
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
@@ -35,9 +19,11 @@ function BalanceReport() {
 
   const dailyBalance = calculateDailyBalance(monthData);
   const balance = calculateBalance(sortedByMonth);
+  */
 
   return (
     <div className="flex flex-col gap-5 m-auto w-[80%] mb-10">
+      {/*
       <div className="flex flex-col gap-10 my-10">
         <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md">
           <p className="text-xl font-semibold text-gray-800">Balance Report</p>
@@ -90,7 +76,7 @@ function BalanceReport() {
           </ChartCard>
         </div>
       </div>
-      <Table data={transactions} />
+      <Table data={transactions} />*/}
     </div>
   );
 }

@@ -1,10 +1,5 @@
 import { NavLink, Outlet, useSearchParams } from "react-router-dom";
-
-import SummaryCard from "../features/dashboard/SummaryCard";
-import TimeFilter from "../ui/TimeFilter";
-import AddForm from "../ui/AddForm";
-import MonthFilter from "../ui/MonthFilter";
-import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
+import { useEffect } from "react";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -16,21 +11,22 @@ import { useIncomeTransactions } from "../features/transactions/useIncomeTransac
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
 import { useIncomeSummary } from "../features/transactions/useIncomeSummary";
-import {
-  calculateMonthlyPercentageChange,
-  calculateTwoMonthsPercentageChange,
-  calculateYearlyPercentageChange,
-} from "../helpers/statistics";
+import { useMonthlyBalance } from "../features/transactions/useMonthlyBalance";
 import { useExpenseSummary } from "../features/transactions/useExpenseSummary";
-import { useEffect } from "react";
+import { useBalancePercentage } from "../features/dashboard/hooks/useBalancePercentage";
+import { useIncomeExpensePercentage } from "../features/dashboard/hooks/useIncomeExpensePercentage";
+
+import SummaryCard from "../features/dashboard/SummaryCard";
+import TimeFilter from "../ui/TimeFilter";
+import AddForm from "../ui/AddForm";
+import MonthFilter from "../ui/MonthFilter";
+import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
-  let incomePercentage;
-  let expensePercentage;
 
   if (month && time) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -60,25 +56,23 @@ function Dashboard() {
 
   const { monthlyExpense, yearlyExpense } = useExpenseSummary();
 
-  if (month) {
-    incomePercentage = calculateTwoMonthsPercentageChange(monthlyIncome, month);
-    expensePercentage = calculateTwoMonthsPercentageChange(
-      monthlyExpense,
-      month
-    );
-  } else if (time === "month") {
-    incomePercentage = calculateMonthlyPercentageChange(monthlyIncome);
-    expensePercentage = calculateMonthlyPercentageChange(monthlyExpense);
-  } else if (time === "year") {
-    incomePercentage = calculateYearlyPercentageChange(yearlyIncome);
-    expensePercentage = calculateYearlyPercentageChange(yearlyExpense);
-  } else {
-    incomePercentage = calculateMonthlyPercentageChange(monthlyIncome);
-    expensePercentage = calculateMonthlyPercentageChange(monthlyExpense);
-  }
-  const savingsSummary = summary(savings);
+  const { monthlyBalance, isLoading: isLoadingBalance } = useMonthlyBalance();
 
-  const balance = totalIncome - totalExpense;
+  const { incomePercentage, expensePercentage } = useIncomeExpensePercentage(
+    time,
+    month,
+    monthlyIncome,
+    monthlyExpense,
+    yearlyIncome,
+    yearlyExpense
+  );
+
+  const { currentMonthBalance, balancePercentage } = useBalancePercentage(
+    monthlyBalance,
+    isLoadingBalance
+  );
+
+  const savingsSummary = summary(savings);
 
   const numOfSavings =
     savings?.filter((saving) => saving.status === "In progress").length || 0;
@@ -135,11 +129,11 @@ function Dashboard() {
         <NavLink to="balance" className="w-full">
           <SummaryCard
             icon={<BiWallet />}
-            name="Balance"
-            amount={balance}
-            percentage="6"
+            name="current balance"
+            amount={currentMonthBalance}
+            percentage={balancePercentage.toFixed(2)}
             isActive={location.pathname === "/dashboard/balance"}
-            isLoading={isLoadingIncome || isLoadingExpense}
+            isLoading={isLoadingBalance}
             reportPath="balance"
           />
         </NavLink>

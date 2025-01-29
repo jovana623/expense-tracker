@@ -152,22 +152,6 @@ export function summarizeAmountsByType(transactions) {
   return result;
 }
 
-/*calculate balance by day for a single month*/
-export function calculateDailyBalance(data) {
-  return data.map((item) => ({
-    day: item.day,
-    balance: item.income - item.expenses,
-  }));
-}
-
-/*calculate balance by month*/
-export function calculateBalance(data) {
-  return data.map((item) => ({
-    monthYear: item.monthYear,
-    balance: item.income - item.expenses,
-  }));
-}
-
 export function summarizeAmountsByCategory(transactions) {
   const incomeTransactions = transactions.filter(
     (transaction) => transaction.Type.name === "income"
@@ -188,10 +172,6 @@ export function summarizeAmountsByCategory(transactions) {
     { category: "Income", amount: totalIncome },
     { category: "Expenses", amount: totalExpenses },
   ];
-}
-
-export function monthySummary() {
-  return [];
 }
 
 export function calculateTotalAmount(savings) {

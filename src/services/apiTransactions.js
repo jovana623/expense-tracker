@@ -157,3 +157,27 @@ export async function getTransactionStatistic(time, month) {
     throw new Error(error.message);
   }
 }
+
+export async function getDailyBalance(month) {
+  try {
+    const response = await axios.get(
+      "http://localhost:8000/api/transactions/daily-balances/",
+      { params: { month } }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getMonthlyBalance(time, month) {
+  try {
+    const response = await axios.get(
+      "http://localhost:8000/api/transactions/monthly-balances",
+      { params: { time, month } }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
