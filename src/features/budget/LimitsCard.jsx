@@ -13,6 +13,7 @@ import Table from "../../ui/Table";
 function LimitsCard({ data }) {
   const { deleteBudget, isLoading } = useDeleteBudget();
   if (isLoading) return <Spinner />;
+  console.log(data);
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <div className="px-5 py-3 flex justify-between items-center">

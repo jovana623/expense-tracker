@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 function FlipCardFront({ title, avg }) {
   return (
-    <div className="font-sans w-full h-40 p-4 md:p-8 rounded-2xl bg-gradient-to-br from-green-400 to-green-500 shadow-lg relative overflow-hidden text-white">
-      <p className="text-xl font-bold mb-4 w-full line-clamp-2">{title}</p>
-      <p className="text-3xl text-left font-bold mb-3 text-shadow">
+    <div className="bg-white p-4 rounded-md shadow-md flex flex-col text-center h-[80%] justify-around">
+      <p className="text-xs text-gray-500 uppercase">{title}</p>
+      <p className="text-xl font-semibold text-gray-800">
         {avg.toLocaleString()}&euro;
       </p>
 
       <svg
-        className="absolute top-6 right-6 opacity-50"
+        className="absolute top-6 right-6 opacity-50 text-green-500"
         width="40"
         height="40"
         fill="none"

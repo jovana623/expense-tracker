@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 function FlipCardBack({ title, transaction }) {
   return (
-    <div className="font-sans w-full h-40 p-8 rounded-2xl bg-gradient-to-br from-green-400 to-green-500 shadow-lg relative overflow-hidden text-white">
-      <p className="text-xl font-bold">{title}</p>
-      <p className="text-base font-bold mb-1 text-shadow">{transaction.name}</p>
-      <p className="text-2xl font-bold mb-3 text-shadow">
+    <div className="bg-white p-4 rounded-md shadow-md flex flex-col text-center h-[80%] justify-around">
+      <p className="text-xs text-gray-500 uppercase">{title}</p>
+      <p className="">{transaction.name}</p>
+      <p className="text-xl font-semibold text-gray-800">
         {transaction.amount.toLocaleString()}&euro;
       </p>
 
       <svg
-        className="absolute top-6 right-6 opacity-50"
+        className="absolute top-6 right-6 opacity-50 text-green-500"
         width="40"
         height="40"
         fill="none"
