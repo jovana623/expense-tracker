@@ -1,11 +1,62 @@
+import { useSearchParams } from "react-router-dom";
+import Spinner from "../../ui/Spinner";
+import { useTransactions } from "../transactions/useTransactions";
+import ChartCard from "../../ui/ChartCard";
+import AreaChartComponent from "../balance/AreaChartComponent";
+import {
+  getCurrentMonthData,
+  OneMonth,
+  sortByMonth,
+} from "../../helpers/sortTransactions";
+import { handleDownloadPDF } from "../../helpers/pdfDownload";
+import { useDailyBalance } from "../transactions/useDailyBalance";
+import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
+import { useBalanceStats } from "../balance/hooks/useBalanceStats";
+import PositiveAndNegativeBar from "../dashboard/PositiveAndNegativeBar";
+import LineChartComponent from "../dashboard/LineChartComponent";
+import Table from "../../ui/Table";
+import BalanceCard from "../balance/BalanceCard";
+
 function BalanceReport() {
-  /*
   const [searchParams] = useSearchParams();
-  const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
+  const time = searchParams.get("time") || "";
   const sortBy = "date-desc";
-  const { transactions, isLoading } = useTransactions(time, month, sortBy);
-  const period = new Date();
+  const currentDate = new Date();
+
+  const monthParam =
+    month === ""
+      ? `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}`
+      : month;
+
+  const { dailyBalance, isLoading: isLoadingDailyBalance } =
+    useDailyBalance(monthParam);
+
+  const { monthlyBalance, isLoading: isLoadingMonthlyBalance } =
+    useMonthlyBalance(time);
+
+  const { transactions, isLoading: isLoadingTransactions } = useTransactions(
+    time,
+    month,
+    sortBy
+  );
+
+  const isLoading = isLoadingDailyBalance || isLoadingMonthlyBalance;
+
+  const {
+    isMonthlyBalance,
+    bestBalance,
+    worstBalance,
+    averageBalance,
+    bestBalanceDiff,
+    worstBalanceDiff,
+  } = useBalanceStats(monthlyBalance, dailyBalance, time, isLoading);
+
+  if (isLoading || isLoadingTransactions) return <Spinner />;
+  if (!bestBalance || !worstBalance) return <Spinner />;
+
   let monthData = [];
   let sortedByMonth = [];
 
@@ -17,66 +68,88 @@ function BalanceReport() {
     else monthData = OneMonth(transactions, month);
   }
 
-  const dailyBalance = calculateDailyBalance(monthData);
-  const balance = calculateBalance(sortedByMonth);
-  */
-
   return (
     <div className="flex flex-col gap-5 m-auto w-[80%] mb-10">
-      {/*
       <div className="flex flex-col gap-10 my-10">
         <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md">
           <p className="text-xl font-semibold text-gray-800">Balance Report</p>
           <button
-            onClick={() => handleDownloadPDF("Balance", period)}
+            onClick={() => handleDownloadPDF("Balance", "")}
             className="bg-green-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-1"
           >
             Download
           </button>
         </div>
       </div>
-      <div id="pdf-content" className="flex flex-col gap-10">
-        <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <ChartCard>
-            <div></div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                Balance Overview
-              </h3>
-              <AreaChartComponent
-                data={balance}
-                timeValue={time}
-                monthData={dailyBalance}
-              />
-            </div>
-          </ChartCard>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-          <ChartCard>
-            <div>
+      <div id="pdf-content">
+        <div className="flex flex-col gap-10">
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+            <ChartCard>
               <div></div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                Income vs Expenses
-              </h3>
-              <PositiveAndNegativeBar
-                data={sortedByMonth}
-                monthData={monthData}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Balance Overview
+                </h3>
+                <AreaChartComponent
+                  dailyBalance={dailyBalance}
+                  monthlyBalance={monthlyBalance}
+                />
+              </div>
+            </ChartCard>
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-5 mt-5">
+              <BalanceCard
+                title={isMonthlyBalance ? "Best month" : "Best day"}
+                date={bestBalance.date}
+                balance={bestBalance.balance}
+                color="green-500"
+                percentage={bestBalanceDiff.toFixed(2)}
               />
+              <BalanceCard
+                title={isMonthlyBalance ? "Worst month" : "Worst day"}
+                date={worstBalance.date}
+                balance={worstBalance.balance}
+                color="red-500"
+                percentage={worstBalanceDiff.toFixed(2)}
+              />
+              <div className="">
+                <BalanceCard
+                  title="Average balance"
+                  balance={averageBalance.toFixed(2)}
+                  color="blue-500"
+                />
+              </div>
             </div>
-          </ChartCard>
-          <ChartCard>
-            <div></div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                Monthly Trends
-              </h3>
-              <LineChartComponent data={sortedByMonth} monthData={monthData} />
-            </div>
-          </ChartCard>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
+            <ChartCard>
+              <div>
+                <div></div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Income vs Expenses
+                </h3>
+                <PositiveAndNegativeBar
+                  data={sortedByMonth}
+                  monthData={monthData}
+                />
+              </div>
+            </ChartCard>
+            <ChartCard>
+              <div></div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  Monthly Trends
+                </h3>
+                <LineChartComponent
+                  data={sortedByMonth}
+                  monthData={monthData}
+                />
+              </div>
+            </ChartCard>
+          </div>
         </div>
+        <Table data={transactions} />
       </div>
-      <Table data={transactions} />*/}
     </div>
   );
 }
