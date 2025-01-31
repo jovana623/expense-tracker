@@ -27,6 +27,9 @@ function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
+  const queryString = searchParams.toString()
+    ? `?${searchParams.toString()}`
+    : "";
 
   if (month && time) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -107,8 +110,13 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
         <NavLink
-          to="income"
+          to={`income${queryString}`}
           className="w-full"
+          onClick={(e) => {
+            if (location.pathname === "/dashboard/income") {
+              e.preventDefault();
+            }
+          }}
           aria-disabled={location.pathname === "/dashboard/income"}
         >
           <SummaryCard
@@ -121,7 +129,16 @@ function Dashboard() {
             reportPath="income"
           />
         </NavLink>
-        <NavLink to="expenses" className="w-full">
+        <NavLink
+          to={`expenses${queryString}`}
+          className="w-full"
+          onClick={(e) => {
+            if (location.pathname === "/dashboard/expenses") {
+              e.preventDefault();
+            }
+          }}
+          aria-disabled={location.pathname === "/dashboard/expenses"}
+        >
           <SummaryCard
             icon={<BiReceipt />}
             name="Total expenses"
@@ -132,7 +149,16 @@ function Dashboard() {
             reportPath="expense"
           />
         </NavLink>
-        <NavLink to="balance" className="w-full">
+        <NavLink
+          to={`balance${queryString}`}
+          className="w-full"
+          onClick={(e) => {
+            if (location.pathname === "/dashboard/balance") {
+              e.preventDefault();
+            }
+          }}
+          aria-disabled={location.pathname === "/dashboard/balance"}
+        >
           <SummaryCard
             icon={<BiWallet />}
             name="current balance"

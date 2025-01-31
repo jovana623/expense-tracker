@@ -66,12 +66,12 @@ function Pagination({ page, numOfPages, setPage }) {
 
         {getPageNumbers().map((pageNumber, index) =>
           pageNumber === "..." ? (
-            <span key={index} className="px-2 text-gray-400">
+            <span key={`ellipsis-${index}`} className="px-2 text-gray-400">
               ...
             </span>
           ) : (
             <PageNumber
-              key={pageNumber}
+              key={`page-${pageNumber}`}
               number={pageNumber}
               isActive={page === pageNumber}
               onClick={() => handlePageNumClick(pageNumber)}

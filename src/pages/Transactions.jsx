@@ -28,8 +28,10 @@ function Transactions() {
   );
 
   useEffect(() => {
-    setSearchParams({ time, month, sortBy, search, page });
-  }, [time, month, sortBy, search, page, setSearchParams]);
+    if (!searchParams.get("time")) {
+      setSearchParams({ time: "month", month, sortBy, search, page });
+    }
+  }, [searchParams, month, sortBy, search, page, setSearchParams]);
 
   return (
     <div>
