@@ -71,31 +71,37 @@ function SummaryCard({
               {amount.toLocaleString()}&euro;
             </p>
 
-            <p className="flex items-center gap-1 h-4">
-              <span
-                className={`flex items-center gap-1 ${
-                  isActive
-                    ? "text-lightBg"
-                    : percentage > 0
-                    ? "text-green-500 group-hover:text-lightBg"
-                    : "text-red-500  group-hover:text-lightBg"
-                }`}
-              >
-                {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
-                <span className="hover:text-lightBg">{percentage}&#x25;</span>
-              </span>{" "}
-              <span
-                className={`${
-                  isActive ? "text-lightBg" : ""
-                } hover:text-lightBg`}
-              >
-                {month
-                  ? "vs this month"
-                  : time === "year"
-                  ? "vs last year"
-                  : "vs last month"}
-              </span>
-            </p>
+            {time === "all" && name !== "Savings" ? (
+              <div className="h-[1rem]"></div>
+            ) : (
+              <p className="flex items-center gap-1 h-4">
+                <span
+                  className={`flex items-center gap-1 ${
+                    isActive
+                      ? "text-lightBg"
+                      : percentage > 0
+                      ? "text-green-500 group-hover:text-lightBg"
+                      : "text-red-500  group-hover:text-lightBg"
+                  }`}
+                >
+                  {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
+                  <span className="hover:text-lightBg">{percentage}&#x25;</span>
+                </span>{" "}
+                <span
+                  className={`${
+                    isActive ? "text-lightBg" : ""
+                  } hover:text-lightBg`}
+                >
+                  {name === "Savings"
+                    ? "completed"
+                    : month
+                    ? "vs this month"
+                    : time === "year"
+                    ? "vs last year"
+                    : "vs last month"}
+                </span>
+              </p>
+            )}
           </div>
         </>
       )}

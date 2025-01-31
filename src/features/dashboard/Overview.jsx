@@ -57,7 +57,7 @@ function Overview() {
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
-      <ChartCard>
+      <ChartCard title="Income vs. Expenses">
         <Select data={charts} onChange={handleGraphChange} />
         {isLoadingTransactions ? (
           <Spinner />
@@ -74,7 +74,7 @@ function Overview() {
           </>
         )}
       </ChartCard>
-      <ChartCard>
+      <ChartCard title="Savings progress">
         {isLoadingSavings ? (
           <Spinner />
         ) : (

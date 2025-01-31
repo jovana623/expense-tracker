@@ -40,14 +40,14 @@ function Balance() {
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
-      <ChartCard>
+      <ChartCard title="Net Balance Progress">
         <div></div>
         <AreaChartComponent
           dailyBalance={dailyBalance}
           monthlyBalance={monthlyBalance}
         />
       </ChartCard>
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-3 mb-3">
         <BalanceCard
           title={isMonthlyBalance ? "Best month" : "Best day"}
           date={bestBalance.date}

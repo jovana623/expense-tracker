@@ -19,6 +19,17 @@ function CategoryChart({ data }) {
 
   const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
 
+  function renderTooltip({ active, payload }) {
+    if (!active || !payload || !payload[0]) return null;
+    const { total, month } = payload[0].payload;
+    return (
+      <div className="bg-lightBg px-0 py-2 rounded-md border border-stone-200 w-full">
+        <p>{month}</p>
+        <p className="text-blue-300">Amount: {total.toLocaleString()}€</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pl-0 ml-[-3rem] text-sm">
       <ResponsiveContainer width="100%" height={300}>
@@ -29,9 +40,14 @@ function CategoryChart({ data }) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis tickFormatter={euroFormatter} />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="total" stroke="#8884d8" />
+          <Tooltip content={renderTooltip} />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{ paddingBottom: "10px" }}
+            payload={[{ value: "Amount", type: "square", color: "#87CEEB" }]}
+          />
+          <Line type="monotone" dataKey="total" stroke="#87CEEB" />
         </LineChart>
       </ResponsiveContainer>
     </div>

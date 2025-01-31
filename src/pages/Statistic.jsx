@@ -33,7 +33,7 @@ function Statistic() {
     <div className="py-8 px-7">
       <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">
         <div className="flex flex-col gap-5">
-          <ChartCard>
+          <ChartCard title="Trends over time">
             {isLoadingTypes ? (
               <Spinner />
             ) : (

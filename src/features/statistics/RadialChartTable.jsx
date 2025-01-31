@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 function RadialChartTable({ data }) {
-  console.log(data);
   return (
     <ul className="flex gap-4 flex-col px-3 overflow-y-scroll h-[fit-container] max-h-[240px]">
       {data.map((entry, index) => (

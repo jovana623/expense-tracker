@@ -24,6 +24,11 @@ function LineChartComponent({ data, monthData }) {
     adjustedData = monthData;
   } else adjustedData = data;
 
+  adjustedData = adjustedData.map((item) => ({
+    ...item,
+    expenses: Math.abs(item.expenses),
+  }));
+
   const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
 
   function renderTooltip({ active, payload }) {
@@ -71,7 +76,15 @@ function LineChartComponent({ data, monthData }) {
 
           <YAxis tickFormatter={euroFormatter} />
           <Tooltip content={renderTooltip} />
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{ paddingBottom: "10px" }}
+            payload={[
+              { value: "Income", type: "square", color: "#22c55e" },
+              { value: "Expenses", type: "square", color: "#ef4444" },
+            ]}
+          />
           <Line type="monotone" dataKey="income" stroke="#22c55e" />
           <Line type="monotone" dataKey="expenses" stroke="#ef4444" />
         </LineChart>

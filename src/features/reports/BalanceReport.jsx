@@ -1,8 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import Spinner from "../../ui/Spinner";
-import { useTransactions } from "../transactions/useTransactions";
-import ChartCard from "../../ui/ChartCard";
-import AreaChartComponent from "../balance/AreaChartComponent";
+
 import {
   getCurrentMonthData,
   OneMonth,
@@ -12,10 +9,15 @@ import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import { useDailyBalance } from "../transactions/useDailyBalance";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
 import { useBalanceStats } from "../balance/hooks/useBalanceStats";
+import { useTransactions } from "../transactions/useTransactions";
+
 import PositiveAndNegativeBar from "../dashboard/PositiveAndNegativeBar";
 import LineChartComponent from "../dashboard/LineChartComponent";
 import Table from "../../ui/Table";
 import BalanceCard from "../balance/BalanceCard";
+import Spinner from "../../ui/Spinner";
+import ChartCard from "../../ui/ChartCard";
+import AreaChartComponent from "../balance/AreaChartComponent";
 
 function BalanceReport() {
   const [searchParams] = useSearchParams();
@@ -68,11 +70,30 @@ function BalanceReport() {
     else monthData = OneMonth(transactions, month);
   }
 
+  const options = { month: "long", year: "numeric" };
+  const currentMonth = currentDate.toLocaleDateString("en-US", options);
+
+  const timeReport =
+    time === "month"
+      ? currentMonth
+      : time === "year"
+      ? currentDate.getFullYear()
+      : time === "all"
+      ? "all"
+      : "Empty";
+
+  const period =
+    timeReport === "Empty"
+      ? new Date(month).toLocaleDateString("en-US", options)
+      : timeReport;
+
   return (
-    <div className="flex flex-col gap-5 m-auto w-[80%] mb-10">
-      <div className="flex flex-col gap-10 my-10">
+    <div className="flex flex-col gap-2 m-auto w-[80%] mb-10">
+      <div className="flex flex-col gap-10 my-4">
         <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md">
-          <p className="text-xl font-semibold text-gray-800">Balance Report</p>
+          <p className="text-xl font-semibold text-gray-800">
+            Balance Report:<span className="text-green-500">{period}</span>
+          </p>
           <button
             onClick={() => handleDownloadPDF("Balance", "")}
             className="bg-green-500 text-white px-4 py-2 rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-1"
@@ -82,19 +103,15 @@ function BalanceReport() {
         </div>
       </div>
       <div id="pdf-content">
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-6">
           <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <ChartCard>
+            <ChartCard title="Net Balance Progress">
               <div></div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Balance Overview
-                </h3>
-                <AreaChartComponent
-                  dailyBalance={dailyBalance}
-                  monthlyBalance={monthlyBalance}
-                />
-              </div>
+
+              <AreaChartComponent
+                dailyBalance={dailyBalance}
+                monthlyBalance={monthlyBalance}
+              />
             </ChartCard>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-5 mt-5">
               <BalanceCard
@@ -122,33 +139,22 @@ function BalanceReport() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-            <ChartCard>
-              <div>
-                <div></div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Income vs Expenses
-                </h3>
-                <PositiveAndNegativeBar
-                  data={sortedByMonth}
-                  monthData={monthData}
-                />
-              </div>
-            </ChartCard>
-            <ChartCard>
+            <ChartCard title="Income vs Expense (Line View)">
               <div></div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Monthly Trends
-                </h3>
-                <LineChartComponent
-                  data={sortedByMonth}
-                  monthData={monthData}
-                />
-              </div>
+              <PositiveAndNegativeBar
+                data={sortedByMonth}
+                monthData={monthData}
+              />
+            </ChartCard>
+            <ChartCard title="Income vs Expense (Bar View)">
+              <div></div>
+              <LineChartComponent data={sortedByMonth} monthData={monthData} />
             </ChartCard>
           </div>
         </div>
-        <Table data={transactions} />
+        <div className="mt-6">
+          <Table data={transactions} />
+        </div>
       </div>
     </div>
   );

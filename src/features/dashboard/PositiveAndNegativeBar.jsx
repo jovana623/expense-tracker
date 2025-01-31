@@ -80,7 +80,15 @@ function PositiveAndNegativeBar({ data, monthData }) {
           )}
           <YAxis tickFormatter={euroFormatter} />
           <Tooltip content={renderTooltip} />
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            align="center"
+            wrapperStyle={{ paddingBottom: "10px" }}
+            payload={[
+              { value: "Income", type: "square", color: "#22c55e" },
+              { value: "Expenses", type: "square", color: "#ef4444" },
+            ]}
+          />
           <ReferenceLine y={0} stroke="#000" />
           <Bar dataKey="income" fill="#22c55e" stackId="stack" />
           <Bar dataKey="expenses" fill="#ef4444" stackId="stack" />

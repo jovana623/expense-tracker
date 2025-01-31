@@ -32,7 +32,7 @@ function Expenses() {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <ChartCard>
+        <ChartCard title="Expenses breakdown">
           <div></div>
           <DetailedPieChart data={summary} />
         </ChartCard>

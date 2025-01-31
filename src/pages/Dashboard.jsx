@@ -6,7 +6,7 @@ import { BiWallet } from "react-icons/bi";
 import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
-import { summary } from "../helpers/sortTransactions";
+import { goalSummary, summary } from "../helpers/sortTransactions";
 import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
 import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
@@ -74,8 +74,10 @@ function Dashboard() {
 
   const savingsSummary = summary(savings);
 
-  const numOfSavings =
-    savings?.filter((saving) => saving.status === "In progress").length || 0;
+  const savingGoalsSummary = goalSummary(savings);
+  const percentageSaved = ((savingsSummary / savingGoalsSummary) * 100).toFixed(
+    1
+  );
 
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
@@ -104,7 +106,11 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-7">
-        <NavLink to="income" className="w-full">
+        <NavLink
+          to="income"
+          className="w-full"
+          aria-disabled={location.pathname === "/dashboard/income"}
+        >
           <SummaryCard
             icon={<MdOutlineEuroSymbol />}
             name="Total income"
@@ -142,7 +148,7 @@ function Dashboard() {
             icon={<MdOutlineSavings />}
             name="Savings"
             amount={savingsSummary}
-            percentage={numOfSavings}
+            percentage={percentageSaved}
             isActive={location.pathname === "/dashboard/savings"}
             isLoading={isLoadingSavings}
             reportPath="savings"
