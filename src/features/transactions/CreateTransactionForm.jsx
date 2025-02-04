@@ -15,7 +15,6 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { updateTransaction, isLoading } = useUpdateTransaction();
   const { types, isLoading: isLoadingType } = useTypes();
   const { categories, isLoading: isLoadingCategory } = useCategories();
-  console.log(transactionToUpdate);
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
@@ -102,7 +101,11 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
           <div className="flex flex-col gap-1 col-span-2">
             <label htmlFor="category">Category</label>
-            <select className="input-field" {...register("category")}>
+            <select
+              id="category"
+              className="input-field"
+              {...register("category")}
+            >
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -113,7 +116,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
           <div className="flex flex-col gap-1 col-span-2">
             <label htmlFor="typeId">Type</label>
-            <select className="input-field" {...register("typeId")}>
+            <select id="typeId" className="input-field" {...register("typeId")}>
               {types.map((type) => (
                 <option key={type.id} value={type.id}>
                   {type.name}

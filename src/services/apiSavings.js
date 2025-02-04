@@ -1,8 +1,9 @@
 import axios from "axios";
+import API_URL from "../config";
 
 export async function getSavings() {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/api/savings/");
+    const response = await axios.get(`${API_URL}/savings/`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -11,7 +12,7 @@ export async function getSavings() {
 
 export async function getSaving(id) {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/savings/${id}`);
+    const response = await axios.get(`${API_URL}/savings/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -21,7 +22,7 @@ export async function getSaving(id) {
 export async function createSaving(savingData) {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/savings/create_saving",
+      `${API_URL}/savings/create_saving`,
       savingData
     );
     return response.data;
@@ -39,10 +40,13 @@ export async function updateSaving(
   color
 ) {
   try {
-    const response = await axios.patch(
-      `http://127.0.0.1:8000/api/savings/${id}`,
-      { name, goal, target_date, description, color }
-    );
+    const response = await axios.patch(`${API_URL}/savings/${id}`, {
+      name,
+      goal,
+      target_date,
+      description,
+      color,
+    });
     return response.data;
   } catch (error) {
     console.error("Update Saving Error: ", error);
@@ -52,9 +56,7 @@ export async function updateSaving(
 
 export async function deleteSaving(id) {
   try {
-    const response = await axios.delete(
-      `http://127.0.0.1:8000/api/savings/${id}`
-    );
+    const response = await axios.delete(`${API_URL}/savings/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -63,10 +65,7 @@ export async function deleteSaving(id) {
 
 export async function updateSavingStatus(id, status) {
   try {
-    const response = await axios.patch(
-      `http://127.0.0.1:8000/api/savings/${id}`,
-      { status }
-    );
+    const response = await axios.patch(`${API_URL}/savings/${id}`, { status });
     return response.data;
   } catch (error) {
     throw new Error(error.message);

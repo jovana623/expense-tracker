@@ -15,7 +15,7 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
   const { id: editId, ...editValues } = savingToUpdate;
   const isUpdateSession = Boolean(editId);
 
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, reset } = useForm({
     defaultValues: isUpdateSession ? editValues : {},
   });
 
@@ -47,11 +47,13 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
 
   function onCancel() {
     close();
+    reset();
   }
 
   if (isLoading || isUpdating) return <Spinner />;
   return (
     <form
+      data-testid="saving-form"
       onSubmit={handleSubmit(onSubmit)}
       className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
     >

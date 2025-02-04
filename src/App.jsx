@@ -15,7 +15,6 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Balance from "./features/balance/Balance";
-import ProtectedRoute from "./ui/ProtectedRoute";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "./context/AuthProvider";
 import Calendar from "./pages/Calendar";
@@ -42,13 +41,7 @@ function App() {
           <Routes>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
+            <Route element={<AppLayout />}>
               <Route
                 index
                 element={<Navigate replace to="dashboard/overview" />}

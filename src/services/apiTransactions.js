@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosInstance from "../utils/axiosInstance";
+import API_URL from "../config";
 
 export async function getTransactions(
   time,
@@ -10,12 +10,9 @@ export async function getTransactions(
   pageSize
 ) {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/api/transactions/",
-      {
-        params: { time, month, sortBy, search, page, page_size: pageSize },
-      }
-    );
+    const response = await axios.get(`${API_URL}/transactions/`, {
+      params: { time, month, sortBy, search, page, page_size: pageSize },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -30,12 +27,9 @@ export async function getIncomeTransactions(
   pageSize
 ) {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/api/transactions/income/",
-      {
-        params: { time, month, sortBy, page, page_size: pageSize },
-      }
-    );
+    const response = await axios.get(`${API_URL}/transactions/income/`, {
+      params: { time, month, sortBy, page, page_size: pageSize },
+    });
     return response.data;
   } catch (error) {
     console.error(
@@ -54,12 +48,9 @@ export async function getExpenseTransactions(
   pageSize
 ) {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/api/transactions/expense/",
-      {
-        params: { time, month, sortBy, page, page_size: pageSize },
-      }
-    );
+    const response = await axios.get(`${API_URL}/transactions/expense/`, {
+      params: { time, month, sortBy, page, page_size: pageSize },
+    });
 
     return response.data;
   } catch (error) {
@@ -69,8 +60,8 @@ export async function getExpenseTransactions(
 
 export async function createTransaction(transactionData) {
   try {
-    const response = await axiosInstance.post(
-      "/transactions/create_transaction/",
+    const response = await axios.post(
+      `${API_URL}/transactions/create_transaction/`,
       transactionData
     );
     return response.data;
@@ -88,7 +79,7 @@ export async function updateTransaction(
   description
 ) {
   try {
-    const response = await axiosInstance.patch(`/transactions/${id}`, {
+    const response = await axios.patch(`${API_URL}/transactions/${id}`, {
       name,
       date,
       type,
@@ -103,7 +94,7 @@ export async function updateTransaction(
 
 export async function deleteTransaction(id) {
   try {
-    const response = await axiosInstance.delete(`/transactions/${id}`);
+    const response = await axios.delete(`${API_URL}/transactions/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -112,9 +103,7 @@ export async function deleteTransaction(id) {
 
 export async function getIncomeSummary() {
   try {
-    const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/income/monthly/"
-    );
+    const response = await axios.get(`${API_URL}/transactions/income/monthly/`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -124,7 +113,7 @@ export async function getIncomeSummary() {
 export async function getExpenseSummary() {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/expense/monthly/"
+      `${API_URL}/transactions/expense/monthly/`
     );
     return response.data;
   } catch (error) {
@@ -135,7 +124,7 @@ export async function getExpenseSummary() {
 export async function getTypeByMonth(type) {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:8000/api/transactions/spending/month/",
+      `${API_URL}/transactions/spending/month/`,
       {
         params: { type },
       }
@@ -148,10 +137,9 @@ export async function getTypeByMonth(type) {
 
 export async function getTransactionStatistic(time, month) {
   try {
-    const response = await axios.get(
-      "http://localhost:8000/api/transactions/statistics/",
-      { params: { time, month } }
-    );
+    const response = await axios.get(`${API_URL}/transactions/statistics/`, {
+      params: { time, month },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -161,7 +149,7 @@ export async function getTransactionStatistic(time, month) {
 export async function getDailyBalance(month) {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/transactions/daily-balances/",
+      `${API_URL}/transactions/daily-balances/`,
       { params: { month } }
     );
     return response.data;
@@ -173,7 +161,7 @@ export async function getDailyBalance(month) {
 export async function getMonthlyBalance(time, month) {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/transactions/monthly-balances",
+      `${API_URL}/transactions/monthly-balances`,
       { params: { time, month } }
     );
     return response.data;
