@@ -1,4 +1,9 @@
-import { NavLink, Outlet, useSearchParams } from "react-router-dom";
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect } from "react";
 
 import { MdOutlineSavings } from "react-icons/md";
@@ -25,6 +30,7 @@ import CreateTransactionForm from "../features/transactions/CreateTransactionFor
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
   const queryString = searchParams.toString()
@@ -85,7 +91,7 @@ function Dashboard() {
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between items-center mb-3">
-        {window.location.pathname === "/dashboard/savings" ? (
+        {location.pathname === "/dashboard/savings" ? (
           <div className="w-15 m-auto md:m-0 sm:m-0">
             <AddForm title="saving goal">
               <CreateSavingGoalForm />

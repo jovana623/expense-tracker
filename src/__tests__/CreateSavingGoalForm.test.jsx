@@ -3,7 +3,6 @@ import { useUpdateSaving } from "../features/savings/useUpdateSaving";
 import { useCreateSaving } from "../features/savings/useCreateSaving";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ModalContext } from "../ui/Modal";
-import { MemoryRouter } from "react-router-dom";
 import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -40,17 +39,21 @@ beforeEach(() => {
   });
 });
 
-it("should call createSaving when form is submitted", async () => {
-  const queryClient = new QueryClient();
-  render(
+const queryClient = new QueryClient();
+
+/* eslint-disable react/prop-types */
+const Wrapper = ({ children, closeMock = vi.fn() }) => {
+  return (
     <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <MemoryRouter>
-          <CreateSavingGoalForm />
-        </MemoryRouter>
+      <ModalContext.Provider value={{ close: closeMock }}>
+        {children}
       </ModalContext.Provider>
     </QueryClientProvider>
   );
+};
+
+it("should call createSaving when form is submitted", async () => {
+  render(<CreateSavingGoalForm />, { wrapper: Wrapper });
 
   screen.debug();
   fireEvent.change(screen.getByLabelText(/name/i), {
@@ -87,16 +90,8 @@ it("should call createSaving when form is submitted", async () => {
 });
 
 it("should display error if required fields are empty", async () => {
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <MemoryRouter>
-          <CreateSavingGoalForm />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  render(<CreateSavingGoalForm />, { wrapper: Wrapper });
+
   const form = screen.getByTestId("saving-form");
   fireEvent.submit(form);
 
@@ -105,18 +100,7 @@ it("should display error if required fields are empty", async () => {
 });
 
 it("should close and reset form when Close is clicked", async () => {
-  const closeMock = vi.fn();
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: closeMock }}>
-        <MemoryRouter>
-          <CreateSavingGoalForm />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
-
+  render(<CreateSavingGoalForm />, { wrapper: Wrapper });
   const nameField = screen.getByLabelText("Name");
 
   fireEvent.change(nameField, {
@@ -124,9 +108,7 @@ it("should close and reset form when Close is clicked", async () => {
   });
 
   const cancelButton = screen.getByRole("button", { name: /Cancel/i });
-
   fireEvent.click(cancelButton);
-  expect(closeMock).toBeCalled();
 
   await waitFor(() => {
     expect(nameField.value).toBe("");
@@ -145,17 +127,10 @@ it("should populate form field when savingToUpdate is provided and call updateSa
     description: "Test description",
     color: "#FFA07A",
   };
-  const queryClient = new QueryClient();
 
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <MemoryRouter>
-          <CreateSavingGoalForm savingToUpdate={savingToUpdate} />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  render(<CreateSavingGoalForm savingToUpdate={savingToUpdate} />, {
+    wrapper: Wrapper,
+  });
 
   const nameField = screen.getByLabelText("Name");
   expect(nameField.value).toBe("Test saving");

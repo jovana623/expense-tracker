@@ -21,6 +21,7 @@ function SummaryCard({
 
   return (
     <div
+      data-testid="summary-card"
       className={`group shadow p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-xl transition-all duration-200 ${
         isActive ? "bg-green-500 text-lightBg" : "bg-lightBg"
       }`}
@@ -84,7 +85,9 @@ function SummaryCard({
                       : "text-red-500  group-hover:text-lightBg"
                   }`}
                 >
-                  {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
+                  <span data-testid="arrow-icon">
+                    {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
+                  </span>
                   <span className="hover:text-lightBg">{percentage}&#x25;</span>
                 </span>{" "}
                 <span

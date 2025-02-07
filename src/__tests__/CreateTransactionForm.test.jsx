@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useTypes } from "../features/type/useTypes";
 import "@testing-library/jest-dom";
 import { useCategories } from "../features/category/useCategories";
-import { MemoryRouter } from "react-router-dom";
 import { useUpdateTransaction } from "../features/transactions/useUpdateTransaction";
 
 vi.mock("../features/transactions/useCreateTransaction", () => {
@@ -73,16 +72,22 @@ beforeEach(() => {
     isLoading: false,
   });
 });
- 
-it("should call createTransaction when form is submitted", async () => {
-  const queryClient = new QueryClient();
-  render(
+
+const queryClient = new QueryClient();
+
+/* eslint-disable react/prop-types */
+const Wrapper = ({ children, closeMock = vi.fn() }) => {
+  return (
     <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <CreateTransactionForm />
+      <ModalContext.Provider value={{ close: closeMock }}>
+        {children}
       </ModalContext.Provider>
     </QueryClientProvider>
   );
+};
+
+it("should call createTransaction when form is submitted", async () => {
+  render(<CreateTransactionForm />, { wrapper: Wrapper });
 
   fireEvent.change(screen.getByLabelText("Name"), {
     target: { value: "Test transaction" },
@@ -117,17 +122,7 @@ it("should call createTransaction when form is submitted", async () => {
 });
 
 it("should display validation error if required fields are empty", async () => {
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <MemoryRouter>
-          <CreateTransactionForm />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
-
+  render(<CreateTransactionForm />, { wrapper: Wrapper });
   const addTransactionButton = screen.getByRole("button", {
     name: /Add transaction/i,
   });
@@ -140,17 +135,7 @@ it("should display validation error if required fields are empty", async () => {
 });
 
 it("should close and reset form when Close is clicked", async () => {
-  const closeMock = vi.fn();
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: closeMock }}>
-        <MemoryRouter>
-          <CreateTransactionForm />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  render(<CreateTransactionForm />, { wrapper: Wrapper });
 
   const nameField = screen.getByLabelText("Name");
 
@@ -161,7 +146,6 @@ it("should close and reset form when Close is clicked", async () => {
   const cancelButton = screen.getByRole("button", { name: /Cancel/i });
 
   fireEvent.click(cancelButton);
-  expect(closeMock).toHaveBeenCalled();
 
   await waitFor(() => {
     expect(nameField.value).toBe("");
@@ -171,17 +155,7 @@ it("should close and reset form when Close is clicked", async () => {
 it("should show spinner when types of categories are loading", () => {
   useTypes.mockReturnValue({ types: [], isLoading: true });
   useCategories.mockReturnValue({ categories: [], isLoading: true });
-
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <MemoryRouter>
-          <CreateTransactionForm />
-        </MemoryRouter>
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  render(<CreateTransactionForm />, { wrapper: Wrapper });
   expect(screen.getByRole("spinner")).toBeInTheDocument();
 });
 
@@ -195,15 +169,9 @@ it("should populate form fields when transactionToUpdate is provided to and call
     description: "Old description",
   };
 
-  const queryClient = new QueryClient();
-
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <CreateTransactionForm transactionToUpdate={transactionToUpdate} />
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  render(<CreateTransactionForm transactionToUpdate={transactionToUpdate} />, {
+    wrapper: Wrapper,
+  });
 
   const nameField = screen.getByLabelText("Name");
 

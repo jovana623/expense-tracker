@@ -78,6 +78,7 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
         <select
           className="input-field"
           {...register("type")}
+          id="type"
           disabled={isUpdateSession}
         >
           {types.map((type) => (

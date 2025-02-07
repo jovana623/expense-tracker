@@ -62,6 +62,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
 
   return (
     <form
+      role="form"
       onSubmit={handleSubmit(onSubmit, onError)}
       className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
     >

@@ -53,6 +53,7 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
   if (isLoading || isUpdating) return <Spinner />;
   return (
     <form
+      role="form"
       data-testid="saving-form"
       onSubmit={handleSubmit(onSubmit)}
       className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
