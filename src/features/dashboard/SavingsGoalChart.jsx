@@ -15,8 +15,6 @@ import { formatDate } from "../../helpers/dateFunctions";
 function SavingsGoalChart({ data }) {
   const { chartData, endDate } = prepareData(data);
 
-  console.log(chartData);
-
   const lastPaymentIndex = chartData.findIndex((item, index) => {
     return index > 0 && item.total !== chartData[index - 1].total;
   });

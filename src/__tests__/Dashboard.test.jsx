@@ -81,7 +81,7 @@ it("opens AddTransaction component when add transaction button is clicked", asyn
   const addTransactionButton = screen.getByText(/Add Transaction/i);
   fireEvent.click(addTransactionButton);
 
-  await waitFor(() => screen.getByText("Add transaction"));
+  await waitFor(() => screen.getByText(/Add transaction/i));
 
   expect(screen.getByRole("form")).toBeInTheDocument();
 });

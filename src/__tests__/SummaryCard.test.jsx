@@ -55,7 +55,7 @@ it("opens url in new tab when check report is clicked", () => {
   const toggleButton = screen.getByRole("button");
   fireEvent.click(toggleButton);
 
-  const reportLink = screen.getByText("Check report");
+  const reportLink = screen.getByText(/check report/i);
   fireEvent.click(reportLink);
 
   expect(window.open).toHaveBeenCalledWith(
@@ -123,5 +123,5 @@ it("does not show report button when card is not active", () => {
       />
     </MemoryRouter>
   );
-  expect(screen.queryByText("Check report")).not.toBeInTheDocument();
+  expect(screen.queryByText(/check report/i)).not.toBeInTheDocument();
 });

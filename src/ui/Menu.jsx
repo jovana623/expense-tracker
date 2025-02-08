@@ -38,7 +38,7 @@ function Toggle({ id }) {
     openId === "" || openId !== id ? open(id) : close();
   }
   return (
-    <button onClick={handleClick}>
+    <button onClick={handleClick} data-testid="menu-toggle">
       <HiEllipsisVertical />
     </button>
   );

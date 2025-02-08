@@ -16,7 +16,8 @@ function PositiveAndNegativeBar({ data, monthData }) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";
-  console.log(monthParam);
+  console.log("Data:", data);
+  console.log("Month data", monthData);
 
   let adjustedData = {};
 
@@ -90,7 +91,12 @@ function PositiveAndNegativeBar({ data, monthData }) {
             ]}
           />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="income" fill="#22c55e" stackId="stack" />
+          <Bar
+            dataKey="income"
+            fill="#22c55e"
+            stackId="stack"
+            data-testid="income-bar"
+          />
           <Bar dataKey="expenses" fill="#ef4444" stackId="stack" />
         </BarChart>
       </ResponsiveContainer>

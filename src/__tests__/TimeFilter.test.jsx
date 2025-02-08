@@ -24,9 +24,9 @@ it("renders all filter options", () => {
       <TimeFilter />
     </MemoryRouter>
   );
-  expect(screen.getByText("Month")).toBeInTheDocument();
-  expect(screen.getByText("Year")).toBeInTheDocument();
-  expect(screen.getByText("All")).toBeInTheDocument();
+  expect(screen.getByText(/month/i)).toBeInTheDocument();
+  expect(screen.getByText(/year/i)).toBeInTheDocument();
+  expect(screen.getByText(/all/i)).toBeInTheDocument();
 });
 
 it("updates searchParams when filter option is clicked", () => {

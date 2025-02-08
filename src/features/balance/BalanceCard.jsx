@@ -1,15 +1,13 @@
 import { formatDate } from "../../helpers/dateFunctions";
 
 /* eslint-disable react/prop-types */
-function BalanceCard({ icon, title, date, balance, color, percentage }) {
+function BalanceCard({ title, date, balance, color, percentage }) {
   return (
     <div
       className={`p-6 rounded-lg border-t-4 text-center shadow-md border-${color} h-full flex flex-col`}
     >
       <div className="flex justify-between items-center mb-4">
-        <p className="text-sm text-gray-600">
-          {icon} {title}
-        </p>
+        <p className="text-sm text-gray-600">{title}</p>
         {percentage && (
           <p className="text-xs text-gray-500">{formatDate(date)}</p>
         )}

@@ -12,10 +12,8 @@ function Savings() {
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   if (!saving) return null;
-  console.log(saving);
 
   function handleCardChange(value) {
-    console.log(value);
     setActiveSaving(value);
   }
 
