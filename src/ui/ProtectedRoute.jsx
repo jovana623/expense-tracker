@@ -1,14 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-/* eslint-disable react/prop-types */
-function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
-  console.log(token);
+function ProtectedRoute() {
+  const accessToken = localStorage.getItem("accessToken");
 
-  if (!token) {
+  if (!accessToken) {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <Outlet />;
 }
 export default ProtectedRoute;

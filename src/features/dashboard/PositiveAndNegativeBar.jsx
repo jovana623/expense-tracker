@@ -16,8 +16,6 @@ function PositiveAndNegativeBar({ data, monthData }) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";
-  console.log("Data:", data);
-  console.log("Month data", monthData);
 
   let adjustedData = {};
 

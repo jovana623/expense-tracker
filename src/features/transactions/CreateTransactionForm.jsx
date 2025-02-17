@@ -8,6 +8,7 @@ import { useCategories } from "../category/useCategories";
 
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {
@@ -15,6 +16,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
   const { updateTransaction, isLoading } = useUpdateTransaction();
   const { types, isLoading: isLoadingType } = useTypes();
   const { categories, isLoading: isLoadingCategory } = useCategories();
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
 
   const { id: editId, ...editValues } = transactionToUpdate;
   const isUpdateSession = Boolean(editId);
@@ -43,8 +45,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
       type: parseInt(data.typeId),
       amount: parseFloat(data.amount),
       description: data.description,
+      user: currentUser.id,
     };
-    const updatedData = { id: editId, ...formattedData };
+    const updatedData = { id: editId, ...formattedData, user: currentUser.id };
     if (isUpdateSession) {
       updateTransaction(updatedData);
     } else {
@@ -58,7 +61,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     reset();
   }
 
-  const isWorking = isCreating || isLoading;
+  const isWorking = isCreating || isLoading || isLoadingUser;
 
   return (
     <form

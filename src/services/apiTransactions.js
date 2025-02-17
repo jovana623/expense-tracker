@@ -10,7 +10,12 @@ export async function getTransactions(
   pageSize
 ) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(`${API_URL}/transactions/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       params: { time, month, sortBy, search, page, page_size: pageSize },
     });
     return response.data;
@@ -27,7 +32,12 @@ export async function getIncomeTransactions(
   pageSize
 ) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(`${API_URL}/transactions/income/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       params: { time, month, sortBy, page, page_size: pageSize },
     });
     return response.data;
@@ -48,7 +58,12 @@ export async function getExpenseTransactions(
   pageSize
 ) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(`${API_URL}/transactions/expense/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       params: { time, month, sortBy, page, page_size: pageSize },
     });
 
@@ -60,9 +75,16 @@ export async function getExpenseTransactions(
 
 export async function createTransaction(transactionData) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.post(
       `${API_URL}/transactions/create_transaction/`,
-      transactionData
+      transactionData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -79,13 +101,14 @@ export async function updateTransaction(
   description
 ) {
   try {
-    const response = await axios.patch(`${API_URL}/transactions/${id}`, {
-      name,
-      date,
-      type,
-      amount,
-      description,
-    });
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.patch(
+      `${API_URL}/transactions/${id}`,
+      { name, date, type, amount, description },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -94,7 +117,13 @@ export async function updateTransaction(
 
 export async function deleteTransaction(id) {
   try {
-    const response = await axios.delete(`${API_URL}/transactions/${id}`);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.delete(`${API_URL}/transactions/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -103,7 +132,16 @@ export async function deleteTransaction(id) {
 
 export async function getIncomeSummary() {
   try {
-    const response = await axios.get(`${API_URL}/transactions/income/monthly/`);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.get(
+      `${API_URL}/transactions/income/monthly/`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -112,8 +150,15 @@ export async function getIncomeSummary() {
 
 export async function getExpenseSummary() {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
-      `${API_URL}/transactions/expense/monthly/`
+      `${API_URL}/transactions/expense/monthly/`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {
@@ -123,9 +168,14 @@ export async function getExpenseSummary() {
 
 export async function getTypeByMonth(type) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
       `${API_URL}/transactions/spending/month/`,
       {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
         params: { type },
       }
     );
@@ -137,7 +187,12 @@ export async function getTypeByMonth(type) {
 
 export async function getTransactionStatistic(time, month) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(`${API_URL}/transactions/statistics/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       params: { time, month },
     });
     return response.data;
@@ -148,9 +203,16 @@ export async function getTransactionStatistic(time, month) {
 
 export async function getDailyBalance(month) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
       `${API_URL}/transactions/daily-balances/`,
-      { params: { month } }
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: { month },
+      }
     );
     return response.data;
   } catch (error) {
@@ -160,9 +222,16 @@ export async function getDailyBalance(month) {
 
 export async function getMonthlyBalance(time, month) {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
       `${API_URL}/transactions/monthly-balances`,
-      { params: { time, month } }
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: { time, month },
+      }
     );
     return response.data;
   } catch (error) {

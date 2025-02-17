@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSaving } from "./useSaving";
 import { useSavings } from "./useSavings";
 import Spinner from "../../ui/Spinner";
@@ -7,9 +7,16 @@ import VerticalCarousel from "./VerticalCarousel";
 import CardSkeleton from "../../ui/CardSkeleton";
 
 function Savings() {
-  const [activeSaving, setActiveSaving] = useState(1);
-  const { saving, isLoading } = useSaving(activeSaving);
   const { savings, isLoading: isLoadingSavings } = useSavings();
+  const [activeSaving, setActiveSaving] = useState(null);
+
+  useEffect(() => {
+    if (savings?.length > 0) {
+      setActiveSaving(savings[0].id);
+    }
+  }, [savings]);
+
+  const { saving, isLoading } = useSaving(activeSaving);
 
   if (!saving) return null;
 

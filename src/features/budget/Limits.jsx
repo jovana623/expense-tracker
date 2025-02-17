@@ -22,7 +22,7 @@ function Limits() {
               ))}
           </div>
         </div>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-8">
           <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-stone-200 pb-2">
             Yearly Budgets
           </h2>

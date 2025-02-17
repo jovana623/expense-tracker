@@ -12,7 +12,13 @@ export async function getPayments() {
 
 export async function deletePayment(id) {
   try {
-    const response = await axios.delete(`${API_URL}/savings/payments/${id}`);
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.delete(`${API_URL}/savings/payments/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -20,10 +26,17 @@ export async function deletePayment(id) {
 }
 
 export async function createPayment(paymentData) {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) throw new Error("No access token found");
   try {
     const response = await axios.post(
       `${API_URL}/savings/create_payment`,
-      paymentData
+      paymentData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {

@@ -23,6 +23,7 @@ import IncomeReport from "./features/reports/IncomeReport";
 import ExpenseReport from "./features/reports/ExpenseReport";
 import SavingsReport from "./features/reports/SavingsReport";
 import BalanceReport from "./features/reports/BalanceReport";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 function App() {
   const queryClient = new QueryClient({
@@ -41,30 +42,32 @@ function App() {
           <Routes>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route element={<AppLayout />}>
-              <Route
-                index
-                element={<Navigate replace to="dashboard/overview" />}
-              />
-              <Route path="dashboard" element={<Dashboard />}>
-                <Route path="overview" element={<Overview />} />
-                <Route path="income" element={<Income />} />
-                <Route path="expenses" element={<Expenses />} />
-                <Route path="balance" element={<Balance />} />
-                <Route path="savings" element={<Savings />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppLayout />}>
+                <Route
+                  index
+                  element={<Navigate replace to="dashboard/overview" />}
+                />
+                <Route path="dashboard" element={<Dashboard />}>
+                  <Route path="overview" element={<Overview />} />
+                  <Route path="income" element={<Income />} />
+                  <Route path="expenses" element={<Expenses />} />
+                  <Route path="balance" element={<Balance />} />
+                  <Route path="savings" element={<Savings />} />
+                </Route>
+                <Route path="budget" element={<Budget />} />
+                <Route path="transactions" element={<Transactions />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="statistic" element={<Statistic />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
-              <Route path="budget" element={<Budget />} />
-              <Route path="transactions" element={<Transactions />} />
-              <Route path="calendar" element={<Calendar />} />
-              <Route path="statistic" element={<Statistic />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="profile" element={<Profile />} />
-            </Route>
-            <Route path="report" element={<ReportPage />}>
-              <Route path="income" element={<IncomeReport />} />
-              <Route path="expense" element={<ExpenseReport />} />
-              <Route path="savings" element={<SavingsReport />} />
-              <Route path="balance" element={<BalanceReport />} />
+              <Route path="report" element={<ReportPage />}>
+                <Route path="income" element={<IncomeReport />} />
+                <Route path="expense" element={<ExpenseReport />} />
+                <Route path="savings" element={<SavingsReport />} />
+                <Route path="balance" element={<BalanceReport />} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
