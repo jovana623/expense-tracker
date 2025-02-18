@@ -1,4 +1,3 @@
-import Spinner from "./Spinner";
 import { FiArrowUpRight } from "react-icons/fi";
 import { FiArrowDownLeft } from "react-icons/fi";
 import { TbListDetails } from "react-icons/tb";
@@ -12,13 +11,11 @@ import Menu from "./Menu";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
 import ConfirmDelete from "./ConfirmDelete";
 import TransactionDetails from "../features/transactions/TransactionDetails";
+import TableSkeleton from "./TableSkeleton";
 
 /* eslint-disable react/prop-types */
 function Table({ data, isLoading }) {
   const { deleteTransaction } = useDeleteTransaction();
-
-  if (isLoading) return <Spinner />;
-  console.log(data);
 
   const isTransactionsPath = location.pathname === "/transactions";
   const isReportPage = location.pathname.includes("/report");
@@ -68,137 +65,147 @@ function Table({ data, isLoading }) {
             </th>
           </tr>
         </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
-              {!isBudgetPath && (
+        {isLoading ? (
+          <tbody>
+            <tr>
+              <td colSpan="6">
+                <TableSkeleton rows={5} />
+              </td>
+            </tr>
+          </tbody>
+        ) : (
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
+                {!isBudgetPath && (
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {item.type.category.name === "Income" ? (
+                      <div className="text-green-500">
+                        <FiArrowDownLeft />
+                      </div>
+                    ) : (
+                      <div className="text-red-500">
+                        <FiArrowUpRight />
+                      </div>
+                    )}
+                  </th>
+                )}
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                 >
-                  {item.type.category.name === "Income" ? (
-                    <div className="text-green-500">
-                      <FiArrowDownLeft />
-                    </div>
+                  {shortName(item.name)}
+                </th>
+                <th className="px-6 py-4">
+                  {item.amount.toLocaleString()}
+                  &euro;
+                </th>
+                {isTransactionsPath || isReportPage ? (
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {item.type.name}
+                  </th>
+                ) : (
+                  <div></div>
+                )}
+
+                {isTransactionsPath || isReportPage ? (
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {shortDescription(item.description)}
+                  </th>
+                ) : (
+                  <div></div>
+                )}
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                >
+                  {formatDate(item.date)}
+                </th>
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                >
+                  {isBudgetPath || isReportPage || isCalendarPath ? (
+                    <div></div>
                   ) : (
-                    <div className="text-red-500">
-                      <FiArrowUpRight />
-                    </div>
+                    <Modal>
+                      <Menu>
+                        <Menu.Toggle id={item.id} />
+                        <Menu.List id={item.id}>
+                          {item.type.name === "Savings" ? (
+                            <button
+                              title="Can't update saving in transaction table"
+                              disabled="True"
+                              className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                            >
+                              <BiSolidPencil /> Update
+                            </button>
+                          ) : (
+                            <Modal.OpenButton opens="update">
+                              <Menu.Button icon={<BiSolidPencil />}>
+                                Update
+                              </Menu.Button>
+                            </Modal.OpenButton>
+                          )}
+                          {item.type.name === "Savings" ? (
+                            <button
+                              title="Can't delete saving in transaction table"
+                              disabled="True"
+                              className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+                            >
+                              <AiOutlineDelete /> Delete
+                            </button>
+                          ) : (
+                            <Modal.OpenButton opens="delete">
+                              <Menu.Button icon={<AiOutlineDelete />}>
+                                Delete
+                              </Menu.Button>
+                            </Modal.OpenButton>
+                          )}
+                          <Modal.OpenButton opens="details">
+                            <Menu.Button icon={<TbListDetails />}>
+                              Details
+                            </Menu.Button>
+                          </Modal.OpenButton>
+                        </Menu.List>
+
+                        <Modal.Window name="update">
+                          <CreateTransactionForm transactionToUpdate={item} />
+                        </Modal.Window>
+
+                        <Modal.Window name="delete">
+                          {item.type.category.name === "Income" ? (
+                            <ConfirmDelete
+                              nameModal="income"
+                              onConfirm={() => deleteTransaction(item.id)}
+                            />
+                          ) : (
+                            <ConfirmDelete
+                              nameModal="expense"
+                              onConfirm={() => deleteTransaction(item.id)}
+                            />
+                          )}
+                        </Modal.Window>
+                        <Modal.Window name="details">
+                          <TransactionDetails item={item} />
+                        </Modal.Window>
+                      </Menu>
+                    </Modal>
                   )}
                 </th>
-              )}
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {shortName(item.name)}
-              </th>
-              <th className="px-6 py-4">
-                {item.amount.toLocaleString()}
-                &euro;
-              </th>
-              {isTransactionsPath || isReportPage ? (
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
-                  {item.type.name}
-                </th>
-              ) : (
-                <div></div>
-              )}
-
-              {isTransactionsPath || isReportPage ? (
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                >
-                  {shortDescription(item.description)}
-                </th>
-              ) : (
-                <div></div>
-              )}
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {formatDate(item.date)}
-              </th>
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-              >
-                {isBudgetPath || isReportPage || isCalendarPath ? (
-                  <div></div>
-                ) : (
-                  <Modal>
-                    <Menu>
-                      <Menu.Toggle id={item.id} />
-                      <Menu.List id={item.id}>
-                        {item.type.name === "Savings" ? (
-                          <button
-                            title="Can't update saving in transaction table"
-                            disabled="True"
-                            className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
-                          >
-                            <BiSolidPencil /> Update
-                          </button>
-                        ) : (
-                          <Modal.OpenButton opens="update">
-                            <Menu.Button icon={<BiSolidPencil />}>
-                              Update
-                            </Menu.Button>
-                          </Modal.OpenButton>
-                        )}
-                        {item.type.name === "Savings" ? (
-                          <button
-                            title="Can't delete saving in transaction table"
-                            disabled="True"
-                            className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
-                          >
-                            <AiOutlineDelete /> Delete
-                          </button>
-                        ) : (
-                          <Modal.OpenButton opens="delete">
-                            <Menu.Button icon={<AiOutlineDelete />}>
-                              Delete
-                            </Menu.Button>
-                          </Modal.OpenButton>
-                        )}
-                        <Modal.OpenButton opens="details">
-                          <Menu.Button icon={<TbListDetails />}>
-                            Details
-                          </Menu.Button>
-                        </Modal.OpenButton>
-                      </Menu.List>
-
-                      <Modal.Window name="update">
-                        <CreateTransactionForm transactionToUpdate={item} />
-                      </Modal.Window>
-
-                      <Modal.Window name="delete">
-                        {item.type.category.name === "Income" ? (
-                          <ConfirmDelete
-                            nameModal="income"
-                            onConfirm={() => deleteTransaction(item.id)}
-                          />
-                        ) : (
-                          <ConfirmDelete
-                            nameModal="expense"
-                            onConfirm={() => deleteTransaction(item.id)}
-                          />
-                        )}
-                      </Modal.Window>
-                      <Modal.Window name="details">
-                        <TransactionDetails item={item} />
-                      </Modal.Window>
-                    </Menu>
-                  </Modal>
-                )}
-              </th>
-            </tr>
-          ))}
-        </tbody>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
     </div>
   );

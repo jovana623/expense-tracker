@@ -3,7 +3,6 @@ import { useTransactions } from "../features/transactions/useTransactions";
 import { useSearchParams } from "react-router-dom";
 import Search from "../ui/Search";
 import { useEffect, useState } from "react";
-import Spinner from "../ui/Spinner";
 import Pagination from "../ui/Pagination";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";
@@ -40,20 +39,19 @@ function Transactions() {
         <SortByTable />
         <TimeFilter />
       </div>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <div>
-          <div className="mx-10 h-[75vh]">
-            <Table data={transactions.results} isLoading={isLoading} />
-          </div>
-          <Pagination
-            page={page}
-            numOfPages={Math.ceil(transactions.count / pageSize)}
-            setPage={setPage}
-          />
+
+      <div>
+        <div className="mx-10 h-[75vh]">
+          <Table data={transactions?.results || []} isLoading={isLoading} />
         </div>
-      )}
+        <Pagination
+          page={page}
+          numOfPages={
+            transactions ? Math.ceil(transactions.count / pageSize) : 1
+          }
+          setPage={setPage}
+        />
+      </div>
     </div>
   );
 }

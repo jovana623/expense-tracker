@@ -15,7 +15,7 @@ import Select from "../../ui/Select";
 import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
 import LineChartComponent from "./LineChartComponent";
 import ChartCard from "../../ui/ChartCard";
-import Spinner from "../../ui/Spinner";
+import ChartSkeleton from "../../ui/ChartSkeleton";
 
 const charts = [
   { id: 1, value: "bar", name: "Bar chart" },
@@ -60,7 +60,7 @@ function Overview() {
       <ChartCard title="Income vs. Expenses">
         <Select data={charts} onChange={handleGraphChange} />
         {isLoadingTransactions ? (
-          <Spinner />
+          <ChartSkeleton />
         ) : (
           <>
             {chart === 1 ? (
@@ -76,11 +76,15 @@ function Overview() {
       </ChartCard>
       <ChartCard title="Savings progress">
         {isLoadingSavings ? (
-          <Spinner />
+          <div></div>
         ) : (
           <Select data={savings} onChange={handleSavingChange} />
         )}
-        {isLoadingSaving ? <Spinner /> : <SavingsGoalChart data={saving} />}
+        {isLoadingSaving ? (
+          <ChartSkeleton />
+        ) : (
+          <SavingsGoalChart data={saving} />
+        )}
       </ChartCard>
     </div>
   );

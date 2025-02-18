@@ -5,12 +5,13 @@ import { useTypes } from "../features/type/useTypes";
 
 import SavingsContainer from "../features/statistics/SavingsContainer";
 import ChartCard from "../ui/ChartCard";
-import Spinner from "../ui/Spinner";
 import CategoryChart from "../features/statistics/CategoryChart";
 import TimeFilter from "../ui/TimeFilter";
 import FlipCard from "../features/statistics/FlipCard";
 import StatsTable from "../features/statistics/StatsTable";
 import SelectType from "../features/statistics/SelectType";
+import ChartSkeleton from "../ui/ChartSkeleton";
+import CardSkeleton from "../ui/CardSkeleton";
 
 function Statistic() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,32 +36,41 @@ function Statistic() {
         <div className="flex flex-col gap-5">
           <ChartCard title="Trends over time">
             {isLoadingTypes ? (
-              <Spinner />
+              <div></div>
             ) : (
               <SelectType data={types} onChange={handleTypeChange} />
             )}
-            {isLoading ? <Spinner /> : <CategoryChart data={typeData} />}
+            {isLoading ? <ChartSkeleton /> : <CategoryChart data={typeData} />}
           </ChartCard>
           <ChartCard>
             <TimeFilter />
-            {isLoadingStats ? (
-              <Spinner />
-            ) : (
-              <div className="flex flex-col sm:flex-row gap-3">
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              {isLoadingStats ? (
+                <div className="my-3 shadow-sm w-[200px] mx-auto">
+                  <CardSkeleton size={4} />
+                </div>
+              ) : (
                 <FlipCard
                   titleFront="Average income"
                   titleBack="Top income"
                   transaction={statistic.top_income}
                   avg={statistic.avg_income}
                 />
+              )}
+              {isLoadingStats ? (
+                <div className="my-3 shadow-sm w-[200px] mx-auto">
+                  <CardSkeleton size={4} />
+                </div>
+              ) : (
                 <FlipCard
                   titleFront="Average expense"
                   titleBack="Top expense"
                   transaction={statistic.top_expense}
                   avg={statistic.avg_expense}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </ChartCard>
         </div>
         <div className="">
@@ -69,20 +79,23 @@ function Statistic() {
         <div>
           <ChartCard>
             <TimeFilter />
-            {isLoadingStats ? (
-              <Spinner />
-            ) : (
-              <div className="flex flex-col gap-3">
-                <p className="text-xs text-gray-700 uppercase bg-gray-50">
-                  Top income types
-                </p>
-                <StatsTable data={statistic.top_income_types} />
-                <p className="text-xs text-gray-700 uppercase bg-gray-50">
-                  Top expense types
-                </p>
-                <StatsTable data={statistic.top_expense_types} />
-              </div>
-            )}
+
+            <div className="flex flex-col gap-3">
+              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                Top income types
+              </p>
+              <StatsTable
+                data={statistic?.top_income_types || []}
+                isLoading={isLoadingStats}
+              />
+              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+                Top expense types
+              </p>
+              <StatsTable
+                data={statistic?.top_expense_types || []}
+                isLoading={isLoadingStats}
+              />
+            </div>
           </ChartCard>
         </div>
       </div>

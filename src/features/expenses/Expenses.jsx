@@ -24,21 +24,26 @@ function Expenses() {
     setSearchParams({ time, month, sortBy, page });
   }, [time, month, sortBy, page, setSearchParams]);
 
-  if (isLoading) return <Spinner />;
-
-  const summary = summarizeAmountsByType(expenseTransactions);
-  const numOfPages = Math.ceil(paginatedTransactions.count / pageSize);
+  const summary = expenseTransactions
+    ? summarizeAmountsByType(expenseTransactions)
+    : [];
+  const numOfPages = paginatedTransactions
+    ? Math.ceil(paginatedTransactions.count / pageSize)
+    : [];
 
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <ChartCard title="Expenses breakdown">
           <div></div>
-          <DetailedPieChart data={summary} />
+          {isLoading ? <Spinner /> : <DetailedPieChart data={summary} />}
         </ChartCard>
         <div className="flex flex-col gap-4">
           <div className="flex-grow">
-            <Table data={paginatedTransactions.results} isLoading={isLoading} />
+            <Table
+              data={paginatedTransactions?.results || []}
+              isLoading={isLoading}
+            />
           </div>
           <div className="mt-auto self-center">
             <Pagination page={page} numOfPages={numOfPages} setPage={setPage} />
