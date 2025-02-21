@@ -16,7 +16,13 @@ function StatsTable({ data, isLoading }) {
           </tr>
         </thead>
         {isLoading ? (
-          <TableSkeleton columns={2} rows={3} />
+          <tbody>
+            <tr>
+              <td colSpan="2">
+                <TableSkeleton rows={3} columns={2} />
+              </td>
+            </tr>
+          </tbody>
         ) : (
           <tbody>
             {data.map((item, index) => (

@@ -24,6 +24,8 @@ import ExpenseReport from "./features/reports/ExpenseReport";
 import SavingsReport from "./features/reports/SavingsReport";
 import BalanceReport from "./features/reports/BalanceReport";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import AdminPanel from "./pages/AdminPanel";
+import ProtectedSuperuserRoute from "./ui/ProtectedSuperuserRoute";
 
 function App() {
   const queryClient = new QueryClient({
@@ -61,6 +63,9 @@ function App() {
                 <Route path="statistic" element={<Statistic />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="profile" element={<Profile />} />
+                <Route element={<ProtectedSuperuserRoute />}>
+                  <Route path="admin" element={<AdminPanel />} />
+                </Route>
               </Route>
               <Route path="report" element={<ReportPage />}>
                 <Route path="income" element={<IncomeReport />} />

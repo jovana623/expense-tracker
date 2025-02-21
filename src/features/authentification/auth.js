@@ -57,3 +57,67 @@ export async function getCurrentUser() {
     throw new Error(err.message);
   }
 }
+
+export async function getUsers(search) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.get(`${API_URL}/users/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: { search },
+    });
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function deleteUser(id) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.delete(`${API_URL}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function updateUser(id, username, email, avatar, is_staff) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.patch(
+      `${API_URL}/users/${id}`,
+      { username, email, avatar, is_staff },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function updateRole(id, is_staff) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.patch(
+      `${API_URL}/users/${id}`,
+      { is_staff },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+ 

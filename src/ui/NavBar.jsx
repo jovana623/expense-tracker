@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
+import Spinner from "./Spinner";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
 import { BiCoinStack } from "react-icons/bi";
@@ -10,9 +11,14 @@ import { RxAvatar } from "react-icons/rx";
 import { CiCalendar } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
+import { useCurrentUser } from "../features/authentification/useCurrentUser";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: user, isLoading } = useCurrentUser();
+
+  if (isLoading) return <Spinner />;
 
   return (
     <nav className="relative">
@@ -31,7 +37,6 @@ function NavBar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
       >
-        {/* Close button in the mobile menu */}
         <div className="flex justify-between items-center px-4 py-2 border-b border-stone-200">
           <Logo />
           <button
@@ -102,6 +107,21 @@ function NavBar() {
               <span>Statistic</span>
             </NavLink>
           </li>
+          {user?.is_staff && (
+            <li>
+              <NavLink
+                to="admin"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                <MdOutlineAdminPanelSettings />
+                <span>Admin Panel</span>
+              </NavLink>
+            </li>
+          )}
+
           <li>
             <NavLink
               to="settings"
@@ -114,6 +134,7 @@ function NavBar() {
               <span>Settings</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="profile"
@@ -129,7 +150,6 @@ function NavBar() {
         </ul>
       </div>
 
-      {/* Menu for larger screens */}
       <div className="hidden lg:flex flex-col row-span-2 border-r border-stone-200 px-10 gap-10">
         <Logo />
         <ul className="flex flex-col gap-4 text-stone-500 text-lg">
@@ -188,8 +208,22 @@ function NavBar() {
               <span>Statistic</span>
             </NavLink>
           </li>
+          {user?.is_staff && (
+            <li>
+              <NavLink
+                to="admin"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                <MdOutlineAdminPanelSettings />
+                <span>Admin Panel</span>
+              </NavLink>
+            </li>
+          )}
 
-          <li className="pt-[250px]">
+          <li className="pt-[150px]">
             <NavLink
               to="settings"
               className={({ isActive }) =>
