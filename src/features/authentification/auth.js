@@ -89,16 +89,15 @@ export async function deleteUser(id) {
   }
 }
 
-export async function updateUser(id, username, email, avatar, is_staff) {
+export async function updateUser(userData) {
   try {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) throw new Error("No access token found");
-    const response = await axios.patch(
-      `${API_URL}/users/${id}`,
-      { username, email, avatar, is_staff },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-
+    const response = await axios.patch(`${API_URL}/users/me/`, userData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response.data;
   } catch (err) {
     throw new Error(err.message);
@@ -120,4 +119,3 @@ export async function updateRole(id, is_staff) {
     throw new Error(err.message);
   }
 }
- 

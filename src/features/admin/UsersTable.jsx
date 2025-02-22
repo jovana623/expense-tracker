@@ -59,7 +59,7 @@ function UsersTable({ data, isLoading }) {
                   {item.avatar ? (
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="/docs/images/people/profile-picture-1.jpg"
+                      src={`${item.avatar}`}
                       alt="profile image"
                     />
                   ) : (
@@ -67,8 +67,10 @@ function UsersTable({ data, isLoading }) {
                       src="/anon-user.png"
                       width="36px"
                       className="rounded-full shadow-sm"
+                      alt="anonymous user"
                     />
                   )}
+
                   <div className="ps-3">
                     <div className="text-base font-semibold">
                       {item.username}
