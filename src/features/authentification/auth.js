@@ -138,3 +138,16 @@ export async function changePassword(data) {
     throw new Error(err.message);
   }
 }
+
+export async function deleteCurrentUser() {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.delete(`${API_URL}/users/delete-account/`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
