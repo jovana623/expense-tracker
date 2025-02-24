@@ -5,11 +5,12 @@ import ChangePasswordForm from "../features/profile/ChangePasswordForm";
 import ChangeProfileInfoForm from "../features/profile/ChangeProfileInfoForm";
 import ConfirmDelete from "../ui/ConfirmDelete";
 import Modal from "../ui/Modal";
-import Spinner from "../ui/Spinner";
+import { useResetCurrentUser } from "../features/authentification/useResetCurrentUser";
 
 function Profile() {
   const { data: currentUser, isLoading } = useCurrentUser();
-  const { deleteCurrentUser, isLoading: isDeleting } = useDeleteCurrentUser();
+  const { deleteCurrentUser } = useDeleteCurrentUser();
+  const { resetCurrentUser } = useResetCurrentUser();
   const navigate = useNavigate();
 
   function handleDeleteAccount() {
@@ -43,20 +44,31 @@ function Profile() {
           <h2 className="text-lg font-medium text-red-500">Danger Zone</h2>
           {
             <Modal>
+              <Modal.OpenButton opens="reset-account">
+                <button className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded-lg w-full transition-all duration-200 hover:bg-red-500 hover:text-white">
+                  Reset Account
+                </button>
+              </Modal.OpenButton>
+              <Modal.Window name="reset-account">
+                <ConfirmDelete
+                  nameModal="all data"
+                  onConfirm={resetCurrentUser}
+                />
+              </Modal.Window>
+            </Modal>
+          }
+          {
+            <Modal>
               <Modal.OpenButton opens="delete-account">
-                <button className="bg-red-500 text-white px-4 py-2 rounded-lg w-full">
+                <button className="bg-red-500 text-white px-4 py-2 rounded-lg w-full transition-all duration-200 hover:bg-red-600">
                   Delete Account
                 </button>
               </Modal.OpenButton>
               <Modal.Window name="delete-account">
-                {isDeleting ? (
-                  <Spinner />
-                ) : (
-                  <ConfirmDelete
-                    nameModal="account"
-                    onConfirm={handleDeleteAccount}
-                  />
-                )}
+                <ConfirmDelete
+                  nameModal="account"
+                  onConfirm={handleDeleteAccount}
+                />
               </Modal.Window>
             </Modal>
           }
