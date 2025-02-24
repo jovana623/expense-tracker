@@ -1,4 +1,5 @@
 import { useCurrentUser } from "../features/authentification/useCurrentUser";
+import ChangePasswordForm from "../features/profile/ChangePasswordForm";
 import ChangeProfileInfoForm from "../features/profile/ChangeProfileInfoForm";
 
 function Profile() {
@@ -9,18 +10,7 @@ function Profile() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
         <ChangeProfileInfoForm user={currentUser} isLoading={isLoading} />
-
-        <section className="space-y-6">
-          <h2 className="text-lg font-medium">Change Password</h2>
-          <div className="space-y-2">
-            <div className="h-10 bg-gray-200 rounded w-full"></div>
-            <div className="h-10 bg-gray-200 rounded w-full"></div>
-            <div className="h-10 bg-gray-200 rounded w-full"></div>
-          </div>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg w-full">
-            Update Password
-          </button>
-        </section>
+        <ChangePasswordForm />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -119,3 +119,22 @@ export async function updateRole(id, is_staff) {
     throw new Error(err.message);
   }
 }
+
+export async function changePassword(data) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.post(
+      `${API_URL}/users/change_password/`,
+      {
+        old_password: data.oldPassword,
+        new_password: data.newPassword,
+        confirm_password: data.confirmPassword,
+      },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}

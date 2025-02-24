@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { ModalContext } from "../../ui/Modal";
 import { useContext } from "react";
 import Button from "../../ui/Button";
-import { useUpdateUser } from "./useUpdateUser";
+import { useUpdateUser } from "../authentification/useUpdateUser";
 
 /* eslint-disable react/prop-types */
 function UpdateUserForm({ userToUpdate = {} }) {
