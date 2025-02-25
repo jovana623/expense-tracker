@@ -1,7 +1,8 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import TableSkeleton from "../../ui/TableSkeleton";
 
 /* eslint-disable react/prop-types */
-function StatsTable({ data, isLoading }) {
+function StatsTable({ data, isLoading, currency }) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -38,7 +39,7 @@ function StatsTable({ data, isLoading }) {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
-                  &euro;
+                  {getCurrencyEntity(currency)}
                 </td>
               </tr>
             ))}

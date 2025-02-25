@@ -1,10 +1,13 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 /* eslint-disable react/prop-types */
-function FlipCardFront({ title, avg }) {
+function FlipCardFront({ title, avg, currency }) {
   return (
     <div className="bg-white p-4 rounded-md shadow-md flex flex-col text-center h-[80%] justify-around">
       <p className="text-xs text-gray-500 uppercase">{title}</p>
       <p className="text-xl font-semibold text-gray-800">
-        {avg.toLocaleString()}&euro;
+        {avg.toLocaleString()}
+        {getCurrencyEntity(currency)}
       </p>
 
       <svg

@@ -9,15 +9,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { formatMonthYear } from "../../helpers/dateFunctions";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function CategoryChart({ data }) {
+function CategoryChart({ data, currency }) {
   const formattedData = data.map((item) => ({
     month: formatMonthYear(`${item.date__year}-${item.date__month}-01`),
     total: item.total,
   }));
+  const formattedCurrency = getCurrencyEntity(currency);
 
-  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+  const currencyFormatter = (tick) =>
+    `${tick.toLocaleString()}${formattedCurrency}`;
 
   function renderTooltip({ active, payload }) {
     if (!active || !payload || !payload[0]) return null;
@@ -25,7 +28,10 @@ function CategoryChart({ data }) {
     return (
       <div className="bg-lightBg px-0 py-2 rounded-md border border-stone-200 w-full">
         <p>{month}</p>
-        <p className="text-blue-300">Amount: {total.toLocaleString()}€</p>
+        <p className="text-blue-300">
+          Amount: {total.toLocaleString()}
+          {formattedCurrency}
+        </p>
       </div>
     );
   }
@@ -39,7 +45,7 @@ function CategoryChart({ data }) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis tickFormatter={euroFormatter} />
+          <YAxis tickFormatter={currencyFormatter} />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"

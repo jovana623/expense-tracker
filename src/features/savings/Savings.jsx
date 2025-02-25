@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSaving } from "./useSaving";
 import { useSavings } from "./useSavings";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 import Spinner from "../../ui/Spinner";
 import SavingsDetailCard from "./SavingsDetailCard";
 import VerticalCarousel from "./VerticalCarousel";
@@ -9,6 +10,7 @@ import CardSkeleton from "../../ui/CardSkeleton";
 function Savings() {
   const { savings, isLoading: isLoadingSavings } = useSavings();
   const [activeSaving, setActiveSaving] = useState(null);
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
 
   useEffect(() => {
     if (savings?.length > 0) {
@@ -26,10 +28,10 @@ function Savings() {
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
-      {isLoading || isLoadingSavings ? (
+      {isLoading || isLoadingSavings || isLoadingUser ? (
         <Spinner />
       ) : (
-        <SavingsDetailCard saving={saving} />
+        <SavingsDetailCard saving={saving} currency={currentUser.currency} />
       )}
       <div>
         {isLoading || isLoadingSavings ? (
@@ -39,6 +41,7 @@ function Savings() {
             savings={savings || []}
             onCardChange={handleCardChange}
             activeSaving={activeSaving}
+            currency={currentUser.currency}
           />
         )}
       </div>

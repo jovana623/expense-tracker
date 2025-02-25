@@ -6,16 +6,24 @@ import ChangeProfileInfoForm from "../features/profile/ChangeProfileInfoForm";
 import ConfirmDelete from "../ui/ConfirmDelete";
 import Modal from "../ui/Modal";
 import { useResetCurrentUser } from "../features/authentification/useResetCurrentUser";
+import { useUpdateUserCurrency } from "../features/authentification/useUpdateUserCurrency";
 
 function Profile() {
   const { data: currentUser, isLoading } = useCurrentUser();
   const { deleteCurrentUser } = useDeleteCurrentUser();
   const { resetCurrentUser } = useResetCurrentUser();
+  const { updateUserCurrency, isLoading: isUpdatingCurrency } =
+    useUpdateUserCurrency();
   const navigate = useNavigate();
 
   function handleDeleteAccount() {
     deleteCurrentUser();
     navigate("/login");
+  }
+
+  function handleCurrencyChange(e) {
+    const newCurrency = e.target.value;
+    updateUserCurrency(newCurrency);
   }
 
   return (
@@ -32,11 +40,27 @@ function Profile() {
           <h2 className="text-lg font-medium">App Preferences</h2>
           <div className="flex justify-between items-center">
             <span>Default Currency</span>
-            <div className="h-10 w-24 bg-gray-200 rounded"></div>
+            <select
+              className="h-10 w-30 bg-gray-200 rounded"
+              onChange={handleCurrencyChange}
+              value={currentUser?.currency || ""}
+              disabled={isUpdatingCurrency}
+            >
+              {!isLoading &&
+                currentUser.currency_choices.map(({ code, symbol }) => (
+                  <option key={code} value={code}>
+                    {symbol}
+                  </option>
+                ))}
+            </select>
           </div>
           <div className="flex justify-between items-center">
             <span>Notifications</span>
-            <div className="h-10 w-10 bg-gray-200 rounded"></div>
+
+            <select className="h-10 w-14 bg-gray-200 rounded">
+              <option value="on">On</option>
+              <option value="off">Off</option>
+            </select>
           </div>
         </section>
 

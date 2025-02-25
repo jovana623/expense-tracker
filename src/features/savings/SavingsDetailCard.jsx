@@ -13,11 +13,13 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
 import ChangeStatus from "./ChangeStatus";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function SavingsDetailCard({ saving }) {
+function SavingsDetailCard({ saving, currency }) {
   const { amount, goal } = saving;
   const { mutate: deleteSaving, isLoading } = useDeleteSaving();
+  const formattedCurrency = getCurrencyEntity(currency);
 
   if (isLoading) return <Spinner />;
   return (
@@ -26,10 +28,12 @@ function SavingsDetailCard({ saving }) {
         <div className="flex flex-col items-center gap-1">
           <p className="text-stone-500">You have reached</p>
           <h1 className="text-2xl font-semibold">
-            {amount.toLocaleString()}&euro;
+            {amount.toLocaleString()}
+            {formattedCurrency}
           </h1>
           <p className="text-stone-500">
-            of your {goal.toLocaleString()}&euro; saving goal
+            of your {goal.toLocaleString()}
+            {formattedCurrency} saving goal
           </p>
         </div>
         <div className="absolute top-6 right-5">
@@ -85,7 +89,7 @@ function SavingsDetailCard({ saving }) {
             <Button type="secondary">See details</Button>
           </Modal.OpenButton>
           <Modal.Window name="details">
-            <PaymentsList saving={saving} />
+            <PaymentsList saving={saving} currency={formattedCurrency} />
           </Modal.Window>
         </Modal>
         {saving.status === "Completed" ? (

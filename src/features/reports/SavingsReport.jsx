@@ -1,7 +1,9 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import { goalSummary, summary } from "../../helpers/sortTransactions";
 import ChartCard from "../../ui/ChartCard";
 import Spinner from "../../ui/Spinner";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 import PaymentsList from "../payments/PaymentsList";
 import SavingCard from "../savings/SavingsCard";
 
@@ -16,7 +18,9 @@ function SavingsReport() {
   const { data: typeData, isLoading: isLoadingType } =
     useTypeByMonth("Savings");
 
-  if (isLoading || isLoadingType) return <Spinner />;
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
+  if (isLoading || isLoadingType || isLoadingUser) return <Spinner />;
 
   const currentDate = new Date();
 
@@ -40,20 +44,20 @@ function SavingsReport() {
       <div id="pdf-content">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white p-4 rounded-lg shadow-md">
-            <SavingsContainer />
+            <SavingsContainer currency={currentUser.currency} />
           </div>
           <div className="grid grid-row-[15_fr_15fr_20fr] gap-5">
             <div className="grid grid-rows-3 gap-4">
               <ReportCard
                 title="Amount Saved"
                 amount={savingsSummary}
-                unit="€"
+                unit={currentUser.currency}
               />
 
               <ReportCard
                 title="Amount Left"
                 amount={savingGoalsSummary - savingsSummary}
-                unit="€"
+                unit={currentUser.currency}
               />
 
               <ReportCard
@@ -64,7 +68,7 @@ function SavingsReport() {
             </div>
             <ChartCard>
               <div>Payments over time</div>
-              <CategoryChart data={typeData} />
+              <CategoryChart data={typeData} currency={currentUser.currency} />
             </ChartCard>
           </div>
         </div>
@@ -75,8 +79,14 @@ function SavingsReport() {
               key={saving.id}
               className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-md border border-gray-200"
             >
-              <SavingCard saving={saving} />
-              <PaymentsList saving={saving} />
+              <SavingCard
+                saving={saving}
+                currency={getCurrencyEntity(currentUser.currency)}
+              />
+              <PaymentsList
+                saving={saving}
+                currency={getCurrencyEntity(currentUser.currency)}
+              />
             </div>
           ))}
         </div>

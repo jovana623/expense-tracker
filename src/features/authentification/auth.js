@@ -164,3 +164,20 @@ export async function resetCurrentUser() {
     throw new Error(err.message);
   }
 }
+
+export async function updateUserCurrency(currency) {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) throw new Error("No access token found");
+    const response = await axios.patch(
+      `${API_URL}/users/update-currency/`,
+      { currency },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}

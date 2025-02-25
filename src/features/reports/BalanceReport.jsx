@@ -18,6 +18,7 @@ import BalanceCard from "../balance/BalanceCard";
 import Spinner from "../../ui/Spinner";
 import ChartCard from "../../ui/ChartCard";
 import AreaChartComponent from "../balance/AreaChartComponent";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function BalanceReport() {
   const [searchParams] = useSearchParams();
@@ -45,7 +46,10 @@ function BalanceReport() {
     sortBy
   );
 
-  const isLoading = isLoadingDailyBalance || isLoadingMonthlyBalance;
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
+  const isLoading =
+    isLoadingDailyBalance || isLoadingMonthlyBalance || isLoadingUser;
 
   const {
     isMonthlyBalance,
@@ -111,6 +115,7 @@ function BalanceReport() {
               <AreaChartComponent
                 dailyBalance={dailyBalance}
                 monthlyBalance={monthlyBalance}
+                currency={currentUser.currency}
               />
             </ChartCard>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-5 mt-5">
@@ -120,6 +125,7 @@ function BalanceReport() {
                 balance={bestBalance.balance}
                 color="green-500"
                 percentage={bestBalanceDiff.toFixed(2)}
+                currency={currentUser.currency}
               />
               <BalanceCard
                 title={isMonthlyBalance ? "Worst month" : "Worst day"}
@@ -127,12 +133,14 @@ function BalanceReport() {
                 balance={worstBalance.balance}
                 color="red-500"
                 percentage={worstBalanceDiff.toFixed(2)}
+                currency={currentUser.currency}
               />
               <div className="">
                 <BalanceCard
                   title="Average balance"
                   balance={averageBalance.toFixed(2)}
                   color="blue-500"
+                  currency={currentUser.currency}
                 />
               </div>
             </div>
@@ -144,16 +152,21 @@ function BalanceReport() {
               <PositiveAndNegativeBar
                 data={sortedByMonth}
                 monthData={monthData}
+                currency={currentUser.currency}
               />
             </ChartCard>
             <ChartCard title="Income vs Expense (Bar View)">
               <div></div>
-              <LineChartComponent data={sortedByMonth} monthData={monthData} />
+              <LineChartComponent
+                data={sortedByMonth}
+                monthData={monthData}
+                currency={currentUser.currency}
+              />
             </ChartCard>
           </div>
         </div>
         <div className="mt-6">
-          <Table data={transactions} />
+          <Table data={transactions} currency={currentUser.currency} />
         </div>
       </div>
     </div>

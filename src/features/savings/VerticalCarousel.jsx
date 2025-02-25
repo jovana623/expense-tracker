@@ -1,8 +1,9 @@
 import Slider from "react-slick";
 import SavingsCard from "./SavingsCard";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function VerticalCarousel({ savings, onCardChange, activeSaving }) {
+function VerticalCarousel({ savings, onCardChange, activeSaving, currency }) {
   const SamplePrevArrow = (props) => {
     const { className, onClick } = props;
     return (
@@ -31,6 +32,8 @@ function VerticalCarousel({ savings, onCardChange, activeSaving }) {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
+
+  const formattedCurrency = getCurrencyEntity(currency);
   return (
     <div className="slider-container">
       <Slider {...settings}>
@@ -40,6 +43,7 @@ function VerticalCarousel({ savings, onCardChange, activeSaving }) {
               saving={saving}
               onCardChange={onCardChange}
               activeSaving={activeSaving}
+              currency={formattedCurrency}
             />
           </div>
         ))}

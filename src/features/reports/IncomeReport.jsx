@@ -8,6 +8,7 @@ import StatsTable from "../statistics/StatsTable";
 import { useSearchParams } from "react-router-dom";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import ReportCard from "./ReportCard";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function IncomeReport() {
   const [searchParams] = useSearchParams();
@@ -23,6 +24,8 @@ function IncomeReport() {
     time,
     month
   );
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
   const summary = summarizeAmountsByType(incomeTransactions);
   const currentDate = new Date();
   const options = { month: "long", year: "numeric" };
@@ -30,7 +33,7 @@ function IncomeReport() {
   const monthDate = new Date(month);
   const monthParam = monthDate.toLocaleDateString("en-US", options);
 
-  if (isLoadingStats) return <Spinner />;
+  if (isLoadingStats || isLoadingUser) return <Spinner />;
 
   const timeReport =
     time === "month"
@@ -59,7 +62,7 @@ function IncomeReport() {
         </div>
         <div id="pdf-content" className="flex flex-col gap-10">
           <div className="grid grid-cols-1 gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-            <DetailedPieChart data={summary} />
+            <DetailedPieChart data={summary} currency={currentUser.currency} />
 
             <div className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -67,17 +70,17 @@ function IncomeReport() {
                   title="Top income"
                   subtitle={statistic.top_income.name}
                   amount={statistic.top_income.amount}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
                 <ReportCard
                   title="Average Income"
                   amount={statistic.avg_income}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
                 <ReportCard
                   title="Total Income"
                   amount={totalIncome}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
               </div>
 
@@ -85,13 +88,20 @@ function IncomeReport() {
                 <p className="text-sm text-gray-700 uppercase mb-2">
                   Top income types
                 </p>
-                <StatsTable data={statistic.top_income_types} />
+                <StatsTable
+                  data={statistic.top_income_types}
+                  currency={currentUser.currency}
+                />
               </div>
             </div>
           </div>
 
           <div>
-            <Table data={incomeTransactions} isLoading={isLoading} />
+            <Table
+              data={incomeTransactions}
+              isLoading={isLoading || isLoadingUser}
+              currency={currentUser.currency}
+            />
           </div>
         </div>
       </div>

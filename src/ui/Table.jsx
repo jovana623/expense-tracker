@@ -12,15 +12,17 @@ import CreateTransactionForm from "../features/transactions/CreateTransactionFor
 import ConfirmDelete from "./ConfirmDelete";
 import TransactionDetails from "../features/transactions/TransactionDetails";
 import TableSkeleton from "./TableSkeleton";
+import { getCurrencyEntity } from "../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function Table({ data, isLoading }) {
+function Table({ data, isLoading, currency }) {
   const { deleteTransaction } = useDeleteTransaction();
 
   const isTransactionsPath = location.pathname === "/transactions";
   const isReportPage = location.pathname.includes("/report");
   const isCalendarPath = location.pathname === "/calendar";
   const isBudgetPath = location.pathname === "/budget";
+  const formattedCurrency = getCurrencyEntity(currency);
 
   function shortDescription(desc) {
     const words = desc.split(" ");
@@ -101,7 +103,7 @@ function Table({ data, isLoading }) {
                 </th>
                 <th className="px-6 py-4">
                   {item.amount.toLocaleString()}
-                  &euro;
+                  {formattedCurrency}
                 </th>
                 {isTransactionsPath || isReportPage ? (
                   <th
@@ -196,7 +198,10 @@ function Table({ data, isLoading }) {
                           )}
                         </Modal.Window>
                         <Modal.Window name="details">
-                          <TransactionDetails item={item} />
+                          <TransactionDetails
+                            item={item}
+                            currency={formattedCurrency}
+                          />
                         </Modal.Window>
                       </Menu>
                     </Modal>

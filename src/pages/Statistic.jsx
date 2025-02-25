@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useTypeByMonth } from "../features/statistics/useTypeByMonth";
 import { useTransactionStatistic } from "../features/transactions/useTransactionStatistic";
 import { useTypes } from "../features/type/useTypes";
+import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 import SavingsContainer from "../features/statistics/SavingsContainer";
 import ChartCard from "../ui/ChartCard";
@@ -30,6 +31,8 @@ function Statistic() {
     setSearchParams(searchParams);
   }
 
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
   return (
     <div className="py-8 px-7">
       <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">
@@ -40,13 +43,17 @@ function Statistic() {
             ) : (
               <SelectType data={types} onChange={handleTypeChange} />
             )}
-            {isLoading ? <ChartSkeleton /> : <CategoryChart data={typeData} />}
+            {isLoading || isLoadingUser ? (
+              <ChartSkeleton />
+            ) : (
+              <CategoryChart data={typeData} currency={currentUser.currency} />
+            )}
           </ChartCard>
           <ChartCard>
             <TimeFilter />
 
             <div className="flex flex-col sm:flex-row gap-3">
-              {isLoadingStats ? (
+              {isLoadingStats || isLoadingUser ? (
                 <div className="my-3 shadow-sm w-[200px] mx-auto">
                   <CardSkeleton size={4} />
                 </div>
@@ -56,9 +63,10 @@ function Statistic() {
                   titleBack="Top income"
                   transaction={statistic.top_income}
                   avg={statistic.avg_income}
+                  currency={currentUser.currency}
                 />
               )}
-              {isLoadingStats ? (
+              {isLoadingStats || isLoadingUser ? (
                 <div className="my-3 shadow-sm w-[200px] mx-auto">
                   <CardSkeleton size={4} />
                 </div>
@@ -68,13 +76,14 @@ function Statistic() {
                   titleBack="Top expense"
                   transaction={statistic.top_expense}
                   avg={statistic.avg_expense}
+                  currency={currentUser.currency}
                 />
               )}
             </div>
           </ChartCard>
         </div>
         <div className="">
-          <SavingsContainer />
+          <SavingsContainer currency={currentUser.currency} />
         </div>
         <div>
           <ChartCard>
@@ -86,14 +95,16 @@ function Statistic() {
               </p>
               <StatsTable
                 data={statistic?.top_income_types || []}
-                isLoading={isLoadingStats}
+                isLoading={isLoadingStats || isLoadingUser}
+                currency={currentUser.currency}
               />
               <p className="text-xs text-gray-700 uppercase bg-gray-50">
                 Top expense types
               </p>
               <StatsTable
                 data={statistic?.top_expense_types || []}
-                isLoading={isLoadingStats}
+                isLoading={isLoadingStats || isLoadingUser}
+                currency={currentUser.currency}
               />
             </div>
           </ChartCard>

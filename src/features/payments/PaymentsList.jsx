@@ -4,7 +4,7 @@ import { useDeletePayment } from "./useDeletePayment";
 import { formatDate } from "../../helpers/dateFunctions";
 
 /* eslint-disable react/prop-types */
-function PaymentList({ saving }) {
+function PaymentList({ saving, currency }) {
   const { payments } = saving;
   const { deletePayment, isDeletingPayment } = useDeletePayment();
 
@@ -40,7 +40,8 @@ function PaymentList({ saving }) {
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
               >
-                {payment.amount.toLocaleString()}&euro;
+                {payment.amount.toLocaleString()}
+                {currency}
               </th>
               <td className="px-6 py-4">{formatDate(payment.date)}</td>
               <td className="px-6 py-4">

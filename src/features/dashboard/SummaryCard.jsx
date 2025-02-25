@@ -4,6 +4,7 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import CardSkeleton from "../../ui/CardSkeleton";
 import Menu from "../../ui/Menu";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function SummaryCard({
@@ -14,6 +15,7 @@ function SummaryCard({
   isActive,
   isLoading,
   reportPath,
+  currency,
 }) {
   const [searchParams] = useSearchParams();
   let time = searchParams.get("time") || "";
@@ -69,7 +71,8 @@ function SummaryCard({
               {name.toUpperCase()}
             </p>
             <p className="text-xl font-bold mb-2">
-              {amount.toLocaleString()}&euro;
+              {amount.toLocaleString()}
+              {getCurrencyEntity(currency)}
             </p>
 
             {time === "all" && name !== "Savings" ? (

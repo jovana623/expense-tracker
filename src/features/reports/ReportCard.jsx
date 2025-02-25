@@ -1,3 +1,5 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 /* eslint-disable react/prop-types */
 function ReportCard({ title, subtitle = "", amount, unit }) {
   return (
@@ -10,7 +12,7 @@ function ReportCard({ title, subtitle = "", amount, unit }) {
       <p>{subtitle}</p>
       <p className="text-xl font-semibold text-gray-800">
         {amount === null ? "0.00" : Number(amount).toLocaleString()}
-        {unit}
+        {getCurrencyEntity(unit)}
       </p>
     </div>
   );

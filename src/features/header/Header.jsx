@@ -5,7 +5,6 @@ import HeaderSkeleton from "../../ui/HeaderSkeleton";
 function Header() {
   const { mutate: logout } = useLogout();
   const { data: user, isLoading } = useCurrentUser();
-  console.log(user);
 
   const avatarUrl = user?.avatar
     ? `http://localhost:8000${user.avatar}`

@@ -1,7 +1,7 @@
 import { calculateDaysLeft } from "../../helpers/dateFunctions";
 
 /* eslint-disable react/prop-types */
-function SavingCard({ saving, onCardChange, activeSaving }) {
+function SavingCard({ saving, onCardChange, activeSaving, currency }) {
   if (!saving) return null;
 
   const startDate = new Date();
@@ -69,8 +69,9 @@ function SavingCard({ saving, onCardChange, activeSaving }) {
             </div>
             <div className="flex justify-between mt-3 text-stone-500">
               <p>
-                {saving.amount.toLocaleString()}&euro; /{" "}
-                {saving.goal.toLocaleString()}&euro;
+                {saving.amount.toLocaleString()}
+                {currency} / {saving.goal.toLocaleString()}
+                {currency}
               </p>
               <p>{percentage}&#x25;</p>
             </div>

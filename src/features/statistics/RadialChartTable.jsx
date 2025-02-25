@@ -1,5 +1,8 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 /* eslint-disable react/prop-types */
-function RadialChartTable({ data }) {
+function RadialChartTable({ data, currency }) {
+  const formattedCurrency = getCurrencyEntity(currency);
   return (
     <ul className="flex gap-4 flex-col px-3 overflow-y-scroll h-[fit-container] max-h-[240px]">
       {data.map((entry, index) => (
@@ -14,9 +17,9 @@ function RadialChartTable({ data }) {
 
           <p>{data[index].name}</p>
           <p className="font-semibold justify-self-center">
-            {data[index].amount.toLocaleString()}&euro; /{" "}
-            {data[index].goal.toLocaleString()}
-            &euro;
+            {data[index].amount.toLocaleString()}
+            {formattedCurrency}/ {data[index].goal.toLocaleString()}
+            {formattedCurrency}
           </p>
           <p className="text-stone-500">{data[index].percentage}%</p>
         </li>

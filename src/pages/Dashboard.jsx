@@ -27,6 +27,7 @@ import AddForm from "../ui/AddForm";
 import MonthFilter from "../ui/MonthFilter";
 import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
+import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -88,6 +89,9 @@ function Dashboard() {
     1
   );
 
+  const { data: currentUser, isLoadingUser } = useCurrentUser();
+  console.log(currentUser);
+
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between items-center mb-3">
@@ -131,8 +135,9 @@ function Dashboard() {
             amount={totalIncome}
             percentage={incomePercentage}
             isActive={location.pathname === "/dashboard/income"}
-            isLoading={isLoadingIncome}
+            isLoading={isLoadingIncome || isLoadingUser}
             reportPath="income"
+            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink
@@ -151,8 +156,9 @@ function Dashboard() {
             amount={totalExpense}
             percentage={expensePercentage}
             isActive={location.pathname === "/dashboard/expenses"}
-            isLoading={isLoadingExpense}
+            isLoading={isLoadingExpense || isLoadingUser}
             reportPath="expense"
+            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink
@@ -171,8 +177,9 @@ function Dashboard() {
             amount={currentMonthBalance}
             percentage={balancePercentage.toFixed(2)}
             isActive={location.pathname === "/dashboard/balance"}
-            isLoading={isLoadingBalance}
+            isLoading={isLoadingBalance || isLoadingUser}
             reportPath="balance"
+            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink to="savings" className="w-full">
@@ -182,8 +189,9 @@ function Dashboard() {
             amount={savingsSummary}
             percentage={percentageSaved}
             isActive={location.pathname === "/dashboard/savings"}
-            isLoading={isLoadingSavings}
+            isLoading={isLoadingSavings || isLoadingUser}
             reportPath="savings"
+            currency={currentUser?.currency}
           />
         </NavLink>
       </div>

@@ -8,9 +8,10 @@ import { useDeleteBudget } from "./useDeleteBudget";
 import Spinner from "../../ui/Spinner";
 import CreateBudgetForm from "./CreateBudgetForm";
 import Table from "../../ui/Table";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function LimitsCard({ data }) {
+function LimitsCard({ data, currency }) {
   const { deleteBudget, isLoading } = useDeleteBudget();
   if (isLoading) return <Spinner />;
   return (
@@ -43,7 +44,7 @@ function LimitsCard({ data }) {
               />
             </Modal.Window>
             <Modal.Window name="budget-details">
-              <Table data={data.transactions} />
+              <Table data={data.transactions} currency={currency} />
             </Modal.Window>
           </Menu>
         </Modal>
@@ -64,8 +65,9 @@ function LimitsCard({ data }) {
             {data.percentage.toFixed(0)}&#x25;
           </span>
           <span className="text-sm text-zinc-600">
-            {data.total.toLocaleString()}&euro;/{data.amount.toLocaleString()}
-            &euro;
+            {data.total.toLocaleString()}
+            {getCurrencyEntity(currency)}/{data.amount.toLocaleString()}
+            {getCurrencyEntity(currency)}
           </span>
         </div>
       </div>

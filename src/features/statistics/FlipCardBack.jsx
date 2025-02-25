@@ -1,11 +1,14 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 /* eslint-disable react/prop-types */
-function FlipCardBack({ title, transaction }) {
+function FlipCardBack({ title, transaction, currency }) {
   return (
     <div className="bg-white p-4 rounded-md shadow-md flex flex-col text-center h-[80%] justify-around">
       <p className="text-xs text-gray-500 uppercase">{title}</p>
       <p className="">{transaction.name}</p>
       <p className="text-xl font-semibold text-gray-800">
-        {transaction.amount.toLocaleString()}&euro;
+        {transaction.amount.toLocaleString()}
+        {getCurrencyEntity(currency)}
       </p>
 
       <svg

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import ChartCard from "../../ui/ChartCard";
 import Table from "../../ui/Table";
 import DetailedPieChart from "../../ui/DetailedPieChart";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function Income() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +20,8 @@ function Income() {
 
   const { incomeTransactions, paginatedTransactions, isLoading } =
     useIncomeTransactions(time, month, sortBy, page, pageSize);
+
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
 
   useEffect(() => {
     setSearchParams({ time, month, sortBy, page });
@@ -36,13 +39,18 @@ function Income() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full">
         <ChartCard title="Income Breakdown">
           <div></div>
-          {isLoading ? <Spinner /> : <DetailedPieChart data={summary} />}
+          {isLoading || isLoadingUser ? (
+            <Spinner />
+          ) : (
+            <DetailedPieChart data={summary} currency={currentUser.currency} />
+          )}
         </ChartCard>
         <div className="flex flex-col gap-4">
           <div className="flex-grow">
             <Table
               data={paginatedTransactions?.results || []}
-              isLoading={isLoading}
+              isLoading={isLoading || isLoadingUser}
+              currency={currentUser.currency}
             />
           </div>
           <div className="mt-auto self-center">

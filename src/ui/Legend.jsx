@@ -1,5 +1,7 @@
+import { getCurrencyEntity } from "../helpers/currencyFunctions";
+
 /* eslint-disable react/prop-types */
-function Legend({ data }) {
+function Legend({ data, currency }) {
   return (
     <div>
       <ul>
@@ -14,7 +16,8 @@ function Legend({ data }) {
             ></div>
             <span className="text-stone-400"> {data[index].typeName} </span>{" "}
             <span className="text-stone-900 font-semibold ml-auto">
-              {data[index].amount.toLocaleString()}&euro;
+              {data[index].amount.toLocaleString()}
+              {getCurrencyEntity(currency)}
             </span>
           </li>
         ))}

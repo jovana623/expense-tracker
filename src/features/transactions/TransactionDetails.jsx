@@ -1,7 +1,7 @@
 import { formatDate } from "../../helpers/dateFunctions";
 
 /* eslint-disable react/prop-types */
-function TransactionDetails({ item }) {
+function TransactionDetails({ item, currency }) {
   return (
     <div>
       <div className="flex justify-between items-center border-b pb-3">
@@ -22,7 +22,10 @@ function TransactionDetails({ item }) {
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-600">Amount:</span>
-            <span className="text-gray-800">{item.amount}&euro;</span>
+            <span className="text-gray-800">
+              {item.amount}
+              {currency}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-600">Type:</span>

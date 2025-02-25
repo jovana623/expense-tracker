@@ -10,9 +10,10 @@ import {
 } from "recharts";
 import { prepareData } from "../../helpers/savingsFunctions";
 import { formatDate } from "../../helpers/dateFunctions";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function SavingsGoalChart({ data }) {
+function SavingsGoalChart({ data, currency }) {
   const { chartData, endDate } = prepareData(data);
 
   const lastPaymentIndex = chartData.findIndex((item, index) => {
@@ -22,7 +23,10 @@ function SavingsGoalChart({ data }) {
   const solidData = chartData.slice(0, lastPaymentIndex + 1);
   const dottedData = chartData.slice(lastPaymentIndex);
 
-  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+  const formattedCurrency = getCurrencyEntity(currency);
+
+  const currencyFormatter = (tick) =>
+    `${tick.toLocaleString()}${formattedCurrency}`;
 
   function renderTooltip({ active, payload }) {
     if (!active || !payload || !payload[0]) return null;
@@ -37,8 +41,14 @@ function SavingsGoalChart({ data }) {
         <p>
           {day} {monthLong} {year}
         </p>
-        <p className="text-red-500">Goal: {goal.toLocaleString()}€</p>
-        <p className="text-green-500">Saved: {total.toLocaleString()}€</p>{" "}
+        <p className="text-red-500">
+          Goal: {goal.toLocaleString()}
+          {formattedCurrency}
+        </p>
+        <p className="text-green-500">
+          Saved: {total.toLocaleString()}
+          {getCurrencyEntity(currency)}
+        </p>{" "}
       </div>
     );
   }
@@ -54,7 +64,7 @@ function SavingsGoalChart({ data }) {
             type="category"
             domain={[chartData[0]?.date, endDate]}
           />
-          <YAxis tickFormatter={euroFormatter} />
+          <YAxis tickFormatter={currencyFormatter} />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"

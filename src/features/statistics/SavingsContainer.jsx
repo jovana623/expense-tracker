@@ -3,7 +3,8 @@ import Spinner from "../../ui/Spinner";
 import RadialBarChart from "./RadialBarChart";
 import RadialChartTable from "./RadialChartTable";
 
-function SavingsContainer() {
+/* eslint-disable react/prop-types */
+function SavingsContainer({ currency }) {
   const { savings, isLoading } = useSavings();
 
   if (!savings) return null;
@@ -21,7 +22,7 @@ function SavingsContainer() {
       ) : (
         <>
           <RadialBarChart data={adjustedData} />
-          <RadialChartTable data={adjustedData} />
+          <RadialChartTable data={adjustedData} currency={currency} />
         </>
       )}
     </div>

@@ -8,12 +8,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function AreaChartComponent({ dailyBalance, monthlyBalance }) {
+function AreaChartComponent({ dailyBalance, monthlyBalance, currency }) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";
+  const formattedCurrency = getCurrencyEntity(currency);
 
   let balance = [];
 
@@ -34,11 +36,15 @@ function AreaChartComponent({ dailyBalance, monthlyBalance }) {
         <p>
           {day} {monthLong} {year}
         </p>
-        <p className="text-green-500">Balance: {balance.toLocaleString()}€</p>
+        <p className="text-green-500">
+          Balance: {balance.toLocaleString()}
+          {formattedCurrency}
+        </p>
       </div>
     );
   }
-  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+  const euroFormatter = (tick) =>
+    `${tick.toLocaleString()}${formattedCurrency}`;
 
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");

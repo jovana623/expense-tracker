@@ -5,10 +5,12 @@ import Spinner from "../../ui/Spinner";
 import DateDetailsButton from "./DateDetailsButton";
 import { useState } from "react";
 import DateNoTransactions from "./DateNoTransactions";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function CustomCalendar() {
   const { transactions, isLoading } = useTransactions();
   const [currentDate, setCurrentDate] = useState(null);
+  const { data: currentUser } = useCurrentUser();
 
   function showTransaction(date) {
     const dateCal = date.toLocaleDateString("en-CA");
@@ -32,7 +34,11 @@ function CustomCalendar() {
             </div>
           ))}
         </div>
-        <DateDetailsButton data={dayTransactions} date={currentDate} />
+        <DateDetailsButton
+          data={dayTransactions}
+          date={currentDate}
+          currency={currentUser.currency}
+        />
       </>
     ) : (
       <DateNoTransactions />

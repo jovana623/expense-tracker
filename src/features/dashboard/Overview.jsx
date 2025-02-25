@@ -16,6 +16,7 @@ import PositiveAndNegativeBar from "./PositiveAndNegativeBar";
 import LineChartComponent from "./LineChartComponent";
 import ChartCard from "../../ui/ChartCard";
 import ChartSkeleton from "../../ui/ChartSkeleton";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 const charts = [
   { id: 1, value: "bar", name: "Bar chart" },
@@ -36,6 +37,7 @@ function Overview() {
 
   const { saving, isLoading: isLoadingSaving } = useSaving(savingParam);
   const { savings, isLoading: isLoadingSavings } = useSavings();
+  const { data: currectUser, isLoading: isLoadingUser } = useCurrentUser();
 
   let monthData = [];
   let sortedByMonth = [];
@@ -59,7 +61,7 @@ function Overview() {
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard title="Income vs. Expenses">
         <Select data={charts} onChange={handleGraphChange} />
-        {isLoadingTransactions ? (
+        {isLoadingTransactions || isLoadingUser ? (
           <ChartSkeleton />
         ) : (
           <>
@@ -67,9 +69,14 @@ function Overview() {
               <PositiveAndNegativeBar
                 data={sortedByMonth}
                 monthData={monthData}
+                currency={currectUser.currency}
               ></PositiveAndNegativeBar>
             ) : (
-              <LineChartComponent data={sortedByMonth} monthData={monthData} />
+              <LineChartComponent
+                data={sortedByMonth}
+                monthData={monthData}
+                currency={currectUser.currency}
+              />
             )}
           </>
         )}
@@ -80,10 +87,10 @@ function Overview() {
         ) : (
           <Select data={savings} onChange={handleSavingChange} />
         )}
-        {isLoadingSaving ? (
+        {isLoadingSaving || isLoadingUser ? (
           <ChartSkeleton />
         ) : (
-          <SavingsGoalChart data={saving} />
+          <SavingsGoalChart data={saving} currency={currectUser.currency} />
         )}
       </ChartCard>
     </div>

@@ -9,13 +9,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function LineChartComponent({ data, monthData }) {
+function LineChartComponent({ data, monthData, currency }) {
   console.log(monthData);
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";
+  const formattedCurrency = getCurrencyEntity(currency);
 
   if (!data) return null;
   let adjustedData = {};
@@ -29,7 +31,8 @@ function LineChartComponent({ data, monthData }) {
     expenses: Math.abs(item.expenses),
   }));
 
-  const euroFormatter = (tick) => `${tick.toLocaleString()}€`;
+  const currencyFormatter = (tick) =>
+    `${tick.toLocaleString()}${formattedCurrency}`;
 
   function renderTooltip({ active, payload }) {
     if (!active || !payload || !payload[0]) return null;
@@ -54,8 +57,14 @@ function LineChartComponent({ data, monthData }) {
         ) : (
           <p>{monthYear}</p>
         )}
-        <p className="text-green-500">Income: {income.toLocaleString()}€</p>{" "}
-        <p className="text-red-500">Expenses: {expenses.toLocaleString()}€</p>
+        <p className="text-green-500">
+          Income: {income.toLocaleString()}
+          {formattedCurrency}
+        </p>{" "}
+        <p className="text-red-500">
+          Expenses: {expenses.toLocaleString()}
+          {formattedCurrency}
+        </p>
       </div>
     );
   }
@@ -74,7 +83,7 @@ function LineChartComponent({ data, monthData }) {
             <XAxis dataKey="monthYear" />
           )}
 
-          <YAxis tickFormatter={euroFormatter} />
+          <YAxis tickFormatter={currencyFormatter} />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"

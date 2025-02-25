@@ -8,6 +8,7 @@ import DetailedPieChart from "../../ui/DetailedPieChart";
 import StatsTable from "../statistics/StatsTable";
 import ReportCard from "./ReportCard";
 import Table from "../../ui/Table";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function ExpenseReport() {
   const [searchParams] = useSearchParams();
@@ -21,6 +22,8 @@ function ExpenseReport() {
     month
   );
 
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
   const summary = summarizeAmountsByType(expenseTransactions);
   const currentDate = new Date();
   const options = { month: "long", year: "numeric" };
@@ -28,7 +31,7 @@ function ExpenseReport() {
   const monthDate = new Date(month);
   const monthParam = monthDate.toLocaleDateString("en-US", options);
 
-  if (isLoadingStats) return <Spinner />;
+  if (isLoadingStats || isLoadingUser) return <Spinner />;
 
   const timeReport =
     time === "month"
@@ -57,7 +60,7 @@ function ExpenseReport() {
         </div>
         <div id="pdf-content" className="flex flex-col gap-10">
           <div className="grid grid-cols-1 gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-            <DetailedPieChart data={summary} />
+            <DetailedPieChart data={summary} currency={currentUser.currency} />
 
             <div className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -65,18 +68,18 @@ function ExpenseReport() {
                   title="Top Expense"
                   subtitle={statistic.top_expense.name}
                   amount={statistic.top_expense.amount}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
                 <ReportCard
                   title="Average Expense"
                   amount={statistic.avg_expense}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
 
                 <ReportCard
                   title="Total Expense"
                   amount={totalExpense}
-                  unit="€"
+                  unit={currentUser.currency}
                 />
               </div>
 
@@ -84,13 +87,20 @@ function ExpenseReport() {
                 <p className="text-sm text-gray-700 uppercase mb-2">
                   Top expense types
                 </p>
-                <StatsTable data={statistic.top_expense_types} />
+                <StatsTable
+                  data={statistic.top_expense_types}
+                  currency={currentUser.currency}
+                />
               </div>
             </div>
           </div>
 
           <div>
-            <Table data={expenseTransactions} isLoading={isLoading} />
+            <Table
+              data={expenseTransactions}
+              isLoading={isLoading || isLoadingUser}
+              currency={currentUser.currency}
+            />
           </div>
         </div>
       </div>

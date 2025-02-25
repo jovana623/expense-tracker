@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import ChartCard from "../../ui/ChartCard";
 import { useDailyBalance } from "../transactions/useDailyBalance";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 import AreaChartComponent from "./AreaChartComponent";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
@@ -24,7 +25,10 @@ function Balance() {
   const { monthlyBalance, isLoading: isLoadingMonthlyBalance } =
     useMonthlyBalance(time);
 
-  const isLoading = isLoadingDailyBalance || isLoadingMonthlyBalance;
+  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+
+  const isLoading =
+    isLoadingDailyBalance || isLoadingMonthlyBalance || isLoadingUser;
 
   const {
     isMonthlyBalance,
@@ -39,12 +43,13 @@ function Balance() {
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
       <ChartCard title="Net Balance Progress">
         <div></div>
-        {isLoadingDailyBalance || isLoadingMonthlyBalance ? (
+        {isLoading ? (
           <ChartSkeleton />
         ) : (
           <AreaChartComponent
             dailyBalance={dailyBalance}
             monthlyBalance={monthlyBalance}
+            currency={currentUser.currency}
           />
         )}
       </ChartCard>
@@ -56,7 +61,10 @@ function Balance() {
           balance={bestBalance?.balance || 0}
           color="green-500"
           percentage={bestBalanceDiff ? bestBalanceDiff.toFixed(2) : "0.00"}
-          isLoading={isLoading || !worstBalance || !bestBalance}
+          isLoading={
+            isLoading || !worstBalance || !bestBalance || isLoadingUser
+          }
+          currency={currentUser.currency}
         />
         <BalanceCard
           title={isMonthlyBalance ? "Worst month" : "Worst day"}
@@ -64,12 +72,14 @@ function Balance() {
           balance={worstBalance?.balance || 0}
           color="red-500"
           percentage={worstBalanceDiff ? worstBalanceDiff.toFixed(2) : "0.00"}
+          currency={currentUser.currency}
         />
         <div className="md:col-span-2">
           <BalanceCard
             title="Average balance"
             balance={averageBalance ? averageBalance.toFixed(2) : "0.00"}
             color="blue-500"
+            currency={currentUser.currency}
           />
         </div>
       </div>

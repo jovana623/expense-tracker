@@ -1,8 +1,17 @@
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import { formatDate } from "../../helpers/dateFunctions";
 import CardSkeleton from "../../ui/CardSkeleton";
 
 /* eslint-disable react/prop-types */
-function BalanceCard({ title, date, balance, color, percentage, isLoading }) {
+function BalanceCard({
+  title,
+  date,
+  balance,
+  color,
+  percentage,
+  isLoading,
+  currency,
+}) {
   return (
     <div
       className={`p-6 rounded-lg border-t-4 text-center shadow-md border-${color} h-full flex flex-col`}
@@ -20,7 +29,8 @@ function BalanceCard({ title, date, balance, color, percentage, isLoading }) {
 
           <div className="flex-grow">
             <p className="text-2xl font-bold text-gray-800">
-              {balance.toLocaleString()}€
+              {balance.toLocaleString()}
+              {getCurrencyEntity(currency)}
             </p>
           </div>
           {percentage && (
