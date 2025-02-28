@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import UsersTable from "../features/admin/UsersTable";
 import { useUsersList } from "../features/authentification/useUsersList";
 import Search from "../ui/Search";
+import TypesTable from "../features/admin/TypesTable";
 
 function AdminPanel() {
   const [searchParams] = useSearchParams();
@@ -20,11 +21,7 @@ function AdminPanel() {
       </div>
 
       <div className="bg-white border p-6 rounded-2xl shadow-lg">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">Types</h2>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg transition">
-          Add type
-        </button>
-        <div className="mt-4 text-gray-500">[List]</div>
+        <TypesTable />
       </div>
     </div>
   );
