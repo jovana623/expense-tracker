@@ -24,7 +24,7 @@ function TypesTable() {
 
       <div className="relative h-[70vh] overflow-y-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10 shadow">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Name
@@ -48,7 +48,7 @@ function TypesTable() {
               {types.map((item, index) => (
                 <tr
                   key={index}
-                  className="bg-white border-b  border-gray-200 hover:bg-gray-50 "
+                  className="bg-white border-b border-gray-200 hover:bg-gray-50 "
                 >
                   <th
                     scope="row"

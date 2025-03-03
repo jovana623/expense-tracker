@@ -12,29 +12,31 @@ import { useCurrentUser } from "../authentification/useCurrentUser";
 function UsersTable({ data, isLoading }) {
   const { deleteUser } = useDeleteUser();
   const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
-  console.log(data);
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 overflow-y-scroll">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+    <div className="relative overflow-x-auto sm:overflow-x-scroll shadow-md sm:rounded-lg h-auto sm:h-[70vh] min-h-[auto] sm:min-h-[70vh] lg:overflow-hidden">
+      <table className="w-full text-xs sm:text-xs text-left rtl:text-right text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10 shadow">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            <th
+              scope="col"
+              className="px-4 sm:px-6 py-3 sticky left-0 bg-gray-50 z-10 w-32 sm:w-auto"
+            >
               Name
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-4 sm:px-6 py-3">
               Staff
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-4 sm:px-6 py-3">
               Status
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-4 sm:px-6 py-3">
               Created at
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-4 sm:px-6 py-3">
               Last login
             </th>
-            <th scope="col" className="px-6 py-3"></th>
+            <th scope="col" className="px-4 sm:px-6 py-3"></th>
           </tr>
         </thead>
         {isLoading || isLoadingUser ? (
@@ -50,37 +52,36 @@ function UsersTable({ data, isLoading }) {
             {data.map((item, index) => (
               <tr
                 key={index}
-                className="bg-white border-b border-gray-200 hover:bg-gray-50 "
+                className="bg-white border-b border-gray-200 hover:bg-gray-50"
               >
                 <th
                   scope="row"
-                  className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
+                  className="flex items-center px-4 sm:px-6 py-4 text-gray-900 whitespace-nowrap sticky left-0 bg-white hover:bg-gray-50 z-10 w-32 sm:w-auto overflow-hidden"
                 >
                   {item.avatar ? (
                     <img
-                      className="w-10 h-10 rounded-full"
+                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                       src={`${item.avatar}`}
                       alt="profile image"
                     />
                   ) : (
                     <img
                       src="/anon-user.png"
-                      width="36px"
+                      width="32px"
                       className="rounded-full shadow-sm"
                       alt="anonymous user"
                     />
                   )}
-
-                  <div className="ps-3">
-                    <div className="text-base font-semibold">
+                  <div className="ps-2 sm:ps-3">
+                    <div className="text-xs sm:text-base font-semibold">
                       {item.username}
                     </div>
-                    <div className="font-normal text-gray-500">
+                    <div className="text-[10px] sm:text-sm font-normal text-gray-500">
                       {item.email}
                     </div>
                   </div>
                 </th>
-                <td className="px-6 py-4">
+                <td className="px-4 sm:px-6 py-4">
                   {item.is_staff ? (
                     <svg
                       className="w-3 h-3 text-green-500"
@@ -115,18 +116,14 @@ function UsersTable({ data, isLoading }) {
                     </svg>
                   )}
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center">
-                    <div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>{" "}
-                    {item.is_active ? "Active" : "Not active"}
-                  </div>
+                <td className="px-4 sm:px-6 py-4">
+                  {item.is_active ? "Active" : "Not active"}
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-4 sm:px-6 py-4">
                   {new Date(item.created_at).toLocaleDateString("en-US")}
                 </td>
-
-                <td className="px-6 py-4">{item.last_login}</td>
-                <td className="px-6 py-4">
+                <td className="px-4 sm:px-6 py-4">{item.last_login}</td>
+                <td className="px-4 sm:px-6 py-4">
                   {((currentUser.is_superuser && !item.is_superuser) ||
                     (currentUser.is_staff && !item.is_staff)) && (
                     <Modal>

@@ -1,24 +1,23 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import Logo from "./Logo";
-import Spinner from "./Spinner";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
 import { BiCoinStack } from "react-icons/bi";
 import { VscGraphLine } from "react-icons/vsc";
-import { RxGear } from "react-icons/rx";
 import { RxAvatar } from "react-icons/rx";
 import { CiCalendar } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import { useCurrentUser } from "../features/authentification/useCurrentUser";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import MenuSkeleton from "./MenuSkeleton";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const { data: user, isLoading } = useCurrentUser();
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <MenuSkeleton />;
 
   return (
     <nav className="relative">
@@ -124,19 +123,6 @@ function NavBar() {
 
           <li>
             <NavLink
-              to="settings"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <RxGear />
-              <span>Settings</span>
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
               to="profile"
               className={({ isActive }) =>
                 isActive ? "nav nav-active" : "nav"
@@ -150,101 +136,94 @@ function NavBar() {
         </ul>
       </div>
 
-      <div className="hidden lg:flex flex-col row-span-2 border-r border-stone-200 px-10 gap-10">
+      <div className="hidden lg:flex flex-col row-span-2 border-r border-stone-200 px-10 gap-15 h-full">
         <Logo />
-        <ul className="flex flex-col gap-4 text-stone-500 text-lg">
-          <li>
-            <NavLink
-              to="dashboard/overview"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <BiHomeAlt2 />
-              <span>Home</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="transactions"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <GrTransaction />
-              <span>Transactions</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="calendar"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <CiCalendar />
-              <span>Calendar</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="budget"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <BiCoinStack />
-              <span>Budget</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="statistic"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <VscGraphLine />
-              <span>Statistic</span>
-            </NavLink>
-          </li>
-          {user?.is_staff && (
+        <ul className="flex flex-col gap-4 text-stone-500 text-lg flex-1 mt-14">
+          <div className="flex flex-col gap-4">
             <li>
               <NavLink
-                to="admin"
+                to="dashboard/overview"
                 className={({ isActive }) =>
                   isActive ? "nav nav-active" : "nav"
                 }
-                onClick={() => setIsOpen(false)}
               >
-                <MdOutlineAdminPanelSettings />
-                <span>Admin Panel</span>
+                <BiHomeAlt2 />
+                <span>Home</span>
               </NavLink>
             </li>
-          )}
+            <li>
+              <NavLink
+                to="transactions"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+              >
+                <GrTransaction />
+                <span>Transactions</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="calendar"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+              >
+                <CiCalendar />
+                <span>Calendar</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="budget"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+              >
+                <BiCoinStack />
+                <span>Budget</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="statistic"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+              >
+                <VscGraphLine />
+                <span>Statistic</span>
+              </NavLink>
+            </li>
+            {user?.is_staff && (
+              <li>
+                <NavLink
+                  to="admin"
+                  className={({ isActive }) =>
+                    isActive ? "nav nav-active" : "nav"
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  <MdOutlineAdminPanelSettings />
+                  <span>Admin Panel</span>
+                </NavLink>
+              </li>
+            )}
+          </div>
 
-          <li className="pt-[150px]">
-            <NavLink
-              to="settings"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <RxGear />
-              <span>Settings</span>
-            </NavLink>
-          </li>
-          <li className="pb-[30px]">
-            <NavLink
-              to="profile"
-              className={({ isActive }) =>
-                isActive ? "nav nav-active" : "nav"
-              }
-            >
-              <RxAvatar />
-              <span>Profile</span>
-            </NavLink>
-          </li>
+          <div className="mt-auto pb-20">
+            <li>
+              <NavLink
+                to="profile"
+                className={({ isActive }) =>
+                  isActive ? "nav nav-active" : "nav"
+                }
+              >
+                <RxAvatar />
+                <span>Profile</span>
+              </NavLink>
+            </li>
+          </div>
         </ul>
       </div>
     </nav>
