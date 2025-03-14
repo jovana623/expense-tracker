@@ -13,8 +13,8 @@ import { formatDate } from "../../helpers/dateFunctions";
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function SavingsGoalChart({ data, currency }) {
-  const { chartData, endDate } = prepareData(data);
+function SavingsGoalChart({ saving, payments, currency }) {
+  const { chartData, endDate } = prepareData(saving, payments);
 
   const lastPaymentIndex = chartData.findIndex((item, index) => {
     return index > 0 && item.total !== chartData[index - 1].total;

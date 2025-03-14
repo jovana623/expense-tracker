@@ -9,6 +9,7 @@ import { useTransactions } from "../transactions/useTransactions";
 import { useSearchParams } from "react-router-dom";
 import { useSaving } from "../savings/useSaving";
 import { useSavings } from "../savings/useSavings";
+import { usePayments } from "../payments/usePayments";
 
 import SavingsGoalChart from "./SavingsGoalChart";
 import Select from "../../ui/Select";
@@ -29,15 +30,16 @@ function Overview() {
 
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
-  const savingParam = searchParams.get("saving") || 4;
+  const savingParam = searchParams.get("saving");
   const { transactions, isLoading: isLoadingTransactions } = useTransactions(
     time,
     month
   );
 
-  const { saving, isLoading: isLoadingSaving } = useSaving(savingParam);
   const { savings, isLoading: isLoadingSavings } = useSavings();
+  const { saving, isLoading: isLoadingSaving } = useSaving(savingParam);
   const { data: currectUser, isLoading: isLoadingUser } = useCurrentUser();
+  const { payments, isLoading: isLoadingPayments } = usePayments(savingParam);
 
   let monthData = [];
   let sortedByMonth = [];
@@ -56,6 +58,8 @@ function Overview() {
   function handleGraphChange(e) {
     setChart(Number(e.target.value));
   }
+
+  console.log(payments);
 
   return (
     <div className="md:grid-cols-[1fr_1fr] gap-10 grid grid-cols-1">
@@ -87,10 +91,14 @@ function Overview() {
         ) : (
           <Select data={savings} onChange={handleSavingChange} />
         )}
-        {isLoadingSaving || isLoadingUser ? (
+        {isLoadingSaving || isLoadingUser || isLoadingPayments ? (
           <ChartSkeleton />
         ) : (
-          <SavingsGoalChart data={saving} currency={currectUser.currency} />
+          <SavingsGoalChart
+            saving={saving}
+            payments={payments}
+            currency={currectUser.currency}
+          />
         )}
       </ChartCard>
     </div>

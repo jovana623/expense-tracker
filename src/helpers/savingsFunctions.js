@@ -1,4 +1,4 @@
-export function prepareData(saving) {
+export function prepareData(saving, payments) {
   const chartData = [];
   const goalAmount = parseFloat(saving.goal);
   const startedAt = new Date(saving.started_at);
@@ -6,12 +6,12 @@ export function prepareData(saving) {
   const today = new Date();
   const endDate = targetDate > today ? targetDate : today;
 
-  const payments = saving.payments.map((payment) => ({
+  const adjustedPayments = payments.map((payment) => ({
     date: new Date(payment.date).getTime(),
     amount: parseFloat(payment.amount),
   }));
 
-  payments.sort((a, b) => a.date - b.date);
+  adjustedPayments.sort((a, b) => a.date - b.date);
 
   let totalAmount = 0;
 
@@ -21,7 +21,7 @@ export function prepareData(saving) {
     goal: goalAmount,
   });
 
-  payments.forEach((payment) => {
+  adjustedPayments.forEach((payment) => {
     totalAmount += payment.amount;
     chartData.push({
       date: new Date(payment.date).toLocaleDateString(),
