@@ -16,8 +16,8 @@ import ChangeStatus from "./ChangeStatus";
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function SavingsDetailCard({ saving, currency }) {
-  const { amount, goal } = saving;
+function SavingsDetailCard({ currentSaving, currency }) {
+  const { amount, goal } = currentSaving;
   const { mutate: deleteSaving, isLoading } = useDeleteSaving();
   const formattedCurrency = getCurrencyEntity(currency);
 
@@ -39,8 +39,8 @@ function SavingsDetailCard({ saving, currency }) {
         <div className="absolute top-6 right-5">
           <Modal>
             <Menu>
-              <Menu.Toggle id={saving.id} />
-              <Menu.List id={saving.id}>
+              <Menu.Toggle id={currentSaving.id} />
+              <Menu.List id={currentSaving.id}>
                 <Modal.OpenButton opens="update-saving">
                   <Menu.Button icon={<BiSolidPencil />}>Update</Menu.Button>
                 </Modal.OpenButton>
@@ -50,38 +50,40 @@ function SavingsDetailCard({ saving, currency }) {
                 <Modal.OpenButton opens="change-status">
                   <Menu.Button
                     icon={
-                      saving.status === "In progress" ? (
+                      currentSaving.status === "In progress" ? (
                         <CiPause1 />
                       ) : (
                         <RxResume />
                       )
                     }
                   >
-                    {saving.status === "In progress" ? "Put on hold" : "Resume"}
+                    {currentSaving.status === "In progress"
+                      ? "Put on hold"
+                      : "Resume"}
                   </Menu.Button>
                 </Modal.OpenButton>
               </Menu.List>
               <Modal.Window name="update-saving">
-                <CreateSavingGoalForm savingToUpdate={saving} />
+                <CreateSavingGoalForm savingToUpdate={currentSaving} />
               </Modal.Window>
               <Modal.Window name="delete-saving">
                 <ConfirmDelete
                   nameModal="saving goal"
-                  onConfirm={() => deleteSaving(saving.id)}
+                  onConfirm={() => deleteSaving(currentSaving.id)}
                 />
               </Modal.Window>
               <Modal.Window name="change-status">
-                <ChangeStatus saving={saving} />
+                <ChangeStatus currentSaving={currentSaving} />
               </Modal.Window>
             </Menu>
           </Modal>
         </div>
       </div>
 
-      <ProgressPercentage saving={saving} />
+      <ProgressPercentage currentSaving={currentSaving} />
       <div
         className={`flex gap-2 ${
-          saving.status === "Completed" ? "flex-col items-center" : ""
+          currentSaving.status === "Completed" ? "flex-col items-center" : ""
         }`}
       >
         <Modal>
@@ -89,12 +91,12 @@ function SavingsDetailCard({ saving, currency }) {
             <Button type="secondary">See details</Button>
           </Modal.OpenButton>
           <Modal.Window name="details">
-            <PaymentsList saving={saving} currency={formattedCurrency} />
+            <PaymentsList saving={currentSaving} currency={formattedCurrency} />
           </Modal.Window>
         </Modal>
-        {saving.status === "Completed" ? (
+        {currentSaving.status === "Completed" ? (
           <p className="text-stone-500">You have reached goal amount</p>
-        ) : saving.status === "On hold" ? (
+        ) : currentSaving.status === "On hold" ? (
           <></>
         ) : (
           <Modal>
@@ -102,7 +104,7 @@ function SavingsDetailCard({ saving, currency }) {
               <Button type="primary">Add to this saving</Button>
             </Modal.OpenButton>
             <Modal.Window name="add-saving">
-              <AddPayment saving={saving} />
+              <AddPayment saving={currentSaving} />
             </Modal.Window>
           </Modal>
         )}

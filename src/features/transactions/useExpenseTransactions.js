@@ -13,11 +13,19 @@ export function useExpenseTransactions(
     queryFn: () => getExpenseTransactions(time, month, sortBy),
     queryKey: ["expense", time, month, sortBy],
     enabled: options.fetchRegular,
+    staleTime: 1000 * 30,
+    cacheTime: 1000 * 60 * 5,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
   const { data: paginatedTransactions } = useQuery({
     queryFn: () => getExpenseTransactions(time, month, sortBy, page, pageSize),
     queryKey: ["expense", time, month, sortBy, page, pageSize],
     enabled: options.fetchPaginated,
+    staleTime: 1000 * 30,
+    cacheTime: 1000 * 60 * 5,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const totalExpense =

@@ -11,6 +11,7 @@ function Savings() {
   const { savings, isLoading: isLoadingSavings } = useSavings();
   const [activeSaving, setActiveSaving] = useState(null);
   const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const { saving: currentSaving, isLoading } = useSaving(activeSaving);
 
   useEffect(() => {
     if (savings?.length > 0) {
@@ -18,9 +19,7 @@ function Savings() {
     }
   }, [savings]);
 
-  const { saving, isLoading } = useSaving(activeSaving);
-
-  if (!saving) return null;
+  if (!currentSaving) return null;
 
   function handleCardChange(value) {
     setActiveSaving(value);
@@ -31,7 +30,10 @@ function Savings() {
       {isLoading || isLoadingSavings || isLoadingUser ? (
         <Spinner />
       ) : (
-        <SavingsDetailCard saving={saving} currency={currentUser.currency} />
+        <SavingsDetailCard
+          currentSaving={currentSaving}
+          currency={currentUser.currency}
+        />
       )}
       <div>
         {isLoading || isLoadingSavings ? (

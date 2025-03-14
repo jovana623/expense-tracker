@@ -4,7 +4,7 @@ import {
   useLocation,
   useSearchParams,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { MdOutlineSavings } from "react-icons/md";
 import { BiWallet } from "react-icons/bi";
@@ -38,18 +38,11 @@ function Dashboard() {
     ? `?${searchParams.toString()}`
     : "";
 
-  if (month && time) {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.delete("time");
-    setSearchParams(newSearchParams);
-  }
-
   useEffect(() => {
-    if (!time && !month) {
-      searchParams.set("time", "month");
-      setSearchParams(searchParams);
+    if (!searchParams.has("time") && !searchParams.has("month")) {
+      setSearchParams({ time: "month" });
     }
-  });
+  }, [searchParams, setSearchParams]);
 
   const { totalIncome, isLoading: isLoadingIncome } = useIncomeTransactions(
     time,
@@ -82,15 +75,15 @@ function Dashboard() {
     isLoadingBalance
   );
 
-  const savingsSummary = summary(savings);
+  const savingsSummary = useMemo(() => summary(savings), [savings]);
 
-  const savingGoalsSummary = goalSummary(savings);
-  const percentageSaved = ((savingsSummary / savingGoalsSummary) * 100).toFixed(
-    1
+  const savingGoalsSummary = useMemo(() => goalSummary(savings), [savings]);
+  const percentageSaved = useMemo(
+    () => ((savingsSummary / savingGoalsSummary) * 100).toFixed(1),
+    [savingsSummary, savingGoalsSummary]
   );
 
   const { data: currentUser, isLoadingUser } = useCurrentUser();
-  console.log(currentUser);
 
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">

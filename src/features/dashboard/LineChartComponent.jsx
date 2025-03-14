@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   CartesianGrid,
@@ -13,28 +14,31 @@ import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function LineChartComponent({ data, monthData, currency }) {
-  console.log(monthData);
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time") || "";
   const monthParam = searchParams.get("month") || "";
-  const formattedCurrency = getCurrencyEntity(currency);
+
+  const formattedCurrency = useMemo(
+    () => getCurrencyEntity(currency),
+    [currency]
+  );
+
+  const adjustedData = useMemo(() => {
+    if (!data) return [];
+
+    let modifiedData = time === "month" || monthParam ? monthData : data;
+    return modifiedData.map((item) => ({
+      ...item,
+      expenses: Math.abs(item.expenses),
+    }));
+  }, [data, monthData, time, monthParam]);
 
   if (!data) return null;
-  let adjustedData = {};
-
-  if (time === "month" || monthParam) {
-    adjustedData = monthData;
-  } else adjustedData = data;
-
-  adjustedData = adjustedData.map((item) => ({
-    ...item,
-    expenses: Math.abs(item.expenses),
-  }));
 
   const currencyFormatter = (tick) =>
     `${tick.toLocaleString()}${formattedCurrency}`;
 
-  function renderTooltip({ active, payload }) {
+  const renderTooltip = ({ active, payload }) => {
     if (!active || !payload || !payload[0]) return null;
 
     const { day, monthYear, income, expenses } = payload[0].payload;
@@ -60,14 +64,14 @@ function LineChartComponent({ data, monthData, currency }) {
         <p className="text-green-500">
           Income: {income.toLocaleString()}
           {formattedCurrency}
-        </p>{" "}
+        </p>
         <p className="text-red-500">
           Expenses: {expenses.toLocaleString()}
           {formattedCurrency}
         </p>
       </div>
     );
-  }
+  };
 
   return (
     <div className="pl-0 ml-[-3rem] text-sm">
@@ -82,7 +86,6 @@ function LineChartComponent({ data, monthData, currency }) {
           ) : (
             <XAxis dataKey="monthYear" />
           )}
-
           <YAxis tickFormatter={currencyFormatter} />
           <Tooltip content={renderTooltip} />
           <Legend

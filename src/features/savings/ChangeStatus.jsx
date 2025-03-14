@@ -6,12 +6,12 @@ import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */
-function ChangeStatus({ saving }) {
+function ChangeStatus({ currentSaving }) {
   const { savingStatus, isLoading } = useUpdateStatus();
   const { close } = useContext(ModalContext);
 
   function handleStatusChange(newStatus) {
-    savingStatus({ id: saving.id, status: newStatus });
+    savingStatus({ id: currentSaving.id, status: newStatus });
     close();
   }
 
@@ -21,7 +21,7 @@ function ChangeStatus({ saving }) {
       <h2 className="font-semibold text-xl">Change status</h2>
       <p>
         Are you sure you want to{" "}
-        {saving.status === "In progress"
+        {currentSaving.status === "In progress"
           ? "put this saving on hold"
           : "resume this saving"}
         ?
@@ -34,11 +34,11 @@ function ChangeStatus({ saving }) {
           type="primary"
           onClick={() =>
             handleStatusChange(
-              saving.status === "In progress" ? "On hold" : "In progress"
+              currentSaving.status === "In progress" ? "On hold" : "In progress"
             )
           }
         >
-          {saving.status === "In progress" ? "Put on hold" : "Resume"}
+          {currentSaving.status === "In progress" ? "Put on hold" : "Resume"}
         </Button>
       </div>
     </div>

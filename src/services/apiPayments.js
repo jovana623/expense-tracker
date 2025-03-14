@@ -1,9 +1,16 @@
 import axios from "axios";
 import API_URL from "../config";
 
-export async function getPayments() {
+export async function getPayments(saving) {
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) throw new Error("No access token found");
   try {
-    const response = await axios.get(`${API_URL}/savings/payments/`);
+    const response = await axios.get(`${API_URL}/savings/payments/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: { saving },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);

@@ -2,19 +2,23 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Empty from "../../ui/Empty";
 import { useDeletePayment } from "./useDeletePayment";
 import { formatDate } from "../../helpers/dateFunctions";
+import { usePayments } from "./usePayments";
+import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */
 function PaymentList({ saving, currency }) {
-  const { payments } = saving;
+  const { payments, isLoading } = usePayments(saving.id);
   const { deletePayment, isDeletingPayment } = useDeletePayment();
-
-  if (payments.length === 0)
-    return <Empty>You did not make any payment for {saving.name}</Empty>;
 
   const isReportPath = location.pathname.includes("report");
   function handleDelete(id) {
     deletePayment(id);
   }
+
+  if (isLoading) return <Spinner />;
+
+  if (payments.length === 0)
+    return <Empty>You did not make any payment for {saving.name}</Empty>;
 
   return (
     <div className="relative overflow-x-auto  sm:rounded-lg">
