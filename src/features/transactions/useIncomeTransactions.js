@@ -34,18 +34,12 @@ export function useIncomeTransactions(
       console.error("React Query error:", error.message);
     },
   });
-  const totalIncome =
-    incomeTransactions?.reduce(
-      (sum, transaction) => sum + parseFloat(transaction.amount),
-      0
-    ) || 0;
 
   const isLoading =
     (options.fetchRegular && !incomeTransactions) ||
     (options.fetchPaginated && !paginatedTransactions);
   return {
     incomeTransactions,
-    totalIncome,
     paginatedTransactions,
     isLoading,
   };

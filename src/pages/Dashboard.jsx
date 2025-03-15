@@ -12,14 +12,10 @@ import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
 import { goalSummary, summary } from "../helpers/sortTransactions";
-import { useIncomeTransactions } from "../features/transactions/useIncomeTransactions";
-import { useExpenseTransactions } from "../features/transactions/useExpenseTransactions";
 import { useSavings } from "../features/savings/useSavings";
-import { useIncomeSummary } from "../features/transactions/useIncomeSummary";
+import { useDashboardData } from "../features/transactions/useDashboardData";
 import { useMonthlyBalance } from "../features/transactions/useMonthlyBalance";
-import { useExpenseSummary } from "../features/transactions/useExpenseSummary";
 import { useBalancePercentage } from "../features/dashboard/hooks/useBalancePercentage";
-import { useIncomeExpensePercentage } from "../features/dashboard/hooks/useIncomeExpensePercentage";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
 import TimeFilter from "../ui/TimeFilter";
@@ -27,7 +23,6 @@ import AddForm from "../ui/AddForm";
 import MonthFilter from "../ui/MonthFilter";
 import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
-import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,31 +39,15 @@ function Dashboard() {
     }
   }, [searchParams, setSearchParams]);
 
-  const { totalIncome, isLoading: isLoadingIncome } = useIncomeTransactions(
-    time,
-    month
-  );
-
-  const { totalExpense, isLoading: isLoadingExpense } = useExpenseTransactions(
-    time,
-    month
-  );
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
-  const { monthlyIncome, yearlyIncome } = useIncomeSummary();
-
-  const { monthlyExpense, yearlyExpense } = useExpenseSummary();
+  const {
+    totalIncome,
+    totalExpense,
+    isLoading: isLoadingDashboard,
+  } = useDashboardData(time, month);
 
   const { monthlyBalance, isLoading: isLoadingBalance } = useMonthlyBalance();
-
-  const { incomePercentage, expensePercentage } = useIncomeExpensePercentage(
-    time,
-    month,
-    monthlyIncome,
-    monthlyExpense,
-    yearlyIncome,
-    yearlyExpense
-  );
 
   const { currentMonthBalance, balancePercentage } = useBalancePercentage(
     monthlyBalance,
@@ -82,8 +61,6 @@ function Dashboard() {
     () => ((savingsSummary / savingGoalsSummary) * 100).toFixed(1),
     [savingsSummary, savingGoalsSummary]
   );
-
-  const { data: currentUser, isLoadingUser } = useCurrentUser();
 
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
@@ -126,11 +103,10 @@ function Dashboard() {
             icon={<MdOutlineEuroSymbol />}
             name="Total income"
             amount={totalIncome}
-            percentage={incomePercentage}
+            percentage="6"
             isActive={location.pathname === "/dashboard/income"}
-            isLoading={isLoadingIncome || isLoadingUser}
+            isLoading={isLoadingDashboard}
             reportPath="income"
-            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink
@@ -147,11 +123,10 @@ function Dashboard() {
             icon={<BiReceipt />}
             name="Total expenses"
             amount={totalExpense}
-            percentage={expensePercentage}
+            percentage="6"
             isActive={location.pathname === "/dashboard/expenses"}
-            isLoading={isLoadingExpense || isLoadingUser}
+            isLoading={isLoadingDashboard}
             reportPath="expense"
-            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink
@@ -170,9 +145,8 @@ function Dashboard() {
             amount={currentMonthBalance}
             percentage={balancePercentage.toFixed(2)}
             isActive={location.pathname === "/dashboard/balance"}
-            isLoading={isLoadingBalance || isLoadingUser}
+            isLoading={isLoadingBalance}
             reportPath="balance"
-            currency={currentUser?.currency}
           />
         </NavLink>
         <NavLink to="savings" className="w-full">
@@ -182,9 +156,8 @@ function Dashboard() {
             amount={savingsSummary}
             percentage={percentageSaved}
             isActive={location.pathname === "/dashboard/savings"}
-            isLoading={isLoadingSavings || isLoadingUser}
+            isLoading={isLoadingSavings}
             reportPath="savings"
-            currency={currentUser?.currency}
           />
         </NavLink>
       </div>

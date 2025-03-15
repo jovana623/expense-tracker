@@ -80,7 +80,7 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           {time === "month" || monthParam ? (
-            <XAxis dataKey="day" />
+            <XAxis dataKey="day" interval={5} />
           ) : (
             <XAxis dataKey="monthYear" />
           )}

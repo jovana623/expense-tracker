@@ -21,7 +21,6 @@ function ChangeProfileInfoForm({ user, isLoading }) {
   }, [user, reset]);
 
   if (isLoading) return <Spinner />;
-  console.log(user);
 
   function handleFileChange(e) {
     const file = e.target.files[0];

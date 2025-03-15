@@ -38,6 +38,11 @@ export async function logoutUser() {
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("avatar");
+    localStorage.removeItem("currency");
+    localStorage.removeItem("isStaff");
+    localStorage.removeItem("isSuperuser");
+    localStorage.removeItem("username");
   } catch (err) {
     throw new Error(err.message);
   }
@@ -52,6 +57,7 @@ export async function getCurrentUser() {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
     return response.data;
   } catch (err) {
     throw new Error(err.message);
@@ -98,6 +104,7 @@ export async function updateUser(userData) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    localStorage.setItem("avatar", userData.avatar);
     return response.data;
   } catch (err) {
     throw new Error(err.message);
@@ -176,6 +183,7 @@ export async function updateUserCurrency(currency) {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
+    localStorage.setItem("currency", currency);
     return response.data;
   } catch (err) {
     throw new Error(err.message);

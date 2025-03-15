@@ -1,13 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "./auth";
+import { getCurrentUser, loginUser } from "./auth";
 import toast from "react-hot-toast";
 
 export function useLogin() {
   const { mutate: login, isLoading } = useMutation({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       localStorage.setItem("accessToken", data.access);
       localStorage.setItem("refreshToken", data.refresh);
+
+      const userData = await getCurrentUser();
+      const { currency, avatar, username, is_staff, is_superuser } = userData;
+
+      localStorage.setItem("currency", currency);
+      localStorage.setItem("avatar", avatar);
+      localStorage.setItem("username", username);
+      localStorage.setItem("isStaff", is_staff);
+      localStorage.setItem("isSuperuser", is_superuser);
+
       toast.success("Welcome");
     },
   });

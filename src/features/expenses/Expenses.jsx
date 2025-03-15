@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import Pagination from "../../ui/Pagination";
 import ChartCard from "../../ui/ChartCard";
 import DetailedPieChart from "../../ui/DetailedPieChart";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function Expenses() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,7 +20,7 @@ function Expenses() {
   const { expenseTransactions, paginatedTransactions, isLoading } =
     useExpenseTransactions(time, month, sortBy, page, pageSize);
 
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
   useEffect(() => {
     setSearchParams({ time, month, sortBy, page });
@@ -39,18 +38,18 @@ function Expenses() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <ChartCard title="Expenses breakdown">
           <div></div>
-          {isLoading || isLoadingUser ? (
+          {isLoading ? (
             <Spinner />
           ) : (
-            <DetailedPieChart data={summary} currency={currentUser.currency} />
+            <DetailedPieChart data={summary} currency={currency} />
           )}
         </ChartCard>
         <div className="flex flex-col gap-4">
           <div className="flex-grow">
             <Table
               data={paginatedTransactions?.results || []}
-              isLoading={isLoading || isLoadingUser}
-              currency={currentUser.currency}
+              isLoading={isLoading}
+              currency={currency}
             />
           </div>
           <div className="mt-auto self-center">

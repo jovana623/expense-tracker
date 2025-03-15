@@ -9,15 +9,12 @@ import { RxAvatar } from "react-icons/rx";
 import { CiCalendar } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
-import { useCurrentUser } from "../features/authentification/useCurrentUser";
+
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
-import MenuSkeleton from "./MenuSkeleton";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { data: user, isLoading } = useCurrentUser();
-
-  if (isLoading) return <MenuSkeleton />;
+  const isStaff = localStorage.getItem("isStaff");
 
   return (
     <nav className="relative">
@@ -106,7 +103,7 @@ function NavBar() {
               <span>Statistic</span>
             </NavLink>
           </li>
-          {user?.is_staff && (
+          {isStaff && (
             <li>
               <NavLink
                 to="admin"
@@ -195,7 +192,7 @@ function NavBar() {
                 <span>Statistic</span>
               </NavLink>
             </li>
-            {user?.is_staff && (
+            {isStaff && (
               <li>
                 <NavLink
                   to="admin"

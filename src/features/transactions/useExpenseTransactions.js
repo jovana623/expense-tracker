@@ -28,12 +28,6 @@ export function useExpenseTransactions(
     refetchOnWindowFocus: false,
   });
 
-  const totalExpense =
-    expenseTransactions?.reduce(
-      (sum, transaction) => sum + parseFloat(transaction.amount),
-      0
-    ) || 0;
-
   const isLoading =
     (options.fetchRegular && !expenseTransactions) ||
     (options.fetchPaginated && !paginatedTransactions);
@@ -41,7 +35,6 @@ export function useExpenseTransactions(
   return {
     expenseTransactions,
     paginatedTransactions,
-    totalExpense,
     isLoading,
   };
 }

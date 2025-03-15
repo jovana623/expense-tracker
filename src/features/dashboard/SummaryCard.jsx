@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { BsArrowDownRight } from "react-icons/bs";
 import { NavLink, useSearchParams } from "react-router-dom";
@@ -7,7 +8,7 @@ import Menu from "../../ui/Menu";
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
-function SummaryCard({
+const SummaryCard = React.memo(function SummaryCard({
   icon,
   name,
   amount,
@@ -15,11 +16,27 @@ function SummaryCard({
   isActive,
   isLoading,
   reportPath,
-  currency,
 }) {
   const [searchParams] = useSearchParams();
-  let time = searchParams.get("time") || "";
-  let month = searchParams.get("month") || "";
+  const time = searchParams.get("time") || "";
+  const month = searchParams.get("month") || "";
+  const currency = localStorage.getItem("currency");
+
+  const reportUrl = useMemo(
+    () => `/report/${reportPath}?time=${time}&month=${month}`,
+    [reportPath, time, month]
+  );
+
+  const percentageClass = useMemo(() => {
+    if (isActive) return "text-white"; // Ako je aktivan, boja je bela
+    if (percentage > 0) return "text-green-500 group-hover:text-lightBg";
+    if (percentage < 0) return "text-red-500 group-hover:text-lightBg";
+    return "text-stone-500";
+  }, [percentage, isActive]);
+
+  const arrowIcon = useMemo(() => {
+    return percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />;
+  }, [percentage]);
 
   return (
     <div
@@ -49,10 +66,9 @@ function SummaryCard({
                   <NavLink
                     onClick={(e) => {
                       e.preventDefault();
-                      const reportUrl = `/report/${reportPath}?time=${time}&month=${month}`;
                       window.open(reportUrl, "_blank");
                     }}
-                    to={`/report/${reportPath}?time=${time}&month=${month}`}
+                    to={reportUrl}
                     className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
                   >
                     <HiOutlineDocumentReport />
@@ -66,7 +82,7 @@ function SummaryCard({
             <p
               className={`text-sm hover:text-lightBg${
                 isActive ? "text-lightBg" : "text-stone-500"
-              }  group-hover:text-lightBg`}
+              } group-hover:text-lightBg`}
             >
               {name.toUpperCase()}
             </p>
@@ -79,18 +95,8 @@ function SummaryCard({
               <div className="h-[1rem]"></div>
             ) : (
               <p className="flex items-center gap-1 h-4">
-                <span
-                  className={`flex items-center gap-1 ${
-                    isActive
-                      ? "text-lightBg"
-                      : percentage > 0
-                      ? "text-green-500 group-hover:text-lightBg"
-                      : "text-red-500  group-hover:text-lightBg"
-                  }`}
-                >
-                  <span data-testid="arrow-icon">
-                    {percentage > 0 ? <BsArrowUpRight /> : <BsArrowDownRight />}
-                  </span>
+                <span className={`flex items-center gap-1 ${percentageClass}`}>
+                  <span data-testid="arrow-icon">{arrowIcon}</span>
                   <span className="hover:text-lightBg">{percentage}&#x25;</span>
                 </span>{" "}
                 <span
@@ -113,6 +119,6 @@ function SummaryCard({
       )}
     </div>
   );
-}
+});
 
 export default SummaryCard;

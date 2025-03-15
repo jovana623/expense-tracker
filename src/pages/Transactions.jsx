@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import Pagination from "../ui/Pagination";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";
-import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 function Transactions() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,7 +25,7 @@ function Transactions() {
     page,
     pageSize
   );
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
   useEffect(() => {
     if (!searchParams.get("time")) {
@@ -46,8 +45,8 @@ function Transactions() {
         <div className="mx-10 h-[75vh]">
           <Table
             data={transactions?.results || []}
-            isLoading={isLoading || isLoadingUser}
-            currency={currentUser.currency}
+            isLoading={isLoading}
+            currency={currency}
           />
         </div>
         <Pagination

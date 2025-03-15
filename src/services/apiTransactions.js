@@ -130,36 +130,16 @@ export async function deleteTransaction(id) {
   }
 }
 
-export async function getIncomeSummary() {
+export async function getDashboardData(time, month) {
   try {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) throw new Error("No access token found");
-    const response = await axios.get(
-      `${API_URL}/transactions/income/monthly/`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-export async function getExpenseSummary() {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) throw new Error("No access token found");
-    const response = await axios.get(
-      `${API_URL}/transactions/expense/monthly/`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/transactions/dashboard/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: { time, month },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);

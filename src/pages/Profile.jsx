@@ -16,6 +16,8 @@ function Profile() {
     useUpdateUserCurrency();
   const navigate = useNavigate();
 
+  const currency = localStorage.getItem("currency");
+
   function handleDeleteAccount() {
     deleteCurrentUser();
     navigate("/login");
@@ -43,7 +45,7 @@ function Profile() {
             <select
               className="h-10 w-30 bg-gray-200 rounded"
               onChange={handleCurrencyChange}
-              value={currentUser?.currency || ""}
+              value={currency}
               disabled={isUpdatingCurrency}
             >
               {!isLoading &&

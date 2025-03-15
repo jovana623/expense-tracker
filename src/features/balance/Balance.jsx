@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import ChartCard from "../../ui/ChartCard";
 import { useDailyBalance } from "../transactions/useDailyBalance";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 import AreaChartComponent from "./AreaChartComponent";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
@@ -25,10 +24,9 @@ function Balance() {
   const { monthlyBalance, isLoading: isLoadingMonthlyBalance } =
     useMonthlyBalance(time);
 
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
-  const isLoading =
-    isLoadingDailyBalance || isLoadingMonthlyBalance || isLoadingUser;
+  const isLoading = isLoadingDailyBalance || isLoadingMonthlyBalance;
 
   const {
     isMonthlyBalance,
@@ -49,7 +47,7 @@ function Balance() {
           <AreaChartComponent
             dailyBalance={dailyBalance}
             monthlyBalance={monthlyBalance}
-            currency={currentUser.currency}
+            currency={currency}
           />
         )}
       </ChartCard>
@@ -61,10 +59,8 @@ function Balance() {
           balance={bestBalance?.balance || 0}
           color="green-500"
           percentage={bestBalanceDiff ? bestBalanceDiff.toFixed(2) : "0.00"}
-          isLoading={
-            isLoading || !worstBalance || !bestBalance || isLoadingUser
-          }
-          currency={currentUser.currency}
+          isLoading={isLoading || !worstBalance || !bestBalance}
+          currency={currency}
         />
         <BalanceCard
           title={isMonthlyBalance ? "Worst month" : "Worst day"}
@@ -72,14 +68,14 @@ function Balance() {
           balance={worstBalance?.balance || 0}
           color="red-500"
           percentage={worstBalanceDiff ? worstBalanceDiff.toFixed(2) : "0.00"}
-          currency={currentUser.currency}
+          currency={currency}
         />
         <div className="md:col-span-2">
           <BalanceCard
             title="Average balance"
             balance={averageBalance ? averageBalance.toFixed(2) : "0.00"}
             color="blue-500"
-            currency={currentUser.currency}
+            currency={currency}
           />
         </div>
       </div>

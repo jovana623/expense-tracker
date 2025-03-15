@@ -1,11 +1,10 @@
 import LimitsCard from "./LimitsCard";
 import { useUsedBudget } from "./useUsedBudget";
 import CardSkeleton from "../../ui/CardSkeleton";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function Limits() {
   const { usedBudget, isLoading } = useUsedBudget();
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
   return (
     <div className="rounded-md h-[100%]">
@@ -15,7 +14,7 @@ function Limits() {
             Monthly Budgets
           </h2>
           <div className="grid md:grid-cols-2 gap-2">
-            {isLoading || isLoadingUser
+            {isLoading
               ? Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}
@@ -30,7 +29,7 @@ function Limits() {
                     <LimitsCard
                       key={budget.id}
                       data={budget}
-                      currency={currentUser.currency}
+                      currency={currency}
                     />
                   ))}
           </div>
@@ -40,7 +39,7 @@ function Limits() {
             Yearly Budgets
           </h2>
           <div className="grid md:grid-cols-2 gap-2">
-            {isLoading || isLoadingUser
+            {isLoading
               ? Array.from({ length: 2 }).map((_, index) => (
                   <div
                     key={index}
@@ -55,7 +54,7 @@ function Limits() {
                     <LimitsCard
                       key={budget.id}
                       data={budget}
-                      currency={currentUser.currency}
+                      currency={currency}
                     />
                   ))}
           </div>
