@@ -7,8 +7,8 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteBudget } from "./useDeleteBudget";
 import Spinner from "../../ui/Spinner";
 import CreateBudgetForm from "./CreateBudgetForm";
-import Table from "../../ui/Table";
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+import BudgetTransactionTable from "./BudgetTransactionsTable";
 
 /* eslint-disable react/prop-types */
 function LimitsCard({ data, currency }) {
@@ -44,7 +44,10 @@ function LimitsCard({ data, currency }) {
               />
             </Modal.Window>
             <Modal.Window name="budget-details">
-              <Table data={data.transactions} currency={currency} />
+              <BudgetTransactionTable
+                type={data.type.id}
+                period={data.period}
+              />
             </Modal.Window>
           </Menu>
         </Modal>

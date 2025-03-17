@@ -1,9 +1,9 @@
 import LimitsCard from "./LimitsCard";
-import { useUsedBudget } from "./useUsedBudget";
 import CardSkeleton from "../../ui/CardSkeleton";
+import { useBudgets } from "./useBudgets";
 
 function Limits() {
-  const { usedBudget, isLoading } = useUsedBudget();
+  const { budgets, isLoading } = useBudgets();
   const currency = localStorage.getItem("currency");
 
   return (
@@ -23,7 +23,7 @@ function Limits() {
                     <CardSkeleton size={3} />
                   </div>
                 ))
-              : usedBudget
+              : budgets
                   .filter((budget) => budget.period === "Monthly")
                   .map((budget) => (
                     <LimitsCard
@@ -48,7 +48,7 @@ function Limits() {
                     <CardSkeleton size={3} />
                   </div>
                 ))
-              : usedBudget
+              : budgets
                   .filter((budget) => budget.period === "Yearly")
                   .map((budget) => (
                     <LimitsCard

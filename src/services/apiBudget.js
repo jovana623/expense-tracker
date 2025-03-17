@@ -50,21 +50,6 @@ export async function createBudget(budgetData) {
   }
 }
 
-export async function getUsedBudget() {
-  try {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) throw new Error("No access token found");
-    const response = await axios.get(`${API_URL}/transactions/budget/used/`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (err) {
-    throw new Error(err.message);
-  }
-}
-
 export async function deleteBudget(id) {
   try {
     const accessToken = localStorage.getItem("accessToken");

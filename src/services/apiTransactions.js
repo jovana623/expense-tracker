@@ -7,7 +7,8 @@ export async function getTransactions(
   sortBy,
   search,
   page,
-  pageSize
+  pageSize,
+  type
 ) {
   try {
     const accessToken = localStorage.getItem("accessToken");
@@ -16,7 +17,7 @@ export async function getTransactions(
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      params: { time, month, sortBy, search, page, page_size: pageSize },
+      params: { time, month, sortBy, search, page, page_size: pageSize, type },
     });
     return response.data;
   } catch (error) {

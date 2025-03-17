@@ -104,7 +104,11 @@ export async function updateUser(userData) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    localStorage.setItem("avatar", userData.avatar);
+
+    if (response.data.avatar) {
+      localStorage.setItem("avatar", response.data.avatar);
+      localStorage.setItem("username", response.data.username);
+    }
     return response.data;
   } catch (err) {
     throw new Error(err.message);
