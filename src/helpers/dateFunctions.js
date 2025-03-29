@@ -10,6 +10,10 @@ export function formatMonthYear(date) {
   return formattedDate.toLocaleDateString("en-GB", options);
 }
 
+export function getDaysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
 //Days left
 export function calculateDaysLeft(startDate, endDateStr) {
   const [year, month, day] = endDateStr.split("-").map(Number);

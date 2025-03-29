@@ -1,10 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-import {
-  getCurrentMonthData,
-  OneMonth,
-  sortByMonth,
-} from "../../helpers/sortTransactions";
+import { sortByMonth, sortMonthData } from "../../helpers/sortTransactions";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import { useDailyBalance } from "../transactions/useDailyBalance";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
@@ -19,13 +15,14 @@ import Spinner from "../../ui/Spinner";
 import ChartCard from "../../ui/ChartCard";
 import AreaChartComponent from "../balance/AreaChartComponent";
 import { useCurrentUser } from "../authentification/useCurrentUser";
+import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 function BalanceReport() {
   const [searchParams] = useSearchParams();
   const month = searchParams.get("month") || "";
   const time = searchParams.get("time") || "";
   const sortBy = "date-desc";
-  const currentDate = new Date();
+  const currentDate = getCurrentMonthAndYear();
 
   const monthParam =
     month === ""
@@ -70,8 +67,8 @@ function BalanceReport() {
 
   if (!isLoading) {
     sortedByMonth = sortByMonth(transactions);
-    if (!month) monthData = getCurrentMonthData(transactions);
-    else monthData = OneMonth(transactions, month);
+    if (!month) monthData = sortMonthData(transactions, currentDate);
+    else monthData = sortMonthData(transactions, month);
   }
 
   const options = { month: "long", year: "numeric" };

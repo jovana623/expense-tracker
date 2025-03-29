@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculateDaysLeft } from "./dateFunctions";
+import { calculateDaysLeft, getDaysInMonth } from "./dateFunctions";
 
 describe("calculateDaysLeft", () => {
   it("should calculate days correctly", () => {
@@ -29,5 +29,11 @@ describe("calculateDaysLeft", () => {
     const endDateStr = "2024-03-01";
     const result = calculateDaysLeft(startDate, endDateStr);
     expect(result).toBe(2);
+  });
+});
+
+describe("getDaysInMonth", () => {
+  it("should return correct number of days", () => {
+    expect(getDaysInMonth(2024, 0)).toBe(31);
   });
 });

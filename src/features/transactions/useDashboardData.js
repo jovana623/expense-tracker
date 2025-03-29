@@ -7,10 +7,14 @@ export function useDashboardData(time, month) {
     queryKey: ["dashboard_data"],
   });
 
-  const totalIncome = data?.total_income || 0;
-  const totalExpense = data?.total_expense || 0;
+  const monthlyData = data?.monthlyData;
+  const yearlyData = data?.yearlyData;
+  const totalIncome = data?.total_income;
+  const totalExpense = data?.total_expense;
 
   return {
+    monthlyData,
+    yearlyData,
     totalIncome,
     totalExpense,
     isLoading,

@@ -1,40 +1,59 @@
-export function prepareData(saving, payments) {
-  const chartData = [];
+import { formatDate } from "./dateFunctions";
+
+export function prepareData(saving, payments, today) {
   const goalAmount = parseFloat(saving.goal);
   const startedAt = new Date(saving.started_at);
   const targetDate = new Date(saving.target_date);
-  const today = new Date();
-  const endDate = targetDate > today ? targetDate : today;
+  const endDate = calculateEndDate(targetDate, today);
 
-  const adjustedPayments = payments.map((payment) => ({
-    date: new Date(payment.date).getTime(),
-    amount: parseFloat(payment.amount),
-  }));
+  const adjustedPayments = preparePayments(payments);
+  const chartData = generateChartData(
+    startedAt,
+    goalAmount,
+    adjustedPayments,
+    endDate
+  );
 
-  adjustedPayments.sort((a, b) => a.date - b.date);
+  return { chartData, endDate: formatDate(endDate) };
+}
 
+export function preparePayments(payments) {
+  return payments
+    .map((payment) => ({
+      date: new Date(payment.date).getTime(),
+      amount: parseFloat(payment.amount),
+    }))
+    .sort((a, b) => a.date - b.date);
+}
+
+export function generateChartData(startedAt, goalAmount, payments, endDate) {
+  const chartData = [];
   let totalAmount = 0;
 
   chartData.push({
-    date: startedAt.toLocaleDateString(),
+    date: formatDate(startedAt),
     total: totalAmount,
     goal: goalAmount,
   });
 
-  adjustedPayments.forEach((payment) => {
+  payments.forEach((payment) => {
     totalAmount += payment.amount;
     chartData.push({
-      date: new Date(payment.date).toLocaleDateString(),
+      date: formatDate(payment.date),
       total: totalAmount,
       goal: goalAmount,
     });
   });
 
   chartData.push({
-    date: endDate.toLocaleDateString(),
+    date: formatDate(endDate),
     total: totalAmount,
     goal: goalAmount,
   });
 
-  return { chartData, endDate: endDate.toLocaleDateString() };
+  return chartData;
+}
+
+export function calculateEndDate(targetDate, today) {
+  return targetDate > today ? targetDate : today;
 }

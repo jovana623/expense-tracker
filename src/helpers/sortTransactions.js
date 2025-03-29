@@ -1,107 +1,38 @@
+import { getDaysInMonth } from "./dateFunctions";
+import {
+  groupTransactionsByMonth,
+  initializeDailySummary,
+  sortMonthlySummary,
+  transactionsForMonth,
+} from "./transactionHelpers";
+
 /*Sums transactions by month, in form monthYear,income,expenses */
 export function sortByMonth(transactions) {
   if (!Array.isArray(transactions)) {
     throw new Error("Invalid input,expected array of transactions");
   }
-  const monthlySummary = {};
 
-  transactions.forEach((transaction) => {
-    const date = new Date(transaction.date);
-    const monthYear = date.toLocaleString("en-US", {
-      month: "long",
-      year: "numeric",
-    });
-    const category = transaction.type.category.name;
-
-    if (!monthlySummary[monthYear]) {
-      monthlySummary[monthYear] = { income: 0, expenses: 0 };
-    }
-
-    if (category === "Income") {
-      monthlySummary[monthYear].income += parseFloat(transaction.amount);
-    } else if (category === "Expense") {
-      monthlySummary[monthYear].expenses -= parseFloat(transaction.amount);
-    }
-  });
-
-  const sortedSummary = Object.entries(monthlySummary)
-    .map(([monthYear, { income, expenses }]) => ({
-      monthYear,
-      income,
-      expenses,
-    }))
-    .sort((a, b) => {
-      const dateA = new Date(a.monthYear);
-      const dateB = new Date(b.monthYear);
-      return dateA - dateB;
-    });
-
-  return sortedSummary;
+  const monthlySummary = groupTransactionsByMonth(transactions);
+  return sortMonthlySummary(monthlySummary);
 }
 
-/*Sums transactions for current month, in form day,income,expenses*/
-export function getCurrentMonthData(transactions) {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+/*Sums transactions for selected month, in form day,income,expenses*/
+export function sortMonthData(transactions, date) {
+  const [year, month] = date.split("-");
 
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const numericYear = parseInt(year, 10); 
+  const numericMonth = parseInt(month, 10);
 
-  const dailySummary = Array.from({ length: daysInMonth }, (_, i) => ({
-    day: i + 1,
-    income: 0,
-    expenses: 0,
-  }));
+  const daysInMonth = getDaysInMonth(numericYear, numericMonth);
 
-  transactions.forEach((transaction) => {
-    const date = new Date(transaction.date);
-    const transactionMonth = date.getMonth();
-    const transactionYear = date.getFullYear();
+  const dailySummary = initializeDailySummary(daysInMonth);
 
-    if (transactionMonth === currentMonth && transactionYear === currentYear) {
-      const day = date.getDate();
-      const category = transaction.type?.category?.name;
-
-      const daySummary = dailySummary.find((d) => d.day === day);
-
-      if (category === "Income") {
-        daySummary.income += parseFloat(transaction.amount);
-      } else daySummary.expenses -= parseFloat(transaction.amount);
-    }
-  });
-  return dailySummary;
-}
-
-/*Sums transactions for one month in form day,income,expenses,
-second argument is month in form yyyy-mm*/
-export function OneMonth(transactions, month) {
-  const [year, monthIndex] = month.split("-").map(Number);
-  const daysInMonth = new Date(year, monthIndex, 0).getDate();
-
-  const dailySummary = Array.from({ length: daysInMonth }, (_, i) => ({
-    day: i + 1,
-    income: 0,
-    expenses: 0,
-  }));
-
-  transactions.forEach((transaction) => {
-    const date = new Date(transaction.date);
-    const transactionMonth = date.getMonth() + 1;
-    const transactionYear = date.getFullYear();
-
-    if (transactionMonth === monthIndex && transactionYear === year) {
-      const day = date.getDate();
-      const category = transaction.type?.category?.name;
-      const daySummary = dailySummary.find((d) => d.day === day);
-
-      if (category === "Income") {
-        daySummary.income += parseFloat(transaction.amount);
-      } else if (category === "Expense") {
-        daySummary.expenses -= parseFloat(transaction.amount);
-      }
-    }
-  });
-  return dailySummary;
+  return transactionsForMonth(
+    transactions,
+    dailySummary,
+    numericMonth,
+    numericYear
+  );
 }
 
 /*Sum amount of given transactions*/

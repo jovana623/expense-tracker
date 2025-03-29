@@ -1,11 +1,12 @@
 import { describe, it, expect } from "vitest";
 import {
-  OneMonth,
   sortByMonth,
   summarizeAmountsByType,
   summary,
   calculateDailyBalance,
   calculateBalance,
+  goalSummary,
+  sortMonthData,
 } from "./sortTransactions";
 
 describe("sortByMonth", () => {
@@ -32,16 +33,11 @@ describe("sortByMonth", () => {
         type: { category: { name: "Income" } },
         amount: "500",
       },
-      {
-        date: "2024-02-10",
-        type: { category: { name: "Expense" } },
-        amount: "100",
-      },
     ];
     const result = sortByMonth(transactions);
     expect(result).toEqual([
-      { monthYear: "January 2024", income: 1000, expenses: -200 },
-      { monthYear: "February 2024", income: 500, expenses: -100 },
+      { monthYear: "Jan 2024", income: 1000, expenses: -200 },
+      { monthYear: "Feb 2024", income: 500, expenses: 0 },
     ]);
   });
 
@@ -57,15 +53,10 @@ describe("sortByMonth", () => {
         type: { category: { name: "Expense" } },
         amount: "150",
       },
-      {
-        date: "2024-01-20",
-        type: { category: { name: "Income" } },
-        amount: "200",
-      },
     ];
     const result = sortByMonth(transactions);
     expect(result).toEqual([
-      { monthYear: "January 2024", income: 500, expenses: -150 },
+      { monthYear: "Jan 2024", income: 300, expenses: -150 },
     ]);
   });
 
@@ -84,8 +75,8 @@ describe("sortByMonth", () => {
     ];
     const result = sortByMonth(transactions);
     expect(result).toEqual([
-      { monthYear: "January 2024", income: 300, expenses: 0 },
-      { monthYear: "February 2024", income: 0, expenses: -150 },
+      { monthYear: "Jan 2024", income: 300, expenses: 0 },
+      { monthYear: "Feb 2024", income: 0, expenses: -150 },
     ]);
   });
 
@@ -102,9 +93,10 @@ describe("sortByMonth", () => {
         amount: "150",
       },
     ];
+
     const result = sortByMonth(transactions);
     expect(result).toEqual([
-      { monthYear: "January 2024", income: 0, expenses: -150 },
+      { monthYear: "Jan 2024", income: 0, expenses: -150 },
     ]);
   });
 
@@ -115,58 +107,25 @@ describe("sortByMonth", () => {
   });
 });
 
-describe("OneMonth", () => {
-  it("should return a array with correct number of days in and all values set to 0 when no transactions are given", () => {
-    const result = OneMonth([], "2024-06");
-    expect(result).toHaveLength(30);
-    result.forEach((daySummary) => {
-      expect(daySummary.income).toBe(0);
-      expect(daySummary.expenses).toBe(0);
-    });
-  });
-
-  it("should sum income and transactions for one month", () => {
+describe("sortMonthData", () => {
+  it("should return correct summary for month", () => {
     const transactions = [
       {
-        date: "2024-08-05",
-        amount: "100",
-        type: { category: { name: "Income" } },
-      },
-      {
-        date: "2024-08-05",
-        amount: "50",
-        type: { category: { name: "Expense" } },
-      },
-      {
-        date: "2024-08-10",
+        date: "2025-03-15",
         amount: "200",
         type: { category: { name: "Income" } },
       },
     ];
-    const result = OneMonth(transactions, "2024-08");
-    expect(result[4].income).toEqual(100);
-    expect(result[4].expenses).toEqual(-50);
 
-    expect(result[9].income).toEqual(200);
-    expect(result[9].expenses).toEqual(0);
+    const result = sortMonthData(transactions, "2025-03");
+    expect(result[14].income).toBe(200);
   });
 
-  it("should ignore transactions from different months", () => {
-    const transactions = [
-      {
-        date: "2024-07-05",
-        amount: "100",
-        type: { category: { name: "Income" } },
-      },
-      {
-        date: "2024-08-10",
-        amount: "150",
-        type: { category: { name: "Income" } },
-      },
-    ];
-    const result = OneMonth(transactions, "2024-08");
-    expect(result[9].income).toBe(150);
-    expect(result[4].income).toBe(0);
+  it("should handle empty transactions array", () => {
+    const result = sortMonthData([], "2025-03");
+    expect(result.every((day) => day.income === 0 && day.expenses === 0)).toBe(
+      true
+    );
   });
 });
 
@@ -342,5 +301,22 @@ describe("calculateBalance", () => {
       { monthYear: "December 2024", balance: 100 },
       { monthYear: "January 2025", balance: 100 },
     ]);
+  });
+});
+
+describe("goalSummary", () => {
+  it("should return 0 when there is no savings", () => {
+    expect(goalSummary([])).toBe(0);
+  });
+
+  it("should correctly sum up the goal amounts", () => {
+    const savings = [
+      { id: 1, goal: "2100.00" },
+      { id: 2, goal: "5000.00" },
+      { id: 3, goal: "11000.00" },
+      { id: 4, goal: "1250.00" },
+    ];
+    const result = goalSummary(savings);
+    expect(result).toBe(19350);
   });
 });

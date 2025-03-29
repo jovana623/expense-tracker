@@ -1,9 +1,6 @@
 import React, { Suspense, useMemo, useState } from "react";
-import {
-  getCurrentMonthData,
-  OneMonth,
-  sortByMonth,
-} from "../../helpers/sortTransactions";
+import { sortByMonth, sortMonthData } from "../../helpers/sortTransactions";
+import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 import { useTransactions } from "../transactions/useTransactions";
 import { useSearchParams } from "react-router-dom";
@@ -30,6 +27,7 @@ function Overview() {
   const time = searchParams.get("time") || "";
   const month = searchParams.get("month") || "";
   const savingParam = searchParams.get("saving") || 4;
+
   const { transactions, isLoading: isLoadingTransactions } = useTransactions(
     time,
     month
@@ -44,15 +42,18 @@ function Overview() {
   const { monthData, sortedByMonth } = useMemo(() => {
     let sortedByMonth = [];
     let monthData = [];
+    const currentDate = getCurrentMonthAndYear();
 
     if (!isLoadingTransactions) {
       sortedByMonth = sortByMonth(transactions);
-      if (!month) monthData = getCurrentMonthData(transactions);
-      else monthData = OneMonth(transactions, month);
+      if (!month) monthData = sortMonthData(transactions, currentDate);
+      else monthData = sortMonthData(transactions, month);
     }
 
     return { monthData, sortedByMonth };
   }, [transactions, month, isLoadingTransactions]);
+
+  console.log(monthData);
 
   function handleSavingChange(e) {
     searchParams.set("saving", e.target.value);

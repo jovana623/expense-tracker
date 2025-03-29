@@ -14,7 +14,9 @@ import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function SavingsGoalChart({ saving, payments, currency }) {
-  const { chartData, endDate } = prepareData(saving, payments);
+  const today = new Date();
+  const { chartData, endDate } = prepareData(saving, payments, today);
+  console.log("Data:", chartData);
 
   const lastPaymentIndex = chartData.findIndex((item, index) => {
     return index > 0 && item.total !== chartData[index - 1].total;
@@ -31,16 +33,10 @@ function SavingsGoalChart({ saving, payments, currency }) {
   function renderTooltip({ active, payload }) {
     if (!active || !payload || !payload[0]) return null;
     const { date, total, goal } = payload[0].payload;
-    const [month, day, year] = date.split("/");
-    const monthLong = new Date(year, month - 1).toLocaleString("en-US", {
-      month: "long",
-    });
 
     return (
       <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
-        <p>
-          {day} {monthLong} {year}
-        </p>
+        <p>{date}</p>
         <p className="text-red-500">
           Goal: {goal.toLocaleString()}
           {formattedCurrency}

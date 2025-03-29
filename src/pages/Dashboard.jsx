@@ -42,6 +42,8 @@ function Dashboard() {
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   const {
+    monthlyData,
+    yearlyData,
     totalIncome,
     totalExpense,
     isLoading: isLoadingDashboard,
@@ -53,6 +55,8 @@ function Dashboard() {
     monthlyBalance,
     isLoadingBalance
   );
+
+  console.log(savings);
 
   const savingsSummary = useMemo(() => summary(savings), [savings]);
 
