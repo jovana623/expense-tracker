@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import UsersTable from "../features/admin/UsersTable";
 import { useUsersList } from "../features/authentification/useUsersList";
+import UsersTable from "../features/admin/UsersTable";
 import Search from "../ui/Search";
 import TypesTable from "../features/admin/TypesTable";
 

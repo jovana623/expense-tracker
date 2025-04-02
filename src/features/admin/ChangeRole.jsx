@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import Button from "../../ui/Button";
 import { ModalContext } from "../../ui/Modal";
 import { useUpdateRole } from "../authentification/useUpdateRole";
+import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
 
 /* eslint-disable react/prop-types */

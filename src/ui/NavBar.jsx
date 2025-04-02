@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import Logo from "./Logo";
 import { BiHomeAlt2 } from "react-icons/bi";
 import { GrTransaction } from "react-icons/gr";
 import { BiCoinStack } from "react-icons/bi";
@@ -9,8 +8,9 @@ import { RxAvatar } from "react-icons/rx";
 import { CiCalendar } from "react-icons/ci";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
-
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+
+import Logo from "./Logo";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);

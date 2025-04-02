@@ -1,8 +1,9 @@
-import PageNumber from "../ui/PageNumber";
 import {
   MdOutlineArrowCircleLeft,
   MdOutlineArrowCircleRight,
 } from "react-icons/md";
+
+import PageNumber from "../ui/PageNumber";
 
 /* eslint-disable react/prop-types */
 function Pagination({ page, numOfPages, setPage }) {

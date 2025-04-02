@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "../features/authentification/useCurrentUser";
 import { useDeleteCurrentUser } from "../features/authentification/useDeleteCurrentUser";
+import { useResetCurrentUser } from "../features/authentification/useResetCurrentUser";
+import { useUpdateUserCurrency } from "../features/authentification/useUpdateUserCurrency";
 import ChangePasswordForm from "../features/profile/ChangePasswordForm";
 import ChangeProfileInfoForm from "../features/profile/ChangeProfileInfoForm";
 import ConfirmDelete from "../ui/ConfirmDelete";
 import Modal from "../ui/Modal";
-import { useResetCurrentUser } from "../features/authentification/useResetCurrentUser";
-import { useUpdateUserCurrency } from "../features/authentification/useUpdateUserCurrency";
 
 function Profile() {
   const { data: currentUser, isLoading } = useCurrentUser();

@@ -1,12 +1,12 @@
+import { BiSolidPencil } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { useDeleteUser } from "../authentification/useDeleteUser";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 import Menu from "../../ui/Menu";
 import Modal from "../../ui/Modal";
 import TableSkeleton from "../../ui/TableSkeleton";
-import { BiSolidPencil } from "react-icons/bi";
-import { AiOutlineDelete } from "react-icons/ai";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useDeleteUser } from "../authentification/useDeleteUser";
 import ChangeRole from "./ChangeRole";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 /* eslint-disable react/prop-types */
 function UsersTable({ data, isLoading }) {

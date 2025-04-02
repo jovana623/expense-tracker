@@ -20,7 +20,7 @@ export function sortByMonth(transactions) {
 export function sortMonthData(transactions, date) {
   const [year, month] = date.split("-");
 
-  const numericYear = parseInt(year, 10); 
+  const numericYear = parseInt(year, 10);
   const numericMonth = parseInt(month, 10);
 
   const daysInMonth = getDaysInMonth(numericYear, numericMonth);
@@ -46,6 +46,7 @@ export function summary(transactions = []) {
   return total;
 }
 
+/*Sums total goal amount of all saving*/
 export function goalSummary(savings = []) {
   let total = 0;
   savings.forEach((saving) => {
@@ -81,60 +82,4 @@ export function summarizeAmountsByType(transactions) {
   }));
 
   return result;
-}
-
-export function summarizeAmountsByCategory(transactions) {
-  const incomeTransactions = transactions.filter(
-    (transaction) => transaction.Type.name === "income"
-  );
-  const expensesTransactions = transactions.filter(
-    (transaction) => transaction.Type.name === "expenses"
-  );
-
-  const totalIncome = incomeTransactions.reduce(
-    (acc, transaction) => acc + transaction.Amount,
-    0
-  );
-  const totalExpenses = expensesTransactions.reduce(
-    (acc, transaction) => acc + transaction.Amount,
-    0
-  );
-  return [
-    { category: "Income", amount: totalIncome },
-    { category: "Expenses", amount: totalExpenses },
-  ];
-}
-
-export function calculateTotalAmount(savings) {
-  const totalAmountSaved = savings.reduce((total, saving) => {
-    return total + saving.amount;
-  }, 0);
-
-  return totalAmountSaved;
-}
-
-export function calculateTotalAmountSavings(savings) {
-  const totalAmountSaved = savings.reduce((total, saving) => {
-    return total + saving.Amount;
-  }, 0);
-
-  return totalAmountSaved;
-}
-
-export function findLargestIncomeAndExpense(data) {
-  let biggestIncome = { amount: 0 };
-  let biggestExpense = { amount: 0 };
-
-  data.forEach((item) => {
-    if (item.Type.category === "income" && item.amount > biggestIncome.amount) {
-      biggestIncome = item;
-    } else if (
-      item.Type.category === "expense" &&
-      item.amount > biggestExpense.amount
-    ) {
-      biggestExpense = item;
-    }
-  });
-
-  return { biggestIncome, biggestExpense };
 }

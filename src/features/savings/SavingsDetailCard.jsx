@@ -1,19 +1,20 @@
+import { BiSolidPencil } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { CiPause1 } from "react-icons/ci";
+import { RxResume } from "react-icons/rx";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import PaymentsList from "../payments/PaymentsList";
 import AddPayment from "../payments/AddPayment";
 import ProgressPercentage from "./ProgressPercentage";
 import Menu from "../../ui/Menu";
-import { BiSolidPencil } from "react-icons/bi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { CiPause1 } from "react-icons/ci";
-import { RxResume } from "react-icons/rx";
 import CreateSavingGoalForm from "./CreateSavingGoalForm";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
 import ChangeStatus from "./ChangeStatus";
-import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ currentSaving, currency }) {

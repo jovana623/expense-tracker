@@ -6,6 +6,8 @@ import { useDailyBalance } from "../transactions/useDailyBalance";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
 import { useBalanceStats } from "../balance/hooks/useBalanceStats";
 import { useTransactions } from "../transactions/useTransactions";
+import { useCurrentUser } from "../authentification/useCurrentUser";
+import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 import PositiveAndNegativeBar from "../dashboard/PositiveAndNegativeBar";
 import LineChartComponent from "../dashboard/LineChartComponent";
@@ -14,8 +16,6 @@ import BalanceCard from "../balance/BalanceCard";
 import Spinner from "../../ui/Spinner";
 import ChartCard from "../../ui/ChartCard";
 import AreaChartComponent from "../balance/AreaChartComponent";
-import { useCurrentUser } from "../authentification/useCurrentUser";
-import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 function BalanceReport() {
   const [searchParams] = useSearchParams();

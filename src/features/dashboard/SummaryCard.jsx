@@ -3,9 +3,10 @@ import { BsArrowUpRight } from "react-icons/bs";
 import { BsArrowDownRight } from "react-icons/bs";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { HiOutlineDocumentReport } from "react-icons/hi";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+
 import CardSkeleton from "../../ui/CardSkeleton";
 import Menu from "../../ui/Menu";
-import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 const SummaryCard = React.memo(function SummaryCard({
@@ -28,7 +29,7 @@ const SummaryCard = React.memo(function SummaryCard({
   );
 
   const percentageClass = useMemo(() => {
-    if (isActive) return "text-white"; // Ako je aktivan, boja je bela
+    if (isActive) return "text-white";
     if (percentage > 0) return "text-green-500 group-hover:text-lightBg";
     if (percentage < 0) return "text-red-500 group-hover:text-lightBg";
     return "text-stone-500";

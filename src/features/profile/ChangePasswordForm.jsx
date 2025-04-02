@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
 import { useChangePassword } from "../authentification/useChangePassword";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import Button from "../../ui/Button";
 
 function ChangePasswordForm() {
   const { register, handleSubmit, getValues, reset } = useForm();

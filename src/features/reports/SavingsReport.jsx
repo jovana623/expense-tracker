@@ -1,16 +1,15 @@
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import { goalSummary, summary } from "../../helpers/sortTransactions";
+import { useCurrentUser } from "../authentification/useCurrentUser";
+import { useSavings } from "../savings/useSavings";
+import { useTypeByMonth } from "../statistics/useTypeByMonth";
 import ChartCard from "../../ui/ChartCard";
 import Spinner from "../../ui/Spinner";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 import PaymentsList from "../payments/PaymentsList";
 import SavingCard from "../savings/SavingsCard";
-
-import { useSavings } from "../savings/useSavings";
 import CategoryChart from "../statistics/CategoryChart";
 import SavingsContainer from "../statistics/SavingsContainer";
-import { useTypeByMonth } from "../statistics/useTypeByMonth";
 import ReportCard from "./ReportCard";
 
 function SavingsReport() {

@@ -1,5 +1,6 @@
 import { formatMonthYear } from "./dateFunctions";
 
+/*set income and expense on 0 for every day in month*/
 export function initializeDailySummary(daysInMonth) {
   return Array.from({ length: daysInMonth }, (_, i) => ({
     day: i + 1,

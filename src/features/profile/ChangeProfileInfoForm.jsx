@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateUser } from "../authentification/useUpdateUser";
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
-import { useUpdateUser } from "../authentification/useUpdateUser";
-import { useEffect, useState } from "react";
 
 /* eslint-disable react/prop-types */
 function ChangeProfileInfoForm({ user, isLoading }) {

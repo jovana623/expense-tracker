@@ -1,11 +1,12 @@
 import { useSearchParams } from "react-router-dom";
+import { useBalanceStats } from "./hooks/useBalanceStats";
+import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
+import { useDailyBalance } from "../transactions/useDailyBalance";
+
 import ChartCard from "../../ui/ChartCard";
 import AreaChartComponent from "./AreaChartComponent";
 import BalanceCard from "./BalanceCard";
-import { useBalanceStats } from "./hooks/useBalanceStats";
 import ChartSkeleton from "../../ui/ChartSkeleton";
-import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
-import { useDailyBalance } from "../transactions/useDailyBalance";
 
 function Balance() {
   const [searchParams] = useSearchParams();

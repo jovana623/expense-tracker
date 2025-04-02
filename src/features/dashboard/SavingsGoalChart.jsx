@@ -16,7 +16,6 @@ import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 function SavingsGoalChart({ saving, payments, currency }) {
   const today = new Date();
   const { chartData, endDate } = prepareData(saving, payments, today);
-  console.log("Data:", chartData);
 
   const lastPaymentIndex = chartData.findIndex((item, index) => {
     return index > 0 && item.total !== chartData[index - 1].total;

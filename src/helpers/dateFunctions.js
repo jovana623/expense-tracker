@@ -1,3 +1,4 @@
+/*Returns date in format 10 Jan 2025*/
 export function formatDate(date) {
   const options = { day: "numeric", month: "short", year: "numeric" };
   const formattedDate = new Date(date);

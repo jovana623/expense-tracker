@@ -1,9 +1,9 @@
+import { useState } from "react";
+import { useTransactions } from "../transactions/useTransactions";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useTransactions } from "../transactions/useTransactions";
 import Spinner from "../../ui/Spinner";
 import DateDetailsButton from "./DateDetailsButton";
-import { useState } from "react";
 import DateNoTransactions from "./DateNoTransactions";
 
 function CustomCalendar() {

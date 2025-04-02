@@ -3,8 +3,6 @@ import {
   sortByMonth,
   summarizeAmountsByType,
   summary,
-  calculateDailyBalance,
-  calculateBalance,
   goalSummary,
   sortMonthData,
 } from "./sortTransactions";
@@ -238,68 +236,6 @@ describe("summarizeAmountsByType", () => {
     expect(result).toEqual([
       { typeName: "Salary", amount: 1821.54, color: "#16a34a" },
       { typeName: "Consulting fees", amount: 250.0, color: "#0f766e" },
-    ]);
-  });
-});
-
-describe("calculateDailyBalance", () => {
-  it("should calculate balance correctly for each day", () => {
-    const transactions = [
-      { day: 1, income: 100, expenses: 50 },
-      { day: 2, income: 200, expenses: 100 },
-    ];
-    const result = calculateDailyBalance(transactions);
-    expect(result).toEqual([
-      { day: 1, balance: 50 },
-      { day: 2, balance: 100 },
-    ]);
-  });
-  it("should handle days with 0 income or expense", () => {
-    const transactions = [
-      { day: 1, income: 0, expenses: 50 },
-      { day: 2, income: 200, expenses: 0 },
-    ];
-    const result = calculateDailyBalance(transactions);
-    expect(result).toEqual([
-      { day: 1, balance: -50 },
-      { day: 2, balance: 200 },
-    ]);
-  });
-  it("should handle no data", () => {
-    const transactions = [];
-    const result = calculateDailyBalance(transactions);
-    expect(result).toEqual([]);
-  });
-});
-
-describe("calculateBalance", () => {
-  it("should calculate balance correctly for each month", () => {
-    const transactions = [
-      { monthYear: "May 2024", income: 4570, expenses: -2804.75 },
-      { monthYear: "June 2024", income: 2460.26, expenses: -1494.31 },
-    ];
-    const result = calculateBalance(transactions);
-    expect(result).toEqual([
-      { monthYear: "May 2024", balance: 7374.75 },
-      { monthYear: "June 2024", balance: 3954.57 },
-    ]);
-  });
-
-  it("should handle no data", () => {
-    const transactions = [];
-    const result = calculateBalance(transactions);
-    expect(result).toEqual([]);
-  });
-
-  it("should handle months with 0 income or expense", () => {
-    const transactions = [
-      { monthYear: "December 2024", income: -100, expenses: -200 },
-      { monthYear: "January 2025", income: -300, expenses: -400 },
-    ];
-    const result = calculateBalance(transactions);
-    expect(result).toEqual([
-      { monthYear: "December 2024", balance: 100 },
-      { monthYear: "January 2025", balance: 100 },
     ]);
   });
 });

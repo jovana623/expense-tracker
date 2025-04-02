@@ -5,6 +5,7 @@ import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDeleteTransaction } from "../features/transactions/useDeleteTransaction";
 import { formatDate } from "../helpers/dateFunctions";
+import { getCurrencyEntity } from "../helpers/currencyFunctions";
 
 import Modal from "./Modal";
 import Menu from "./Menu";
@@ -12,7 +13,6 @@ import CreateTransactionForm from "../features/transactions/CreateTransactionFor
 import ConfirmDelete from "./ConfirmDelete";
 import TransactionDetails from "../features/transactions/TransactionDetails";
 import TableSkeleton from "./TableSkeleton";
-import { getCurrencyEntity } from "../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function Table({ data, isLoading, currency }) {

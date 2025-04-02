@@ -1,14 +1,14 @@
 import { useSearchParams } from "react-router-dom";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 import { useTransactionStatistic } from "../transactions/useTransactionStatistic";
 import { useExpenseTransactions } from "../transactions/useExpenseTransactions";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
-import Spinner from "../../ui/Spinner";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
+import Spinner from "../../ui/Spinner";
 import DetailedPieChart from "../../ui/DetailedPieChart";
 import StatsTable from "../statistics/StatsTable";
 import ReportCard from "./ReportCard";
 import Table from "../../ui/Table";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function ExpenseReport() {
   const [searchParams] = useSearchParams();

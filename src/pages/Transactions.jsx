@@ -1,8 +1,9 @@
-import SortByTable from "../ui/SortByTable";
+import { useEffect, useState } from "react";
 import { useTransactions } from "../features/transactions/useTransactions";
 import { useSearchParams } from "react-router-dom";
+
+import SortByTable from "../ui/SortByTable";
 import Search from "../ui/Search";
-import { useEffect, useState } from "react";
 import Pagination from "../ui/Pagination";
 import Table from "../ui/Table";
 import TimeFilter from "../ui/TimeFilter";

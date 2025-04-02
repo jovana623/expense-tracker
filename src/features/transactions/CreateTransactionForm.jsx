@@ -5,10 +5,10 @@ import { ModalContext } from "../../ui/Modal";
 import { useCreateTransaction } from "./useCreateTransaction";
 import { useUpdateTransaction } from "./useUpdateTransaction";
 import { useCategories } from "../category/useCategories";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 /* eslint-disable react/prop-types */
 function CreateTransactionForm({ transactionToUpdate = {} }) {

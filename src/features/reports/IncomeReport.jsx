@@ -1,14 +1,15 @@
+import { useSearchParams } from "react-router-dom";
 import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
-import DetailedPieChart from "../../ui/DetailedPieChart";
-import { summarizeAmountsByType } from "../../helpers/sortTransactions";
-import Table from "../../ui/Table";
 import { useTransactionStatistic } from "../transactions/useTransactionStatistic";
+import { summarizeAmountsByType } from "../../helpers/sortTransactions";
+import { useCurrentUser } from "../authentification/useCurrentUser";
+import { handleDownloadPDF } from "../../helpers/pdfDownload";
+
+import Table from "../../ui/Table";
+import DetailedPieChart from "../../ui/DetailedPieChart";
 import Spinner from "../../ui/Spinner";
 import StatsTable from "../statistics/StatsTable";
-import { useSearchParams } from "react-router-dom";
-import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import ReportCard from "./ReportCard";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function IncomeReport() {
   const [searchParams] = useSearchParams();

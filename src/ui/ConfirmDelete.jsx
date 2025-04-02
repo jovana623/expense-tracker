@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import Button from "./Button";
 import { ModalContext } from "./Modal";
+import Button from "./Button";
 
 /* eslint-disable react/prop-types */
 function ConfirmDelete({ nameModal, onConfirm }) {

@@ -12,10 +12,13 @@ import { BiReceipt } from "react-icons/bi";
 import { MdOutlineEuroSymbol } from "react-icons/md";
 
 import { goalSummary, summary } from "../helpers/sortTransactions";
+
 import { useSavings } from "../features/savings/useSavings";
-import { useDashboardData } from "../features/transactions/useDashboardData";
+import { useDashboardSummary } from "../features/transactions/useDashboardSummary";
 import { useMonthlyBalance } from "../features/transactions/useMonthlyBalance";
 import { useBalancePercentage } from "../features/dashboard/hooks/useBalancePercentage";
+import { useDashboardHistory } from "../features/transactions/useDashboardHistory";
+import { useIncomeExpensePercentage } from "../features/dashboard/hooks/useIncomeExpensePercentage";
 
 import SummaryCard from "../features/dashboard/SummaryCard";
 import TimeFilter from "../ui/TimeFilter";
@@ -42,21 +45,32 @@ function Dashboard() {
   const { savings, isLoading: isLoadingSavings } = useSavings();
 
   const {
-    monthlyData,
-    yearlyData,
     totalIncome,
     totalExpense,
-    isLoading: isLoadingDashboard,
-  } = useDashboardData(time, month);
+    isLoading: isLoadingSummary,
+  } = useDashboardSummary(time, month);
+
+  const {
+    monthlyData,
+    yearlyData,
+    isLoading: isLoadingHistory,
+  } = useDashboardHistory();
 
   const { monthlyBalance, isLoading: isLoadingBalance } = useMonthlyBalance();
 
   const { currentMonthBalance, balancePercentage } = useBalancePercentage(
     monthlyBalance,
-    isLoadingBalance
+    isLoadingBalance,
+    time
   );
 
-  console.log(savings);
+  const { incomePercentage, expensePercentage } = useIncomeExpensePercentage(
+    time,
+    month,
+    monthlyData,
+    yearlyData,
+    isLoadingHistory
+  );
 
   const savingsSummary = useMemo(() => summary(savings), [savings]);
 
@@ -65,6 +79,8 @@ function Dashboard() {
     () => ((savingsSummary / savingGoalsSummary) * 100).toFixed(1),
     [savingsSummary, savingGoalsSummary]
   );
+
+  console.log(incomePercentage, expensePercentage);
 
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
@@ -107,9 +123,9 @@ function Dashboard() {
             icon={<MdOutlineEuroSymbol />}
             name="Total income"
             amount={totalIncome}
-            percentage="6"
+            percentage={incomePercentage}
             isActive={location.pathname === "/dashboard/income"}
-            isLoading={isLoadingDashboard}
+            isLoading={isLoadingSummary || isLoadingHistory}
             reportPath="income"
           />
         </NavLink>
@@ -127,9 +143,9 @@ function Dashboard() {
             icon={<BiReceipt />}
             name="Total expenses"
             amount={totalExpense}
-            percentage="6"
+            percentage={expensePercentage}
             isActive={location.pathname === "/dashboard/expenses"}
-            isLoading={isLoadingDashboard}
+            isLoading={isLoadingSummary || isLoadingHistory}
             reportPath="expense"
           />
         </NavLink>
@@ -147,7 +163,7 @@ function Dashboard() {
             icon={<BiWallet />}
             name="current balance"
             amount={currentMonthBalance}
-            percentage={balancePercentage.toFixed(2)}
+            percentage={balancePercentage}
             isActive={location.pathname === "/dashboard/balance"}
             isLoading={isLoadingBalance}
             reportPath="balance"

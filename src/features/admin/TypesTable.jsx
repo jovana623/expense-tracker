@@ -1,13 +1,14 @@
+import { useTypes } from "../type/useTypes";
+import { BiSolidPencil } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { useDeleteType } from "../type/useDeleteType";
+
 import AddForm from "../../ui/AddForm";
 import Menu from "../../ui/Menu";
 import Modal from "../../ui/Modal";
 import TableSkeleton from "../../ui/TableSkeleton";
 import TypesForm from "../type/TypesForm";
-import { useTypes } from "../type/useTypes";
-import { BiSolidPencil } from "react-icons/bi";
-import { AiOutlineDelete } from "react-icons/ai";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useDeleteType } from "../type/useDeleteType";
 
 function TypesTable() {
   const { types, isLoading } = useTypes();

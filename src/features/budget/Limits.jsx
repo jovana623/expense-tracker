@@ -1,6 +1,6 @@
+import { useBudgets } from "./useBudgets";
 import LimitsCard from "./LimitsCard";
 import CardSkeleton from "../../ui/CardSkeleton";
-import { useBudgets } from "./useBudgets";
 
 function Limits() {
   const { budgets, isLoading } = useBudgets();

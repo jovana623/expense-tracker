@@ -1,7 +1,7 @@
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+import { useTransactions } from "../transactions/useTransactions";
 import { formatDate } from "../../helpers/dateFunctions";
 import TableSkeleton from "../../ui/TableSkeleton";
-import { useTransactions } from "../transactions/useTransactions";
 
 /* eslint-disable react/prop-types */
 function BudgetTransactionTable({ type, period }) {
