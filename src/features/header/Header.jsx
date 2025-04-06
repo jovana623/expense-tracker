@@ -1,4 +1,5 @@
 import { useLogout } from "../authentification/useLogout";
+import DarkModeSwitch from "./DarkModeSwitch";
 
 function Header() {
   const { mutate: logout } = useLogout();
@@ -10,29 +11,37 @@ function Header() {
     : "/anon-user.png";
 
   return (
-    <div className="border-b border-stone-200 py-3 h-[50px] flex items-center justify-end pr-12 pl-6 sticky top-0 bg-white z-10 md:bg-white gap-6">
-      <div className="flex gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center">
-            <img
-              src={avatarUrl}
-              alt="User Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <span className="text-gray-700 font-medium text-sm">
-            {username || "Guest"}
-          </span>
-        </div>
+    <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-stone-200 dark:border-stone-600 shadow-sm px-6 py-3">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        {/* Left side (reserved for future content) */}
+        <div></div>
 
-        <button
-          onClick={logout}
-          className="px-4 py-1 text-sm text-gray-600 border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition-shadow shadow-sm"
-        >
-          Log out
-        </button>
+        {/* Right side */}
+        <div className="flex items-center gap-8">
+          <DarkModeSwitch />
+
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center">
+              <img
+                src={avatarUrl}
+                alt="User Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="text-sm font-medium text-gray-700 dark:text-white">
+              {username || "Guest"}
+            </span>
+          </div>
+
+          <button
+            onClick={logout}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600 transition duration-200 shadow-sm"
+          >
+            Log out
+          </button>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }
 

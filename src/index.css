@@ -4,11 +4,11 @@
 
 @layer components {
   .nav {
-    @apply flex items-center gap-2 px-4 py-2 hover:text-green-500 hover:bg-green-50 hover:px-4 hover:py-2 hover:rounded-md;
+    @apply flex items-center gap-2 px-4 py-2 hover:text-green-500 hover:bg-green-50 hover:px-4 hover:py-2 hover:rounded-md dark:text-gray-300 hover:dark:bg-gray-700 hover:dark:text-green-500;
   }
 
   .nav-active {
-    @apply text-green-500 bg-green-50 px-4 py-2 rounded-md;
+    @apply text-green-500 bg-green-50 px-4 py-2 rounded-md dark:bg-gray-700 dark:text-green-500;
   }
 
   .summary-card {
@@ -20,7 +20,57 @@
   }
 
   .input-field {
-    @apply px-2 py-2 shadow-sm border-stone-200 border rounded-md focus:outline-green-500 w-full;
+    @apply px-2 py-2 shadow-sm border-stone-200 border rounded-md focus:outline-green-500 w-full dark:bg-gray-800 dark:text-lightBg dark:border-stone-600;
+  }
+
+  /*Calendar*/
+  .my-calendar {
+    @apply p-5 w-full border border-gray-300 dark:border-gray-800 dark:bg-gray-800;
+  }
+
+  .my-calendar .react-calendar__tile {
+    @apply bg-white border border-gray-300 h-28 w-full relative box-border dark:bg-gray-800;
+    outline: 1px solid #d1d5db;
+  }
+
+  html.dark .my-calendar .react-calendar__tile {
+    outline: 1px solid #4b5563;
+  }
+
+  .my-calendar .react-calendar__tile:enabled:hover {
+    @apply bg-gray-100 dark:bg-gray-700;
+  }
+
+  .my-calendar .react-calendar__tile abbr {
+    @apply absolute top-2 left-2 text-sm font-bold text-gray-600 dark:text-gray-200;
+  }
+
+  .my-calendar .react-calendar__month-view__weekdays__weekday {
+    @apply text-gray-500 text-[0.7rem] text-right font-semibold p-2 border-t border-gray-300 dark:text-white dark:border-stone-500;
+  }
+
+  .my-calendar .react-calendar__month-view__weekdays__weekday:first-child {
+    @apply border-l border-gray-300 dark:border-stone-500;
+  }
+
+  .my-calendar .react-calendar__month-view__weekdays__weekday:last-child {
+    @apply border-r border-gray-300 dark:border-stone-500;
+  }
+
+  .my-calendar .react-calendar__month-view__weekdays__weekday abbr {
+    @apply no-underline;
+  }
+
+  .my-calendar .react-calendar__navigation {
+    @apply bg-white w-2/5 mx-auto mb-4 dark:bg-gray-800;
+  }
+
+  .my-calendar .react-calendar__navigation button:enabled:hover {
+    @apply bg-gray-100 dark:bg-gray-700;
+  }
+
+  .my-calendar .react-calendar__navigation__label {
+    @apply text-lg font-bold cursor-default dark:text-white;
   }
 }
 
@@ -42,65 +92,7 @@
   border-bottom-right-radius: 3px;
 }
 
-/*Calendar*/
-.my-calendar {
-  padding: 1.25rem;
-  width: 100%;
-  border: none;
-}
-
-.my-calendar .react-calendar__tile {
-  background-color: #ffffff;
-  border: 1px solid #d1d5db;
-  height: 6.8rem;
-  position: relative;
-}
-
-.my-calendar .react-calendar__tile abbr {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: bold;
-  color: #4b5563;
-}
-
-.my-calendar .react-calendar__month-view__weekdays__weekday {
-  color: #6b7280;
-  font-size: 0.7rem;
-  text-align: right;
-  font-weight: 600;
-  padding: 0.5rem;
-  border-top: 1px solid #d1d5db;
-}
-
-.my-calendar .react-calendar__month-view__weekdays__weekday:first-child {
-  border-left: 1px solid #d1d5db;
-}
-
-.my-calendar .react-calendar__month-view__weekdays__weekday:last-child {
-  border-right: 1px solid #d1d5db;
-}
-
-.my-calendar .react-calendar__month-view__weekdays__weekday abbr {
-  text-decoration: none;
-}
-
-.my-calendar .react-calendar__navigation {
-  background-color: #ffffff;
-  width: 40%;
-  margin: auto;
-  margin-bottom: 1rem;
-}
-
-.my-calendar .react-calendar__navigation__label {
-  font-size: 1.125rem;
-  font-weight: bold;
-  cursor: default;
-}
-
 /*Flip card*/
-
 .card {
   perspective: 800px;
 }
@@ -125,4 +117,9 @@
 
 .desktop-view .mobile-only {
   @apply hidden;
+}
+
+/*Date picker*/
+.dark input[type="month"] {
+  color-scheme: dark;
 }

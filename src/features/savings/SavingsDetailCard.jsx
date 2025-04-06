@@ -24,15 +24,15 @@ function SavingsDetailCard({ currentSaving, currency }) {
 
   if (isLoading) return <Spinner />;
   return (
-    <div className="relative shadow rounded-md flex flex-col items-center py-3 gap-5">
+    <div className="relative shadow rounded-md flex flex-col items-center py-3 gap-5 dark:bg-gray-700">
       <div className="flex">
         <div className="flex flex-col items-center gap-1">
-          <p className="text-stone-500">You have reached</p>
+          <p className="text-stone-500 dark:text-gray-300">You have reached</p>
           <h1 className="text-2xl font-semibold">
             {amount.toLocaleString()}
             {formattedCurrency}
           </h1>
-          <p className="text-stone-500">
+          <p className="text-stone-500 dark:text-gray-300">
             of your {goal.toLocaleString()}
             {formattedCurrency} saving goal
           </p>

@@ -14,10 +14,13 @@ import BudgetTransactionTable from "./BudgetTransactionsTable";
 function LimitsCard({ data, currency }) {
   const { deleteBudget, isLoading } = useDeleteBudget();
   if (isLoading) return <Spinner />;
+
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-700">
       <div className="px-5 py-3 flex justify-between items-center">
-        <h3 className="text-zinc-900 text-lg">{data.type.name}</h3>
+        <h3 className="text-zinc-900 text-lg dark:text-lightBg">
+          {data.type.name}
+        </h3>
         <Modal>
           <Menu>
             <Menu.Toggle id={data.id} />
@@ -64,10 +67,10 @@ function LimitsCard({ data, currency }) {
           )}
         </div>
         <div className="flex justify-between items-center mt-3">
-          <span className="text-sm text-zinc-600">
+          <span className="text-sm text-zinc-600 dark:text-gray-200">
             {data.percentage.toFixed(0)}&#x25;
           </span>
-          <span className="text-sm text-zinc-600">
+          <span className="text-sm text-zinc-600 dark:text-gray-200">
             {data.total.toLocaleString()}
             {getCurrencyEntity(currency)}/{data.amount.toLocaleString()}
             {getCurrencyEntity(currency)}

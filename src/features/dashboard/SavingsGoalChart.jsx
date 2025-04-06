@@ -34,7 +34,7 @@ function SavingsGoalChart({ saving, payments, currency }) {
     const { date, total, goal } = payload[0].payload;
 
     return (
-      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
         <p>{date}</p>
         <p className="text-red-500">
           Goal: {goal.toLocaleString()}
@@ -50,16 +50,26 @@ function SavingsGoalChart({ saving, payments, currency }) {
 
   return (
     <div className="pl-0 ml-[-2rem] text-sm">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={280}>
         <LineChart width={600} height={300} data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="currentColor"
+            className="stroke-gray-300 dark:stroke-gray-500"
+          />
           <XAxis
             dataKey="date"
             tickFormatter={formatDate}
             type="category"
             domain={[chartData[0]?.date, endDate]}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
           />
-          <YAxis tickFormatter={currencyFormatter} />
+          <YAxis
+            tickFormatter={currencyFormatter}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"
@@ -73,7 +83,8 @@ function SavingsGoalChart({ saving, payments, currency }) {
           <Line
             type="monotone"
             dataKey="goal"
-            stroke="red"
+            stroke="#f87171"
+            strokeWidth={2}
             dot={false}
             name="Goal"
             strokeDasharray="5 5"
@@ -85,14 +96,15 @@ function SavingsGoalChart({ saving, payments, currency }) {
             stroke="#ffffff"
             dot={false}
             name="Cumulative Savings"
+            strokeWidth={0}
           />
-
           <Line
             type="monotone"
             data={dottedData}
             dataKey="total"
-            stroke="#008000"
+            stroke="#4ade80"
             name="Total payments"
+            strokeWidth={2}
           />
         </LineChart>
       </ResponsiveContainer>

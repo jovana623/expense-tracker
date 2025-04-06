@@ -8,7 +8,7 @@ function RadialChartTable({ data, currency }) {
       {data.map((entry, index) => (
         <li
           key={index}
-          className="grid grid-cols-[0.5fr_2fr_3fr_1fr] border-b border-stone-200 py-1 items-center gap-3 text-sm w-[90%] mx-auto"
+          className="grid grid-cols-[0.5fr_2fr_3fr_1fr] border-b border-stone-200 py-1 items-center gap-3 text-sm w-[90%] mx-auto dark:border-stone-600"
         >
           <div
             className="h-2 w-4 rounded"
@@ -16,12 +16,17 @@ function RadialChartTable({ data, currency }) {
           ></div>
 
           <p>{data[index].name}</p>
-          <p className="font-semibold justify-self-center">
+          <p
+            className="font-semibold justify-self-center dark:text-lightBg
+          "
+          >
             {data[index].amount.toLocaleString()}
             {formattedCurrency}/ {data[index].goal.toLocaleString()}
             {formattedCurrency}
           </p>
-          <p className="text-stone-500">{data[index].percentage}%</p>
+          <p className="text-stone-500 dark:text-gray-200">
+            {data[index].percentage}%
+          </p>
         </li>
       ))}
     </ul>

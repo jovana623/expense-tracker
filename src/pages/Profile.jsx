@@ -29,46 +29,52 @@ function Profile() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-xl h-full grid grid-rows-[auto_1fr] gap-6">
-      <h1 className="text-2xl font-semibold text-center">Account Settings</h1>
+    <div className="w-full h-[90%] px-6 py-4">
+      <h1 className="text-2xl font-semibold mb-4 text-center">
+        Account Settings
+      </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
-        <ChangeProfileInfoForm user={currentUser} isLoading={isLoading} />
-        <ChangePasswordForm />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <section className="space-y-6">
-          <h2 className="text-lg font-medium">App Preferences</h2>
-          <div className="flex justify-between items-center">
-            <span>Default Currency</span>
-            <select
-              className="h-10 w-30 bg-gray-200 rounded"
-              onChange={handleCurrencyChange}
-              value={currency}
-              disabled={isUpdatingCurrency}
-            >
-              {!isLoading &&
-                currentUser.currency_choices.map(({ code, symbol }) => (
-                  <option key={code} value={code}>
-                    {symbol}
-                  </option>
-                ))}
-            </select>
+      <div className="flex flex-col xl:flex-row gap-4 h-full">
+        <div className="flex-1 bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md flex gap-6">
+          <div className="w-1/2 h-full flex flex-col justify-start">
+            <ChangeProfileInfoForm user={currentUser} isLoading={isLoading} />
           </div>
-          <div className="flex justify-between items-center">
-            <span>Notifications</span>
-
-            <select className="h-10 w-14 bg-gray-200 rounded">
-              <option value="on">On</option>
-              <option value="off">Off</option>
-            </select>
+          <div className="w-1/2 h-full flex flex-col justify-start">
+            <ChangePasswordForm />
           </div>
-        </section>
+        </div>
 
-        <section className="space-y-6">
-          <h2 className="text-lg font-medium text-red-500">Danger Zone</h2>
-          {
+        <div className="w-full xl:w-[380px] flex flex-col justify-between bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md">
+          <div className="space-y-6">
+            <h2 className="text-lg font-medium">App Preferences</h2>
+            <div className="flex justify-between items-center">
+              <span>Default Currency</span>
+              <select
+                className="h-10 w-32 bg-gray-200 rounded px-2 dark:bg-gray-800"
+                onChange={handleCurrencyChange}
+                value={currency}
+                disabled={isUpdatingCurrency}
+              >
+                {!isLoading &&
+                  currentUser.currency_choices.map(({ code, symbol }) => (
+                    <option key={code} value={code}>
+                      {symbol}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="flex justify-between items-center">
+              <span>Notifications</span>
+              <select className="h-10 w-20 bg-gray-200 rounded px-2 dark:bg-gray-800">
+                <option value="on">On</option>
+                <option value="off">Off</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-20 space-y-4">
+            <h2 className="text-lg font-medium text-red-500">Danger Zone</h2>
+
             <Modal>
               <Modal.OpenButton opens="reset-account">
                 <button className="bg-white text-red-500 border border-red-500 px-4 py-2 rounded-lg w-full transition-all duration-200 hover:bg-red-500 hover:text-white">
@@ -82,8 +88,7 @@ function Profile() {
                 />
               </Modal.Window>
             </Modal>
-          }
-          {
+
             <Modal>
               <Modal.OpenButton opens="delete-account">
                 <button className="bg-red-500 text-white px-4 py-2 rounded-lg w-full transition-all duration-200 hover:bg-red-600">
@@ -97,8 +102,8 @@ function Profile() {
                 />
               </Modal.Window>
             </Modal>
-          }
-        </section>
+          </div>
+        </div>
       </div>
     </div>
   );

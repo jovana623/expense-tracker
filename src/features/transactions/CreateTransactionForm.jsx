@@ -67,14 +67,16 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     <form
       role="form"
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
+      className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs dark:bg-gray-700"
     >
       {isLoadingType || isLoadingCategory ? (
         <Spinner />
       ) : (
         <>
           <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name" className="dark:text-lightBg">
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -87,7 +89,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
             <p className="text-xs text-red-500">{errors?.name?.message}</p>
           </div>
           <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
-            <label htmlFor="amount">Amount</label>
+            <label htmlFor="amount" className="dark:text-lightBg">
+              Amount
+            </label>
             <input
               type="text"
               className="input-field"
@@ -104,7 +108,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
-            <label htmlFor="category">Category</label>
+            <label htmlFor="category" className="dark:text-lightBg">
+              Category
+            </label>
             <select
               id="category"
               className="input-field"
@@ -119,7 +125,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
-            <label htmlFor="typeId">Type</label>
+            <label htmlFor="typeId" className="dark:text-lightBg">
+              Type
+            </label>
             <select id="typeId" className="input-field" {...register("typeId")}>
               {types.map((type) => (
                 <option key={type.id} value={type.id}>
@@ -131,7 +139,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           </div>
 
           <div className="col-span-2 flex flex-col gap-1">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description" className="dark:text-lightBg">
+              Description
+            </label>
             <textarea
               className="input-field"
               type="textarea"
@@ -141,7 +151,9 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
           </div>
 
           <div className="col-span-2 flex flex-col gap-1">
-            <label htmlFor="date">Date</label>
+            <label htmlFor="date" className="dark:text-lightBg">
+              Date
+            </label>
             <input
               type="date"
               className="input-field"

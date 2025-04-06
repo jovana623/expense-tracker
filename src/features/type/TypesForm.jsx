@@ -46,9 +46,11 @@ function TypesForm({ typeToUpdate = {} }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="m-0 sm:m-10 px-5 py-3  flex flex-col gap-2 bg-lightBg sm:text-base text-xs"
+      className="m-0 sm:m-10 px-5 py-3  flex flex-col gap-2 bg-lightBg sm:text-base text-xs dark:bg-gray-700"
     >
-      <label htmlFor="name">Name</label>
+      <label htmlFor="name" className="dark:text-lightBg">
+        Name
+      </label>
       <input
         type="text"
         id="name"
@@ -57,7 +59,9 @@ function TypesForm({ typeToUpdate = {} }) {
         })}
         className="input-field"
       ></input>
-      <label htmlFor="name">Category</label>
+      <label htmlFor="name" className="dark:text-lightBg">
+        Category
+      </label>
       <select id="category" className="input-field" {...register("category")}>
         {categories.map((category) => (
           <option key={category.id} value={category.id}>
@@ -65,10 +69,12 @@ function TypesForm({ typeToUpdate = {} }) {
           </option>
         ))}
       </select>
-      <label htmlFor="name">Color</label>
+      <label htmlFor="name" className="dark:text-lightBg">
+        Color
+      </label>
       <input
         type="color"
-        className="p-1 h-10 block bg-white border border-gray-200 cursor-pointer rounded-lg w-1/2"
+        className="p-1 h-10 block bg-lightBg cursor-pointer rounded-lg w-1/2 dark:bg-gray-700"
         id="color"
         {...register("color")}
       ></input>

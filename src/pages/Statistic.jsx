@@ -88,8 +88,8 @@ function Statistic() {
           <ChartCard>
             <TimeFilter />
 
-            <div className="flex flex-col gap-3">
-              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+            <div className="flex flex-col gap-3 g-gray-50 dark:bg-gray-700">
+              <p className="text-xs text-gray-700 uppercase dark:text-lightBg">
                 Top income types
               </p>
               <StatsTable
@@ -97,7 +97,7 @@ function Statistic() {
                 isLoading={isLoadingStats}
                 currency={currency}
               />
-              <p className="text-xs text-gray-700 uppercase bg-gray-50">
+              <p className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-lightBg">
                 Top expense types
               </p>
               <StatsTable

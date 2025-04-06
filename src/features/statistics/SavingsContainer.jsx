@@ -15,8 +15,10 @@ function SavingsContainer({ currency }) {
   }));
 
   return (
-    <div className="rounded-md shadow h-[100%] flex flex-col px-4 py-7">
-      <p className="font-semibold text-xl text-center">Saving goals</p>
+    <div className="rounded-md shadow h-[100%] flex flex-col px-4 py-7 dark:bg-gray-700">
+      <p className="font-semibold text-xl text-center dark:text-gray-200">
+        Saving goals
+      </p>
       {isLoading ? (
         <Spinner />
       ) : (

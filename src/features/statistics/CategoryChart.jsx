@@ -26,9 +26,9 @@ function CategoryChart({ data, currency }) {
     if (!active || !payload || !payload[0]) return null;
     const { total, month } = payload[0].payload;
     return (
-      <div className="bg-lightBg px-0 py-2 rounded-md border border-stone-200 w-full">
-        <p>{month}</p>
-        <p className="text-blue-300">
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
+        <p className="text-sm text-gray-700 dark:text-gray-300">{month}</p>
+        <p className="text-blue-400 font-medium">
           Amount: {total.toLocaleString()}
           {formattedCurrency}
         </p>
@@ -43,9 +43,21 @@ function CategoryChart({ data, currency }) {
           data={formattedData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis tickFormatter={currencyFormatter} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="currentColor"
+            className="stroke-gray-300 dark:stroke-gray-500"
+          />
+          <XAxis
+            dataKey="month"
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
+          <YAxis
+            tickFormatter={currencyFormatter}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"
@@ -53,7 +65,13 @@ function CategoryChart({ data, currency }) {
             wrapperStyle={{ paddingBottom: "10px" }}
             payload={[{ value: "Amount", type: "square", color: "#87CEEB" }]}
           />
-          <Line type="monotone" dataKey="total" stroke="#87CEEB" />
+          <Line
+            type="monotone"
+            dataKey="total"
+            stroke="#87CEEB"
+            strokeWidth={2}
+            dot={false}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

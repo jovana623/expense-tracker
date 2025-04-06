@@ -38,7 +38,11 @@ function Toggle({ id }) {
     openId === "" || openId !== id ? open(id) : close();
   }
   return (
-    <button onClick={handleClick} data-testid="menu-toggle">
+    <button
+      onClick={handleClick}
+      data-testid="menu-toggle"
+      className="text-stone-600 dark:text-lightBg"
+    >
       <HiEllipsisVertical />
     </button>
   );
@@ -54,7 +58,8 @@ function List({ id, children }) {
     /* eslint-disable-next-line react/no-unknown-property */
     <ul
       ref={ref}
-      className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md z-2"
+      className="absolute top-[calc(100%+0.5rem)] left-0 z-10 bg-white border border-gray-200 rounded shadow-md z-2 dark:bg-gray-800 
+      dark:border-stone-600"
       style={{ top: position?.y, left: position?.x }}
     >
       {children}
@@ -75,7 +80,8 @@ function Button({ children, icon, onClick }) {
     <li>
       <button
         onClick={handleClick}
-        className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500"
+        className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500 dark:border-stone-600
+        dark:text-lightBg dark:bg-gray-700"
       >
         {icon}
         <span>{children}</span>

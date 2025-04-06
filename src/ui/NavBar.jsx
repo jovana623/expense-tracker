@@ -18,7 +18,7 @@ function NavBar() {
 
   return (
     <nav className="relative">
-      <div className="lg:hidden flex items-center justify-between px-4 py-2 border-b border-stone-200">
+      <div className="lg:hidden flex items-center justify-between px-4 py-2 border-b border-stone-200 dark:border-stone-600 dark:bg-gray-800">
         <Logo />
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -29,7 +29,7 @@ function NavBar() {
       </div>
 
       <div
-        className={`fixed top-0 left-0 w-full h-full bg-white transform ${
+        className={`fixed top-0 left-0 w-full h-full bg-white transform dark:bg-gray-700 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out z-50 lg:hidden`}
       >
@@ -133,7 +133,7 @@ function NavBar() {
         </ul>
       </div>
 
-      <div className="hidden lg:flex flex-col row-span-2 border-r border-stone-200 px-10 gap-15 h-full">
+      <div className="hidden lg:flex flex-col row-span-2 border-r border-stone-200 px-10 gap-15 h-full dark:border-stone-600">
         <Logo />
         <ul className="flex flex-col gap-4 text-stone-500 text-lg flex-1 mt-14">
           <div className="flex flex-col gap-4">

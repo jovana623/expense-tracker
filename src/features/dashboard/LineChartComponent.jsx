@@ -5,6 +5,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -49,17 +50,17 @@ function LineChartComponent({ data, monthData, currency }) {
     });
 
     return (
-      <div className="bg-lightBg px-0 py-2 rounded-md border border-stone-200 w-full">
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
         {time === "month" ? (
-          <p>
+          <p className="dark:text-gray-200">
             {day} {currentMonth}
           </p>
         ) : monthParam ? (
-          <p>
+          <p className="dark:text-gray-200">
             {day} {monthLong}
           </p>
         ) : (
-          <p>{monthYear}</p>
+          <p className="dark:text-gray-200">{monthYear}</p>
         )}
         <p className="text-green-500">
           Income: {income.toLocaleString()}
@@ -75,18 +76,27 @@ function LineChartComponent({ data, monthData, currency }) {
 
   return (
     <div className="pl-0 ml-[-3rem] text-sm">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={280}>
         <LineChart
           data={adjustedData}
           margin={{ top: 5, right: 10, left: 30, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          {time === "month" || monthParam ? (
-            <XAxis dataKey="day" interval={5} />
-          ) : (
-            <XAxis dataKey="monthYear" />
-          )}
-          <YAxis tickFormatter={currencyFormatter} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="currentColor"
+            className="stroke-gray-300 dark:stroke-gray-500"
+          />
+          <XAxis
+            dataKey={time === "month" || monthParam ? "day" : "monthYear"}
+            interval={time === "month" || monthParam ? 5 : "preserveStartEnd"}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
+          <YAxis
+            tickFormatter={currencyFormatter}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"
@@ -97,8 +107,24 @@ function LineChartComponent({ data, monthData, currency }) {
               { value: "Expenses", type: "square", color: "#ef4444" },
             ]}
           />
-          <Line type="monotone" dataKey="income" stroke="#22c55e" />
-          <Line type="monotone" dataKey="expenses" stroke="#ef4444" />
+          <ReferenceLine
+            y={0}
+            className="stroke-gray-800 dark:stroke-gray-400"
+          />
+          <Line
+            type="monotone"
+            dataKey="income"
+            stroke="#4ade80"
+            strokeWidth={2}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="expenses"
+            stroke="#f87171"
+            strokeWidth={2}
+            dot={false}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

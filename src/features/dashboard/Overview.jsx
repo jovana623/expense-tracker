@@ -53,8 +53,6 @@ function Overview() {
     return { monthData, sortedByMonth };
   }, [transactions, month, isLoadingTransactions]);
 
-  console.log(monthData);
-
   function handleSavingChange(e) {
     searchParams.set("saving", e.target.value);
     setSearchParams(searchParams);

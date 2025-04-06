@@ -22,9 +22,9 @@ function BudgetTransactionTable({ type, period }) {
   console.log(transactions);
 
   return (
-    <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+    <div className="relative overflow-x-auto my-4 px-3">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-800 dark:text-lightBg">
           <tr>
             <th scope="col" className="px-6 py-3 rounded-s-lg">
               Name
@@ -46,12 +46,15 @@ function BudgetTransactionTable({ type, period }) {
             </tr>
           </tbody>
         ) : (
-          <tbody>
+          <tbody className="">
             {transactions.map((transaction) => (
-              <tr key={transaction.id} className="bg-white">
+              <tr
+                key={transaction.id}
+                className="bg-white dark:bg-gray-700 dark:border-stone-600 dark:text-lightBg"
+              >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-lightBg"
                 >
                   {transaction.name}
                 </th>

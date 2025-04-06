@@ -26,6 +26,7 @@ import BalanceReport from "./features/reports/BalanceReport";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AdminPanel from "./pages/AdminPanel";
 import ProtectedSuperuserRoute from "./ui/ProtectedSuperuserRoute";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   const queryClient = new QueryClient({
@@ -39,63 +40,65 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <BrowserRouter>
-          <Routes>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route element={<ProtectedRoute />}>
-              <Route element={<AppLayout />}>
-                <Route
-                  index
-                  element={<Navigate replace to="dashboard/overview" />}
-                />
-                <Route path="dashboard" element={<Dashboard />}>
-                  <Route path="overview" element={<Overview />} />
-                  <Route path="income" element={<Income />} />
-                  <Route path="expenses" element={<Expenses />} />
-                  <Route path="balance" element={<Balance />} />
-                  <Route path="savings" element={<Savings />} />
+        <ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <BrowserRouter>
+            <Routes>
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route
+                    index
+                    element={<Navigate replace to="dashboard/overview" />}
+                  />
+                  <Route path="dashboard" element={<Dashboard />}>
+                    <Route path="overview" element={<Overview />} />
+                    <Route path="income" element={<Income />} />
+                    <Route path="expenses" element={<Expenses />} />
+                    <Route path="balance" element={<Balance />} />
+                    <Route path="savings" element={<Savings />} />
+                  </Route>
+                  <Route path="budget" element={<Budget />} />
+                  <Route path="transactions" element={<Transactions />} />
+                  <Route path="calendar" element={<Calendar />} />
+                  <Route path="statistic" element={<Statistic />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="profile" element={<Profile />} />
+                  <Route element={<ProtectedSuperuserRoute />}>
+                    <Route path="admin" element={<AdminPanel />} />
+                  </Route>
                 </Route>
-                <Route path="budget" element={<Budget />} />
-                <Route path="transactions" element={<Transactions />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="statistic" element={<Statistic />} />
-                <Route path="settings" element={<Settings />} />
-                <Route path="profile" element={<Profile />} />
-                <Route element={<ProtectedSuperuserRoute />}>
-                  <Route path="admin" element={<AdminPanel />} />
+                <Route path="report" element={<ReportPage />}>
+                  <Route path="income" element={<IncomeReport />} />
+                  <Route path="expense" element={<ExpenseReport />} />
+                  <Route path="savings" element={<SavingsReport />} />
+                  <Route path="balance" element={<BalanceReport />} />
                 </Route>
               </Route>
-              <Route path="report" element={<ReportPage />}>
-                <Route path="income" element={<IncomeReport />} />
-                <Route path="expense" element={<ExpenseReport />} />
-                <Route path="savings" element={<SavingsReport />} />
-                <Route path="balance" element={<BalanceReport />} />
-              </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 5000,
-            },
-            style: {
-              fontStyle: "16px",
-              maxWidth: "500px",
-              padding: "16px 24px",
-              backgroundColor: "var(--color-grey-0)",
-              color: "var(--color-grey-700)",
-            },
-          }}
-        />
+            </Routes>
+          </BrowserRouter>
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontStyle: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "var(--color-grey-0)",
+                color: "var(--color-grey-700)",
+              },
+            }}
+          />
+        </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

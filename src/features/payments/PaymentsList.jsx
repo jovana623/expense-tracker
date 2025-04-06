@@ -4,6 +4,7 @@ import { useDeletePayment } from "./useDeletePayment";
 import { formatDate } from "../../helpers/dateFunctions";
 import { usePayments } from "./usePayments";
 import Spinner from "../../ui/Spinner";
+import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 
 /* eslint-disable react/prop-types */
 function PaymentList({ saving, currency }) {
@@ -23,7 +24,7 @@ function PaymentList({ saving, currency }) {
   return (
     <div className="relative overflow-x-auto  sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right ">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-lightBg">
           <tr>
             <th scope="col" className="px-6 py-3">
               Amount
@@ -38,14 +39,14 @@ function PaymentList({ saving, currency }) {
           {payments.map((payment) => (
             <tr
               key={payment.id}
-              className="bg-white border-b  border-gray-200 hover:bg-gray-50 "
+              className="bg-white border-b  border-gray-200 hover:bg-gray-50 dark:bg-gray-700 dark:text-lightBg dark:border-stone-600"
             >
               <th
                 scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-lightBg"
               >
                 {payment.amount.toLocaleString()}
-                {currency}
+                {getCurrencyEntity(currency)}
               </th>
               <td className="px-6 py-4">{formatDate(payment.date)}</td>
               <td className="px-6 py-4">

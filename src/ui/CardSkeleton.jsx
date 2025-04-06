@@ -5,7 +5,7 @@ function CardSkeleton({ size = 6 }) {
       {[...Array(size)].map((_, index) => (
         <div
           key={index}
-          className="h-3 bg-gray-200 rounded-full mb-4"
+          className="h-3 bg-gray-200 rounded-full mb-4 dark:bg-gray-800"
           style={{ width: `${Math.max(150, 230 - index * 10)}px` }}
         ></div>
       ))}

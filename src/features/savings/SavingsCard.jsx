@@ -21,9 +21,9 @@ function SavingCard({ saving, onCardChange, activeSaving, currency }) {
   return (
     <div className="flex justify-center">
       <div
-        className={` rounded-md px-3 pt-4 w-[90%]  items-end shadow hover:border hover:border-blue-500 hover:cursor-pointer mb-4 ${
+        className={`rounded-md px-3 pt-4 w-[90%]  items-end shadow hover:border hover:border-blue-500 hover:cursor-pointer mb-4 dark:bg-gray-700 dark:border-stone-600 ${
           activeSaving === saving.id
-            ? "border border-blue-500"
+            ? "border border-blue-500 dark:border-blue-500"
             : "border border-lightBg"
         }`}
         onClick={() => onCardChange(saving.id)}
@@ -37,7 +37,7 @@ function SavingCard({ saving, onCardChange, activeSaving, currency }) {
           <div>
             <div className="flex items-center justify-between gap-3 pb-4">
               <div className="flex items-center gap-5 justify-center">
-                <p className="text-stone-900 text-xl font-semibold">
+                <p className="text-stone-900 text-xl font-semibold dark:text-lightBg">
                   {saving.name}
                 </p>
                 <p
@@ -67,7 +67,7 @@ function SavingCard({ saving, onCardChange, activeSaving, currency }) {
                 }}
               ></div>
             </div>
-            <div className="flex justify-between mt-3 text-stone-500">
+            <div className="flex justify-between mt-3 text-stone-500 dark:text-gray-300">
               <p>
                 {saving.amount.toLocaleString()}
                 {currency} / {saving.goal.toLocaleString()}
@@ -75,7 +75,7 @@ function SavingCard({ saving, onCardChange, activeSaving, currency }) {
               </p>
               <p>{percentage}&#x25;</p>
             </div>
-            <div className="flex justify-end mt-3 text-stone-600">
+            <div className="flex justify-end mt-3 text-stone-600 dark:text-gray-200">
               <p>
                 {daysLeft > 0
                   ? `${daysLeft} days left`

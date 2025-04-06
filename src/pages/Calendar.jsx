@@ -1,7 +1,11 @@
 import CustomCalendar from "../features/calendar/CustomCalendar";
 
 function Calendar() {
-  return <CustomCalendar />;
+  return (
+    <div>
+      <CustomCalendar />
+    </div>
+  );
 }
 
 export default Calendar;

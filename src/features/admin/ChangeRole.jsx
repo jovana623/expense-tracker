@@ -17,8 +17,8 @@ function ChangeRole({ user }) {
   if (isLoading) return <Spinner />;
   return (
     <div className="px-2 py-2 flex flex-col gap-3">
-      <h2 className="font-semibold text-xl">Change role</h2>
-      <p>
+      <h2 className="font-semibold text-xl dark:text-lightBg">Change role</h2>
+      <p className="dark:text-gray-200">
         Are you sure you want to{" "}
         {user.is_staff
           ? `remove ${user.username} from staff`

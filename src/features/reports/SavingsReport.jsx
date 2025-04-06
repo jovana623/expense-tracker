@@ -1,7 +1,6 @@
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
 import { goalSummary, summary } from "../../helpers/sortTransactions";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 import { useSavings } from "../savings/useSavings";
 import { useTypeByMonth } from "../statistics/useTypeByMonth";
 import ChartCard from "../../ui/ChartCard";
@@ -17,9 +16,9 @@ function SavingsReport() {
   const { data: typeData, isLoading: isLoadingType } =
     useTypeByMonth("Savings");
 
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
-  if (isLoading || isLoadingType || isLoadingUser) return <Spinner />;
+  if (isLoading || isLoadingType) return <Spinner />;
 
   const currentDate = new Date();
 
@@ -30,9 +29,11 @@ function SavingsReport() {
   );
 
   return (
-    <div className="flex flex-col gap-8 p-6 w-[95%] md:w-[90%] mx-auto bg-gray-50 rounded-lg shadow-md">
-      <div className="flex justify-between items-center p-5 rounded-md shadow-md">
-        <p className="text-xl font-semibold text-gray-800">Savings Report</p>
+    <div className="flex flex-col gap-8 p-6 w-[95%] md:w-[90%] mx-auto bg-gray-50 rounded-lg shadow-md dark:bg-gray-800">
+      <div className="flex justify-between items-center p-5 rounded-md shadow-md dark:bg-gray-700">
+        <p className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          Savings Report
+        </p>
         <button
           onClick={() => handleDownloadPDF("Savings", currentDate)}
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-300"
@@ -42,21 +43,21 @@ function SavingsReport() {
       </div>
       <div id="pdf-content">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <SavingsContainer currency={currentUser.currency} />
+          <div className="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800 dark:shadow-none">
+            <SavingsContainer currency={currency} />
           </div>
           <div className="grid grid-row-[15_fr_15fr_20fr] gap-5">
             <div className="grid grid-rows-3 gap-4">
               <ReportCard
                 title="Amount Saved"
                 amount={savingsSummary}
-                unit={currentUser.currency}
+                unit={currency}
               />
 
               <ReportCard
                 title="Amount Left"
                 amount={savingGoalsSummary - savingsSummary}
-                unit={currentUser.currency}
+                unit={currency}
               />
 
               <ReportCard
@@ -66,8 +67,10 @@ function SavingsReport() {
               />
             </div>
             <ChartCard>
-              <div>Payments over time</div>
-              <CategoryChart data={typeData} currency={currentUser.currency} />
+              <div className="text-lg font-semibold text-gray-700 dark:text-gray-100">
+                Payments over time
+              </div>
+              <CategoryChart data={typeData} currency={currency} />
             </ChartCard>
           </div>
         </div>
@@ -76,15 +79,15 @@ function SavingsReport() {
           {savings.map((saving) => (
             <div
               key={saving.id}
-              className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-md border border-gray-200"
+              className="flex flex-col gap-4 bg-white p-4 rounded-lg shadow-md border border-gray-200 dark:bg-gray-800 dark:border-stone-600"
             >
               <SavingCard
                 saving={saving}
-                currency={getCurrencyEntity(currentUser.currency)}
+                currency={getCurrencyEntity(currency)}
               />
               <PaymentsList
                 saving={saving}
-                currency={getCurrencyEntity(currentUser.currency)}
+                currency={getCurrencyEntity(currency)}
               />
             </div>
           ))}

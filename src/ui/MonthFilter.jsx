@@ -17,8 +17,8 @@ function MonthFilter() {
         onChange={(e) => handleMonthChange(e.target.value)}
         value={month}
         role="textbox"
-        className="text-stone-500 bg-lightBg px-2 py-1 shadow rounded-md focus:outline-green-500"
-      ></input>
+        className="text-stone-500 bg-lightBg px-2 py-1 shadow rounded-md focus:outline-green-500 dark:bg-gray-700 dark:text-lightBg dark:focus:outline-green-500"
+      />
     </div>
   );
 }

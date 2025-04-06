@@ -2,8 +2,8 @@ import { useSearchParams } from "react-router-dom";
 import { useIncomeTransactions } from "../transactions/useIncomeTransactions";
 import { useTransactionStatistic } from "../transactions/useTransactionStatistic";
 import { summarizeAmountsByType } from "../../helpers/sortTransactions";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
+import { useDashboardSummary } from "../transactions/useDashboardSummary";
 
 import Table from "../../ui/Table";
 import DetailedPieChart from "../../ui/DetailedPieChart";
@@ -16,7 +16,7 @@ function IncomeReport() {
   let time = searchParams.get("time") || "";
   let month = searchParams.get("month") || "";
   const sortBy = "date-desc";
-  const { incomeTransactions, totalIncome, isLoading } = useIncomeTransactions(
+  const { incomeTransactions, isLoading } = useIncomeTransactions(
     time,
     month,
     sortBy
@@ -25,7 +25,7 @@ function IncomeReport() {
     time,
     month
   );
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
   const summary = summarizeAmountsByType(incomeTransactions);
   const currentDate = new Date();
@@ -33,8 +33,12 @@ function IncomeReport() {
   const currentMonth = currentDate.toLocaleDateString("en-US", options);
   const monthDate = new Date(month);
   const monthParam = monthDate.toLocaleDateString("en-US", options);
+  const { totalIncome, isLoading: isLoadingSummary } = useDashboardSummary(
+    time,
+    month
+  );
 
-  if (isLoadingStats || isLoadingUser) return <Spinner />;
+  if (isLoadingStats || isLoadingSummary) return <Spinner />;
 
   const timeReport =
     time === "month"
@@ -50,8 +54,8 @@ function IncomeReport() {
   return (
     <div className="flex flex-col gap-5 m-auto w-[95%] md:w-[80%]">
       <div className="flex flex-col gap-10 my-10">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-          <p className="text-xl font-semibold text-gray-800 md:text-left text-center">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-5 bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-700">
+          <p className="text-xl font-semibold text-gray-800 md:text-left text-center dark:text-gray-200">
             Income Report: <span className="text-green-500">{period}</span>
           </p>
           <button
@@ -62,8 +66,8 @@ function IncomeReport() {
           </button>
         </div>
         <div id="pdf-content" className="flex flex-col gap-10">
-          <div className="grid grid-cols-1 gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-            <DetailedPieChart data={summary} currency={currentUser.currency} />
+          <div className="grid grid-cols-1 gap-5 bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-700">
+            <DetailedPieChart data={summary} currency={currency} />
 
             <div className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -71,17 +75,17 @@ function IncomeReport() {
                   title="Top income"
                   subtitle={statistic.top_income.name}
                   amount={statistic.top_income.amount}
-                  unit={currentUser.currency}
+                  unit={currency}
                 />
                 <ReportCard
                   title="Average Income"
                   amount={statistic.avg_income}
-                  unit={currentUser.currency}
+                  unit={currency}
                 />
                 <ReportCard
                   title="Total Income"
                   amount={totalIncome}
-                  unit={currentUser.currency}
+                  unit={currency}
                 />
               </div>
 
@@ -91,7 +95,7 @@ function IncomeReport() {
                 </p>
                 <StatsTable
                   data={statistic.top_income_types}
-                  currency={currentUser.currency}
+                  currency={currency}
                 />
               </div>
             </div>
@@ -100,8 +104,8 @@ function IncomeReport() {
           <div>
             <Table
               data={incomeTransactions}
-              isLoading={isLoading || isLoadingUser}
-              currency={currentUser.currency}
+              isLoading={isLoading}
+              currency={currency}
             />
           </div>
         </div>

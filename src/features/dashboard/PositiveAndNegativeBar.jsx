@@ -44,17 +44,17 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
     });
 
     return (
-      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200">
+      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
         {time === "month" ? (
-          <p>
+          <p className="dark:text-gray-200">
             {day} {currentMonth}
           </p>
         ) : monthParam ? (
-          <p>
+          <p className="dark:text-gray-200">
             {day} {monthLong}
           </p>
         ) : (
-          <p>{monthYear}</p>
+          <p className="dark:text-gray-200">{monthYear}</p>
         )}
         <p className="text-green-500">
           Income: {income.toLocaleString()}
@@ -70,7 +70,7 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
 
   return (
     <div className="pl-0 ml-[-3rem] text-sm">
-      <ResponsiveContainer width="104%" height={300}>
+      <ResponsiveContainer width="104%" height={280}>
         <BarChart
           width={500}
           height={300}
@@ -78,13 +78,23 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
           stackOffset="sign"
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          {time === "month" || monthParam ? (
-            <XAxis dataKey="day" interval={5} />
-          ) : (
-            <XAxis dataKey="monthYear" />
-          )}
-          <YAxis tickFormatter={currencyFormatter} />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="currentColor"
+            className="stroke-gray-300 dark:stroke-gray-500"
+          />
+
+          <XAxis
+            dataKey={time === "month" || monthParam ? "day" : "monthYear"}
+            interval={time === "month" || monthParam ? 5 : "preserveStartEnd"}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
+          <YAxis
+            tickFormatter={currencyFormatter}
+            tick={{ fill: "currentColor" }}
+            className="dark:text-white"
+          />
           <Tooltip content={renderTooltip} />
           <Legend
             verticalAlign="bottom"
@@ -95,7 +105,11 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
               { value: "Expenses", type: "square", color: "#ef4444" },
             ]}
           />
-          <ReferenceLine y={0} stroke="#000" />
+          <ReferenceLine
+            y={0}
+            className="stroke-gray-800 dark:stroke-gray-400"
+          />
+
           <Bar
             dataKey="income"
             fill="#22c55e"

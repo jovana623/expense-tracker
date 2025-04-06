@@ -6,7 +6,6 @@ import { useDailyBalance } from "../transactions/useDailyBalance";
 import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
 import { useBalanceStats } from "../balance/hooks/useBalanceStats";
 import { useTransactions } from "../transactions/useTransactions";
-import { useCurrentUser } from "../authentification/useCurrentUser";
 import { getCurrentMonthAndYear } from "../../helpers/dateFunctions";
 
 import PositiveAndNegativeBar from "../dashboard/PositiveAndNegativeBar";
@@ -24,11 +23,11 @@ function BalanceReport() {
   const sortBy = "date-desc";
   const currentDate = getCurrentMonthAndYear();
 
+  const [year, monthFromDate] = currentDate.split("-");
+
   const monthParam =
     month === ""
-      ? `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}`
+      ? `${year}-${(new Date().getMonth() + 1).toString().padStart(2, "0")}`
       : month;
 
   const { dailyBalance, isLoading: isLoadingDailyBalance } =
@@ -43,10 +42,9 @@ function BalanceReport() {
     sortBy
   );
 
-  const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
+  const currency = localStorage.getItem("currency");
 
-  const isLoading =
-    isLoadingDailyBalance || isLoadingMonthlyBalance || isLoadingUser;
+  const isLoading = isLoadingDailyBalance || isLoadingMonthlyBalance;
 
   const {
     isMonthlyBalance,
@@ -72,13 +70,16 @@ function BalanceReport() {
   }
 
   const options = { month: "long", year: "numeric" };
-  const currentMonth = currentDate.toLocaleDateString("en-US", options);
+  const currentMonth = new Date(`${year}-${monthFromDate}`).toLocaleDateString(
+    "en-US",
+    options
+  );
 
   const timeReport =
     time === "month"
       ? currentMonth
       : time === "year"
-      ? currentDate.getFullYear()
+      ? year
       : time === "all"
       ? "all"
       : "Empty";
@@ -91,8 +92,8 @@ function BalanceReport() {
   return (
     <div className="flex flex-col gap-2 m-auto w-[80%] mb-10">
       <div className="flex flex-col gap-10 my-4">
-        <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md">
-          <p className="text-xl font-semibold text-gray-800">
+        <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-700">
+          <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">
             Balance Report:<span className="text-green-500">{period}</span>
           </p>
           <button
@@ -105,14 +106,14 @@ function BalanceReport() {
       </div>
       <div id="pdf-content">
         <div className="flex flex-col gap-6">
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-700">
             <ChartCard title="Net Balance Progress">
               <div></div>
 
               <AreaChartComponent
                 dailyBalance={dailyBalance}
                 monthlyBalance={monthlyBalance}
-                currency={currentUser.currency}
+                currency={currency}
               />
             </ChartCard>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-5 mt-5">
@@ -122,7 +123,7 @@ function BalanceReport() {
                 balance={bestBalance.balance}
                 color="green-500"
                 percentage={bestBalanceDiff.toFixed(2)}
-                currency={currentUser.currency}
+                currency={currency}
               />
               <BalanceCard
                 title={isMonthlyBalance ? "Worst month" : "Worst day"}
@@ -130,40 +131,40 @@ function BalanceReport() {
                 balance={worstBalance.balance}
                 color="red-500"
                 percentage={worstBalanceDiff.toFixed(2)}
-                currency={currentUser.currency}
+                currency={currency}
               />
               <div className="">
                 <BalanceCard
                   title="Average balance"
                   balance={averageBalance.toFixed(2)}
                   color="blue-500"
-                  currency={currentUser.currency}
+                  currency={currency}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-5 bg-gray-100 p-4 rounded-lg shadow-md">
-            <ChartCard title="Income vs Expense (Line View)">
+          <div className="flex flex-col md:flex-row gap-5 bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-700">
+            <ChartCard title="Income vs Expense (Bar View)">
               <div></div>
               <PositiveAndNegativeBar
                 data={sortedByMonth}
                 monthData={monthData}
-                currency={currentUser.currency}
+                currency={currency}
               />
             </ChartCard>
-            <ChartCard title="Income vs Expense (Bar View)">
+            <ChartCard title="Income vs Expense (Line View)">
               <div></div>
               <LineChartComponent
                 data={sortedByMonth}
                 monthData={monthData}
-                currency={currentUser.currency}
+                currency={currency}
               />
             </ChartCard>
           </div>
         </div>
         <div className="mt-6">
-          <Table data={transactions} currency={currentUser.currency} />
+          <Table data={transactions} currency={currency} />
         </div>
       </div>
     </div>

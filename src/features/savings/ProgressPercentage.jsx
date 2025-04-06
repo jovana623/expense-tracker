@@ -15,6 +15,9 @@ function ProgressPercentage({ currentSaving }) {
         width={150}
         strokeWidth={10}
         style={{ fontSize: "24px" }}
+        format={(percent) => (
+          <span className="dark:text-lightBg">{percent}%</span>
+        )}
       />
     </Flex>
   );

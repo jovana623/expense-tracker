@@ -35,8 +35,8 @@ function Table({ data, isLoading, currency }) {
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+      <table className="w-full text-sm text-left rtl:text-right dark:bg-gray-700 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:border-stone-600 dark:text-lightBg">
           <tr>
             <th scope="col" className="px-6 py-3"></th>
             <th scope="col" className="px-6 py-3">
@@ -77,7 +77,10 @@ function Table({ data, isLoading, currency }) {
         ) : (
           <tbody>
             {data.map((item, index) => (
-              <tr key={index} className="odd:bg-white even:bg-gray-50 border-b">
+              <tr
+                key={index}
+                className="odd:bg-white even:bg-gray-50 border-b dark:even:bg-gray-700 dark:odd:bg-gray-700 dark:border-stone-600"
+              >
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -95,18 +98,18 @@ function Table({ data, isLoading, currency }) {
 
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-lightBg"
                 >
                   {shortName(item.name)}
                 </th>
-                <th className="px-6 py-4">
+                <th className="px-6 py-4 dark:text-white">
                   {item.amount.toLocaleString()}
                   {formattedCurrency}
                 </th>
                 {isTransactionsPath || isReportPage ? (
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-300"
                   >
                     {item.type.name}
                   </th>
@@ -117,7 +120,7 @@ function Table({ data, isLoading, currency }) {
                 {isTransactionsPath || isReportPage ? (
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-300"
                   >
                     {shortDescription(item.description)}
                   </th>
@@ -126,7 +129,7 @@ function Table({ data, isLoading, currency }) {
                 )}
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-lightBg"
                 >
                   {formatDate(item.date)}
                 </th>

@@ -50,7 +50,7 @@ function Pagination({ page, numOfPages, setPage }) {
 
   return (
     <div className="flex justify-center">
-      <div className="inline-flex border items-center rounded-md">
+      <div className="inline-flex border items-center rounded-md dark:border-stone-600">
         <button
           className={`px-3 flex items-center justify-center gap-1 
             ${

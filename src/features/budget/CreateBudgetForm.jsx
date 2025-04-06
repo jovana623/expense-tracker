@@ -71,10 +71,12 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="m-0 sm:m-10 px-10 py-3 w-95% bg-lightBg sm:text-base text-xs flex flex-col gap-2"
+      className="m-0 sm:m-10 px-10 py-3 w-95% bg-lightBg sm:text-base text-xs flex flex-col gap-2 dark:bg-gray-700"
     >
       <div className="flex flex-col gap-1 col-span-2">
-        <label htmlFor="type">Type</label>
+        <label htmlFor="type" className="dark:text-lightBg">
+          Type
+        </label>
         <select
           className="input-field"
           {...register("type")}
@@ -89,7 +91,9 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
         </select>
       </div>
       <div className="flex flex-col gap-1 col-span-2">
-        <label htmlFor="amount">Budget</label>
+        <label htmlFor="amount" className="dark:text-lightBg">
+          Budget
+        </label>
         <input
           type="text"
           className="input-field"
@@ -109,7 +113,9 @@ function CreateBudgetForm({ budgetToUpdate = {} }) {
         )}
       </div>
       <div className="flex flex-col gap-1 col-span-2">
-        <label htmlFor="period">Period</label>
+        <label htmlFor="period" className="dark:text-lightBg">
+          Period
+        </label>
         <select className="input-field" id="period" {...register("period")}>
           <option value="Monthly">Monthly</option>
           <option value="Yearly">Yearly</option>

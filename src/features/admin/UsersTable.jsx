@@ -14,29 +14,18 @@ function UsersTable({ data, isLoading }) {
   const { data: currentUser, isLoading: isLoadingUser } = useCurrentUser();
 
   return (
-    <div className="relative overflow-x-auto sm:overflow-x-scroll shadow-md sm:rounded-lg h-auto sm:h-[70vh] min-h-[auto] sm:min-h-[70vh] lg:overflow-hidden">
-      <table className="w-full text-xs sm:text-xs text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 z-10 shadow">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-2xl h-auto sm:h-[70vh] lg:overflow-hidden border border-gray-200 dark:border-gray-700">
+      <table className="w-full text-sm text-left text-gray-700 dark:text-white bg-white dark:bg-gray-800">
+        <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 sticky top-0 z-10">
           <tr>
-            <th
-              scope="col"
-              className="px-4 sm:px-6 py-3 sticky left-0 bg-gray-50 z-10 w-32 sm:w-auto"
-            >
+            <th className="px-6 py-4 sticky left-0 z-20 bg-gray-100 dark:bg-gray-900 w-44">
               Name
             </th>
-            <th scope="col" className="px-4 sm:px-6 py-3">
-              Staff
-            </th>
-            <th scope="col" className="px-4 sm:px-6 py-3">
-              Status
-            </th>
-            <th scope="col" className="px-4 sm:px-6 py-3">
-              Created at
-            </th>
-            <th scope="col" className="px-4 sm:px-6 py-3">
-              Last login
-            </th>
-            <th scope="col" className="px-4 sm:px-6 py-3"></th>
+            <th className="px-6 py-4">Staff</th>
+            <th className="px-6 py-4">Status</th>
+            <th className="px-6 py-4">Created</th>
+            <th className="px-6 py-4">Last login</th>
+            <th className="px-6 py-4 text-center">Actions</th>
           </tr>
         </thead>
         {isLoading || isLoadingUser ? (
@@ -52,78 +41,59 @@ function UsersTable({ data, isLoading }) {
             {data.map((item, index) => (
               <tr
                 key={index}
-                className="bg-white border-b border-gray-200 hover:bg-gray-50"
+                className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
               >
-                <th
-                  scope="row"
-                  className="flex items-center px-4 sm:px-6 py-4 text-gray-900 whitespace-nowrap sticky left-0 bg-white hover:bg-gray-50 z-10 w-32 sm:w-auto overflow-hidden"
-                >
-                  {item.avatar ? (
-                    <img
-                      className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
-                      src={`${item.avatar}`}
-                      alt="profile image"
-                    />
-                  ) : (
-                    <img
-                      src="/anon-user.png"
-                      width="32px"
-                      className="rounded-full shadow-sm"
-                      alt="anonymous user"
-                    />
-                  )}
-                  <div className="ps-2 sm:ps-3">
-                    <div className="text-xs sm:text-base font-semibold">
+                <td className="flex items-center gap-3 px-6 py-4 whitespace-nowrap sticky left-0 z-10 bg-white dark:bg-gray-800">
+                  <img
+                    src={item.avatar || "/anon-user.png"}
+                    className="w-10 h-10 rounded-full shadow-sm object-cover"
+                    alt="User avatar"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-800 dark:text-white text-sm">
                       {item.username}
                     </div>
-                    <div className="text-[10px] sm:text-sm font-normal text-gray-500">
+                    <div className="text-gray-500 dark:text-gray-300 text-xs">
                       {item.email}
                     </div>
                   </div>
-                </th>
-                <td className="px-4 sm:px-6 py-4">
+                </td>
+
+                <td className="px-6 py-4">
                   {item.is_staff ? (
-                    <svg
-                      className="w-3 h-3 text-green-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 16 12"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M1 5.917 5.724 10.5 15 1.5"
-                      />
-                    </svg>
+                    <span className="inline-flex items-center px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded dark:bg-green-700 dark:text-white">
+                      Yes
+                    </span>
                   ) : (
-                    <svg
-                      className="w-3 h-3 text-red-500"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 14 14"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                      />
-                    </svg>
+                    <span className="inline-flex items-center px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded dark:bg-red-700 dark:text-white">
+                      No
+                    </span>
                   )}
                 </td>
-                <td className="px-4 sm:px-6 py-4">
-                  {item.is_active ? "Active" : "Not active"}
+
+                <td className="px-6 py-4">
+                  {item.is_active ? (
+                    <span className="text-green-600 dark:text-green-400 font-medium text-sm">
+                      Active
+                    </span>
+                  ) : (
+                    <span className="text-red-600 dark:text-red-400 font-medium text-sm">
+                      Not Active
+                    </span>
+                  )}
                 </td>
-                <td className="px-4 sm:px-6 py-4">
-                  {new Date(item.created_at).toLocaleDateString("en-US")}
+
+                <td className="px-6 py-4 text-sm">
+                  {new Date(item.created_at).toLocaleDateString("en-GB")}
                 </td>
-                <td className="px-4 sm:px-6 py-4">{item.last_login}</td>
-                <td className="px-4 sm:px-6 py-4">
+
+                <td className="px-6 py-4 text-xs text-gray-600 dark:text-gray-300">
+                  {item.last_login
+                    ? new Date(item.last_login).toLocaleString("en-GB")
+                    : "—"}
+                </td>
+
+                <td className="px-6 py-4 text-center">
                   {((currentUser.is_superuser && !item.is_superuser) ||
                     (currentUser.is_staff && !item.is_staff)) && (
                     <Modal>
@@ -141,9 +111,11 @@ function UsersTable({ data, isLoading }) {
                             </Menu.Button>
                           </Modal.OpenButton>
                         </Menu.List>
+
                         <Modal.Window name="change-role">
                           <ChangeRole user={item} />
                         </Modal.Window>
+
                         <Modal.Window name="delete-user">
                           <ConfirmDelete
                             nameModal={item.username}

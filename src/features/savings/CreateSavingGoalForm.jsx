@@ -35,7 +35,6 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       description: data.description,
       color: data.color,
     };
-    console.log("Updated data:", updatedData);
 
     if (isUpdateSession) {
       updateSaving(updatedData);
@@ -56,10 +55,12 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       role="form"
       data-testid="saving-form"
       onSubmit={handleSubmit(onSubmit)}
-      className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs"
+      className="m-0 sm:m-10 px-5 py-3  grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs dark:bg-gray-700"
     >
       <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name" className="dark:text-lightBg">
+          Name
+        </label>
         <input
           type="text"
           id="name"
@@ -70,7 +71,9 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       </div>
 
       <div className="flex flex-col gap-1 sm:col-span-1 col-span-2">
-        <label htmlFor="goal">Goal</label>
+        <label htmlFor="goal" className="dark:text-lightBg">
+          Goal
+        </label>
         <input
           type="number"
           className="input-field"
@@ -81,7 +84,9 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       </div>
 
       <div className="col-span-2 flex flex-col gap-1">
-        <label htmlFor="target_date">Target Date</label>
+        <label htmlFor="target_date" className="dark:text-lightBg">
+          Target Date
+        </label>
         <input
           type="date"
           className="input-field"
@@ -92,7 +97,9 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
       </div>
 
       <div className="col-span-2 flex flex-col gap-1">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description" className="text-lightBg">
+          Description
+        </label>
         <textarea
           className="input-field"
           type="textarea"
@@ -101,10 +108,12 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         ></textarea>
       </div>
       <div className="col-span-2 flex flex-col gap-1">
-        <label htmlFor="color">Pick a color</label>
+        <label htmlFor="color" className="dark:text-lightBg">
+          Pick a color
+        </label>
         <input
           type="color"
-          className="p-1 h-10 block bg-white border border-gray-200 cursor-pointer rounded-lg w-1/2"
+          className="p-1 h-10 bg-lightBg cursor-pointer rounded-lg w-1/2 dark:bg-gray-700"
           id="color"
           {...register("color")}
         ></input>
