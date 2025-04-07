@@ -26,7 +26,7 @@ function Search() {
       </div>
       <input
         type="text"
-        className="outline-none ml-3 p-3 rounded-md text-[14px] bg-white w-full text-black font-normal px-4 dark:bg-inherit dark:text-lightBg"
+        className="outline-none ml-3 rounded-md text-[14px] bg-white w-full text-black font-normal p-5 dark:bg-inherit dark:text-lightBg"
         placeholder="Search"
         onChange={handleChange}
         value={searchParams.get("search") || ""}

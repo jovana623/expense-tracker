@@ -33,12 +33,12 @@ function Window({ children, name }) {
   if (name !== openModal) return null;
 
   return createPortal(
-    <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 backdrop-blur-sm z-50 transition-all duration-500">
+    <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300 z-50 flex">
       <div
         ref={ref}
         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                   bg-lightBg flex flex-col p-5 rounded-md 
-                  w-[90%] max-w-[400px] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[600px] overflow-y-scroll dark:bg-gray-700"
+                  w-[90%] max-w-[400px] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[600px] dark:bg-gray-700"
       >
         <button
           onClick={close}

@@ -32,10 +32,10 @@ function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-lg shadow-md mb-3 flex flex-col h-full"
+      className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-200 dark:border-gray-600 space-y-6 w-full max-w-md mx-auto"
     >
-      <div className="mb-4">
-        <label htmlFor="email" className="block mb-2">
+      <div>
+        <label htmlFor="email" className="block mb-2 dark:text-lightBg">
           Email
         </label>
         <input
@@ -47,8 +47,8 @@ function LoginForm() {
           disabled={isLoading}
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="password" className="block mb-2">
+      <div>
+        <label htmlFor="password" className="block mb-2 dark:text-lightBg">
           Password
         </label>
         <div className="relative">
@@ -73,7 +73,11 @@ function LoginForm() {
           </button>
         </div>
       </div>
-      <Button type="primary">Login</Button>
+      <div className="pt-2 grid">
+        <Button type="primary" disabled={isLoading}>
+          Login
+        </Button>
+      </div>
     </form>
   );
 }

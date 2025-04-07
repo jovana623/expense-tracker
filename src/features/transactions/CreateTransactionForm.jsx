@@ -67,7 +67,7 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
     <form
       role="form"
       onSubmit={handleSubmit(onSubmit, onError)}
-      className="m-0 sm:m-10 px-5 py-3 w-fit grid grid-cols-2 gap-2 bg-lightBg sm:text-base text-xs dark:bg-gray-700"
+      className="m-0 px-5 py-3 w-full grid grid-cols-2 gap-2 bg-lightBg text-xs dark:bg-gray-700 sm:m-10 sm:text-base sm:w-fit"
     >
       {isLoadingType || isLoadingCategory ? (
         <Spinner />
@@ -162,11 +162,15 @@ function CreateTransactionForm({ transactionToUpdate = {} }) {
             />
             <p className="text-xs text-red-500">{errors?.date?.message}</p>
           </div>
-          <div className="flex gap-2 col-start-2 mt-4 justify-self-end self-end">
-            <Button type="secondary" onClick={onCancel}>
+          <div className="col-span-2 flex flex-col gap-2 mt-4 sm:flex-row sm:justify-end">
+            <Button
+              type="secondary"
+              onClick={onCancel}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button type="primary">
+            <Button type="primary" className="w-full sm:w-auto">
               {isUpdateSession ? "Update transaction" : "Add transaction"}
             </Button>
           </div>

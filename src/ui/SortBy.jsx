@@ -13,7 +13,7 @@ function SortBy({ options, onChange }) {
   return (
     <select
       onChange={handleChange}
-      className="border border-stone-200 focus:outline-green-500 rounded-md h-8 dark:border-stone-600 dark:bg-gray-700"
+      className="px-3 py-2 rounded-md shadow-sm border border-stone-200 focus:outline-none focus:ring-2 focus:ring-green-400 dark:bg-gray-700 dark:border-stone-600 dark:text-gray-200"
     >
       {options.map((item) => (
         <option value={item.value} key={item.value}>

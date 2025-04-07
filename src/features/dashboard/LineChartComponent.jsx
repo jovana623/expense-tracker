@@ -85,6 +85,7 @@ function LineChartComponent({ data, monthData, currency }) {
             strokeDasharray="3 3"
             stroke="currentColor"
             className="stroke-gray-300 dark:stroke-gray-500"
+            vertical={false}
           />
           <XAxis
             dataKey={time === "month" || monthParam ? "day" : "monthYear"}
@@ -103,8 +104,8 @@ function LineChartComponent({ data, monthData, currency }) {
             align="center"
             wrapperStyle={{ paddingBottom: "10px" }}
             payload={[
-              { value: "Income", type: "square", color: "#22c55e" },
-              { value: "Expenses", type: "square", color: "#ef4444" },
+              { value: "Income", type: "square", color: "#4ade80" },
+              { value: "Expenses", type: "square", color: "#f87171" },
             ]}
           />
           <ReferenceLine

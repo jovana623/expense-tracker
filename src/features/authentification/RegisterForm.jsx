@@ -27,11 +27,13 @@ function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white p-6 rounded-lg shadow-md mb-3 flex flex-col h-full"
+      className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-200 dark:border-gray-600 space-y-6 w-full max-w-md mx-auto"
     >
       <div className="grid grid-cols-2 gap-3 mb-3">
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username" className="dark:text-lightBg">
+            Username
+          </label>
           <input
             type="text"
             id="username"
@@ -40,7 +42,9 @@ function RegisterForm() {
           />
         </div>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email" className="dark:text-lightBg">
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -55,7 +59,9 @@ function RegisterForm() {
           />
         </div>
         <div className="col-span-2 relative">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password" className="dark:text-lightBg">
+            Password
+          </label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -77,7 +83,9 @@ function RegisterForm() {
           </div>
         </div>
         <div className="col-span-2 relative">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword" className="dark:text-lightBg">
+            Confirm Password
+          </label>
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -103,9 +111,11 @@ function RegisterForm() {
           </div>
         </div>
       </div>
-      <Button type="primary" disabled={isLoading}>
-        {isLoading ? "Registering..." : "Register"}
-      </Button>
+      <div className="pt-2 grid">
+        <Button type="primary" disabled={isLoading}>
+          Register
+        </Button>
+      </div>
     </form>
   );
 }

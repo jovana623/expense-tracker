@@ -113,7 +113,7 @@ function CreateSavingGoalForm({ savingToUpdate = {} }) {
         </label>
         <input
           type="color"
-          className="p-1 h-10 bg-lightBg cursor-pointer rounded-lg w-1/2 dark:bg-gray-700"
+          className="p-2 h-12 bg-lightBg rounded-lg shadow-sm border border-stone-300 focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer w-1/2 dark:bg-gray-700 dark:border-stone-600 dark:focus:ring-green-600"
           id="color"
           {...register("color")}
         ></input>

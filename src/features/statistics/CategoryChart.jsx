@@ -47,6 +47,7 @@ function CategoryChart({ data, currency }) {
             strokeDasharray="3 3"
             stroke="currentColor"
             className="stroke-gray-300 dark:stroke-gray-500"
+            vertical={false}
           />
           <XAxis
             dataKey="month"

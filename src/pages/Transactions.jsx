@@ -16,7 +16,7 @@ function Transactions() {
   const search = searchParams.get("search") || "";
   const pageParams = Number(searchParams.get("page")) || 1;
   const [page, setPage] = useState(pageParams);
-  const [pageSize] = useState(9);
+  const [pageSize] = useState(7);
 
   const { transactions, isLoading } = useTransactions(
     time,

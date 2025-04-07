@@ -20,7 +20,7 @@
   }
 
   .input-field {
-    @apply px-2 py-2 shadow-sm border-stone-200 border rounded-md focus:outline-green-500 w-full dark:bg-gray-800 dark:text-lightBg dark:border-stone-600;
+    @apply px-4 py-3 shadow-md border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-white focus:shadow-md w-full border-stone-200 bg-white text-gray-800 duration-300 dark:bg-gray-800 dark:text-white dark:border-stone-600;
   }
 
   /*Calendar*/
@@ -71,6 +71,22 @@
 
   .my-calendar .react-calendar__navigation__label {
     @apply text-lg font-bold cursor-default dark:text-white;
+  }
+
+  /*toast*/
+  .app-toast {
+    @apply max-w-[500px] 
+           px-6 py-4     
+           text-base     
+           bg-white  
+           text-gray-700
+           rounded-lg
+           shadow-lg 
+           border border-gray-200;
+
+    @apply dark:bg-gray-800  
+           dark:text-gray-100   
+           dark:border-gray-600;
   }
 }
 

@@ -80,8 +80,6 @@ function Dashboard() {
     [savingsSummary, savingGoalsSummary]
   );
 
-  console.log(incomePercentage, expensePercentage);
-
   return (
     <div className="w-[90%] m-auto py-2 sm:px-7 sm:w-full sm:m-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between items-center mb-3">
@@ -181,7 +179,7 @@ function Dashboard() {
           />
         </NavLink>
       </div>
-      <div className="mt-10">
+      <div className="mt-8 mb-2">
         <Outlet />
       </div>
     </div>

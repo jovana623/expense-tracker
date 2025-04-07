@@ -1,15 +1,30 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import Header from "../features/header/Header";
+import MobileNav from "./MobileNav";
 
 function AppLayout() {
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-[auto_1fr] py-3 gap-0 md:h-screen overflow-hidden dark:bg-gray-800 dark:text-white">
-      <NavBar />
-      <div className="flex flex-col w-full h-full">
-        <Header />
-        <div className="bg-stone-50 w-full h-full overflow-y-scroll dark:bg-gray-800 dark:text-white">
+    <div className="min-h-screen w-full dark:bg-gray-800 dark:text-white">
+      <div className="block lg:hidden">
+        <MobileNav />
+        <div className="bg-stone-50 w-full min-h-screen px-4 pt-4 pb-8 dark:bg-gray-800">
           <Outlet />
+        </div>
+      </div>
+
+      <div className="hidden lg:grid lg:grid-cols-[auto_1fr] lg:h-screen">
+        <div>
+          <NavBar />
+        </div>
+        <div className="flex flex-col w-full overflow-hidden">
+          <Header />
+          <div className="bg-stone-50 w-full grow dark:bg-gray-800 flex flex-col overflow-hidden">
+            <main className="mx-auto h-full w-full">
+              {" "}
+              <Outlet />
+            </main>
+          </div>
         </div>
       </div>
     </div>

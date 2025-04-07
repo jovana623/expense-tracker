@@ -6,12 +6,11 @@ function AddForm({ title, children }) {
   return (
     <Modal>
       <Modal.OpenButton opens="create-goal">
-        <button className="flex items-center gap-2 bg-green-500 text-lightBg px-3 py-2 rounded-md hover:bg-green-600">
-          <span className="px-0.5 py-0.5 bg-lightBg rounded-full text-green-500 ">
-            {" "}
-            <AiOutlinePlus />
+        <button className="flex items-center gap-2 bg-green-500 text-white px-3 py-2 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 hover:bg-green-600">
+          <span className="bg-white rounded-full p-1 text-green-500">
+            <AiOutlinePlus className="text-lg" />
           </span>
-          <span>Add {title}</span>
+          <span className="font-medium text-xs">Add {title}</span>
         </button>
       </Modal.OpenButton>
       <Modal.Window name="create-goal">{children}</Modal.Window>

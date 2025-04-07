@@ -42,7 +42,7 @@ const SummaryCard = React.memo(function SummaryCard({
   return (
     <div
       data-testid="summary-card"
-      className={`group shadow-md p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-lg transition-all duration-200 ${
+      className={`group shadow-md p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-lg transition-all duration-200 dark:hover:bg-green-500 ${
         isActive
           ? "bg-green-500 text-lightBg shadow-xl"
           : "bg-lightBg text-stone-800 dark:bg-gray-700 dark:text-white dark:shadow-lg"
@@ -53,7 +53,7 @@ const SummaryCard = React.memo(function SummaryCard({
       ) : (
         <>
           <div className="flex items-start justify-between">
-            <div className="text-5xl bg-slate-50 p-4 rounded-full dark:bg-gray-800 text-green-500">
+            <div className="text-5xl bg-gray-100 dark:bg-gray-600 p-4 rounded-full text-green-500">
               {icon}
             </div>
             {!isActive ? (
@@ -66,17 +66,17 @@ const SummaryCard = React.memo(function SummaryCard({
                   }}
                 />
                 <Menu.List>
-                  <NavLink
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(reportUrl, "_blank");
-                    }}
-                    to={reportUrl}
-                    className="flex items-center justify-center gap-2 px-2 py-1 border-b border-stone-200 text-stone-500 dark:text-lightBg dark:border-stone-600"
-                  >
-                    <HiOutlineDocumentReport />
-                    <span>Check report</span>
-                  </NavLink>
+                  <Menu.Button icon={<HiOutlineDocumentReport />}>
+                    <NavLink
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(reportUrl, "_blank");
+                      }}
+                      to={reportUrl}
+                    >
+                      <span>Check report</span>
+                    </NavLink>
+                  </Menu.Button>
                 </Menu.List>
               </Menu>
             )}
