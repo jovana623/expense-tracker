@@ -6,14 +6,12 @@ import { getCurrencyEntity } from "../../helpers/currencyFunctions";
 import Menu from "../../ui/Menu";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import Spinner from "../../ui/Spinner";
 import CreateBudgetForm from "./CreateBudgetForm";
 import BudgetTransactionTable from "./BudgetTransactionsTable";
 
 /* eslint-disable react/prop-types */
 function LimitsCard({ data, currency }) {
-  const { deleteBudget, isLoading } = useDeleteBudget();
-  if (isLoading) return <Spinner />;
+  const { deleteBudget } = useDeleteBudget();
 
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-700">

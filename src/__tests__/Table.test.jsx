@@ -45,7 +45,7 @@ it("shows spinner when loading", () => {
       <Table data={[]} isLoading={true} />
     </MemoryRouter>
   );
-  expect(screen.getByRole("spinner")).toBeInTheDocument();
+  expect(screen.getByRole("status")).toBeInTheDocument();
 });
 
 it("shows menu buttons", () => {

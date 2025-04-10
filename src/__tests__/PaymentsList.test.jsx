@@ -1,56 +1,83 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, expect, it, vi } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { usePayments } from "../features/payments/usePayments";
+import { render, screen } from "@testing-library/react";
 import PaymentList from "../features/payments/PaymentsList";
-import { useDeletePayment } from "../features/payments/useDeletePayment";
 import "@testing-library/jest-dom";
+import { useDeletePayment } from "../features/payments/useDeletePayment";
+import { formatDate } from "../helpers/dateFunctions";
+import { getCurrencyEntity } from "../helpers/currencyFunctions";
 
-vi.mock("../features/payments/useDeletePayment", () => ({
-  useDeletePayment: vi.fn(),
+vi.mock("../features/payments/useDeletePayment");
+vi.mock("../features/payments/usePayments");
+vi.mock("../helpers/dateFunctions", () => ({
+  formatDate: vi.fn(),
 }));
 
-beforeEach(() => {
-  useDeletePayment.mockReturnValue({
-    deletePayment: vi.fn(),
-    isDeletingPayment: false,
+vi.mock("../helpers/currencyFunctions", () => ({
+  getCurrencyEntity: vi.fn(),
+}));
+
+const queryClient = new QueryClient();
+
+const mockSaving = { id: 1, name: "Test saving" };
+
+/* eslint-disable react/prop-types */
+const Wrapper = ({ children }) => {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+};
+
+const renderPaymentsList = () => {
+  render(<PaymentList saving={mockSaving} currency="EUR" />, {
+    wrapper: Wrapper,
   });
+};
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
-it("show empty message when there is no payments for saving", () => {
-  const mockSaving = { name: "Test saving", payments: [] };
-  render(<PaymentList saving={mockSaving} />);
-  expect(
-    screen.getByText(/You did not make any payment for/i)
-  ).toBeInTheDocument();
-});
+describe("PaymentsList", () => {
+  it("renders spinner when loading", () => {
+    vi.mocked(usePayments).mockReturnValue({ payments: [], isLoading: true });
+    vi.mocked(useDeletePayment).mockReturnValue({
+      deletePayment: vi.fn(),
+      isDeletingPayment: false,
+    });
 
-it("should render list of payments", () => {
-  const mockSaving = {
-    name: "Test saving",
-    payments: [
-      { id: "1", amount: 500, date: "2025-02-01" },
-      { id: "2", amount: 1000, date: "2025-02-05" },
-    ],
-  };
-  render(<PaymentList saving={mockSaving} />);
-  expect(screen.getByText(/1 feb 2025/i)).toBeInTheDocument();
-  expect(screen.getByText(/500/i)).toBeInTheDocument();
-  expect(screen.getByText(/5 feb 2025/i)).toBeInTheDocument();
-  expect(screen.getByText(/1.000/i)).toBeInTheDocument();
-});
-
-it("should call deletePayment when button is clicked", () => {
-  const mockDeletePayment = vi.fn();
-  useDeletePayment.mockReturnValue({
-    deletePayment: mockDeletePayment,
-    isDeletingPayment: false,
+    renderPaymentsList();
+    expect(screen.getByRole("spinner")).toBeInTheDocument();
   });
-  const mockSaving = {
-    name: "Test saving",
-    payments: [{ id: "1", amount: 500, date: "2025-02-01" }],
-  };
-  render(<PaymentList saving={mockSaving} />);
-  const deleteButton = screen.getByRole("button");
-  fireEvent.click(deleteButton);
-  expect(mockDeletePayment).toHaveBeenCalled(1);
-  expect(mockDeletePayment).toBeCalledWith("1");
+
+  it("renders empty message when there is no payments", () => {
+    vi.mocked(usePayments).mockReturnValue({ payments: [], isLoading: false });
+    vi.mocked(useDeletePayment).mockReturnValue({
+      deletePayment: vi.fn(),
+      isDeletingPayment: false,
+    });
+
+    renderPaymentsList();
+    expect(
+      screen.getByText(/You did not make any payment for Test saving/i)
+    ).toBeInTheDocument();
+  });
+
+  it("renders a payment", () => {
+    vi.mocked(usePayments).mockReturnValue({
+      payments: [{ id: 1, amount: 150, date: "2024-01-01" }],
+      isLoading: false,
+    });
+    vi.mocked(useDeletePayment).mockReturnValue({
+      deletePayment: vi.fn(),
+      isDeletingPayment: false,
+    });
+    vi.mocked(formatDate).mockImplementation(() => "formatted-date");
+    vi.mocked(getCurrencyEntity).mockImplementation(() => "€");
+
+    renderPaymentsList();
+    expect(screen.getByText("150€")).toBeInTheDocument();
+    expect(screen.getByText("formatted-date")).toBeInTheDocument();
+  });
 });

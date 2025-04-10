@@ -41,12 +41,6 @@ it("renders card with correct data", () => {
   expect(screen.getByText(/40/i)).toBeInTheDocument();
 });
 
-it("shows spinner when loading is true", () => {
-  useDeleteBudget.mockReturnValue({ deleteBudget: vi.fn(), isLoading: true });
-  render(<LimitsCard data={mockBudget} />);
-  expect(screen.getByRole("spinner")).toBeInTheDocument();
-});
-
 it("opens delete modal and confirm delete", () => {
   const deleteMock = vi.fn();
 

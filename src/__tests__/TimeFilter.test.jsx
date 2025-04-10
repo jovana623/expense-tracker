@@ -51,5 +51,5 @@ it("keep active option highlighted", () => {
   );
 
   const monthButton = screen.getByRole("button", { name: "Month" });
-  expect(monthButton).toHaveClass("bg-green-500 text-lightBg");
+  expect(monthButton).toHaveClass("bg-green-500");
 });

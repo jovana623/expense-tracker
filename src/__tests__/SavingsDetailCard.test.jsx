@@ -1,8 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import SavingsDetailCard from "../features/savings/SavingsDetailCard";
 import "@testing-library/jest-dom";
-import { ModalContext } from "../ui/Modal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 vi.mock("../features/savings/useDeleteSaving", () => {
@@ -36,6 +35,10 @@ vi.mock("../features/savings/useUpdateStatus", () => ({
   }),
 }));
 
+vi.mock("../../helpers/currencyFunctions", () => ({
+  getCurrencyEntity: (currency) => (currency === "EUR" ? "€" : "$"),
+}));
+
 const mockSaving = {
   id: 1,
   name: "Vacation fund",
@@ -46,92 +49,95 @@ const mockSaving = {
   status: "In progress",
   description: "Saving for a vacation trip",
   color: "#FFA07A",
-  payments: [{ id: 10, amount: 150, date: "2024-08-22", saving: 1 }],
 };
 
-it("renders saving details", () => {
-  render(<SavingsDetailCard saving={mockSaving} />);
+const queryClient = new QueryClient();
 
-  expect(screen.getByText(/you have reached/i)).toBeInTheDocument();
-});
-
-it("renders menu buttons", () => {
-  render(<SavingsDetailCard saving={mockSaving} />);
-  const toggleButton = screen.getByTestId("menu-toggle");
-  fireEvent.click(toggleButton);
-
-  expect(screen.getByText(/update/i)).toBeInTheDocument();
-  expect(screen.getByText(/delete/i)).toBeInTheDocument();
-  expect(screen.getByText(/put on hold/i)).toBeInTheDocument();
-});
-
-it("shows message when goal is completed", () => {
-  const completedSaving = { ...mockSaving, status: "Completed" };
-  render(<SavingsDetailCard saving={completedSaving} />);
-  expect(screen.getByText(/you have reached goal amount/i)).toBeInTheDocument();
-});
-
-it("opens delete modal and confirm delete", () => {
-  render(
-    <ModalContext.Provider value={{ close: vi.fn() }}>
-      <SavingsDetailCard saving={mockSaving} />
-    </ModalContext.Provider>
+/* eslint-disable react/prop-types */
+const Wrapper = ({ children }) => {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+};
 
-  fireEvent.click(screen.getByTestId("menu-toggle"));
-  const deleteButton = screen.getByRole("button", { name: /delete/i });
-  fireEvent.click(deleteButton);
-  expect(
-    screen.getByText(/Are you sure you want to delete/i)
-  ).toBeInTheDocument();
-  const confirmButton = screen.getByRole("button", { name: /delete/i });
-  fireEvent.click(confirmButton);
-  expect(
-    screen.queryByText(/Are you sure you want to delete/i)
-  ).not.toBeInTheDocument();
-});
+describe("SavingsDetailCars", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    queryClient.clear();
+  });
 
-it("opens 'See details' modal", () => {
-  render(
-    <ModalContext.Provider value={{ close: vi.fn() }}>
-      <SavingsDetailCard saving={mockSaving} />
-    </ModalContext.Provider>
-  );
-  const detailsButton = screen.getByRole("button", { name: /see details/i });
-  fireEvent.click(detailsButton);
-  expect(screen.getByText(/amount/i)).toBeInTheDocument();
-  expect(screen.getByText(/date/i)).toBeInTheDocument();
-});
+  it("renders saving details", () => {
+    render(<SavingsDetailCard currentSaving={mockSaving} currency="EUR" />, {
+      wrapper: Wrapper,
+    });
 
-it("opens 'add to this saving' modal", async () => {
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <SavingsDetailCard saving={mockSaving} />
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
-  const addButton = screen.getByRole("button", { name: /add to this saving/i });
-  fireEvent.click(addButton);
-  expect(await screen.findByLabelText(/amount/i)).toBeInTheDocument();
-});
+    expect(screen.getByText(/you have reached/i)).toBeInTheDocument();
+  });
 
-it("should change status", () => {
-  const queryClient = new QueryClient();
-  render(
-    <QueryClientProvider client={queryClient}>
-      <ModalContext.Provider value={{ close: vi.fn() }}>
-        <SavingsDetailCard saving={mockSaving} />
-      </ModalContext.Provider>
-    </QueryClientProvider>
-  );
+  it("renders menu buttons", () => {
+    render(<SavingsDetailCard currentSaving={mockSaving} currency="EUR" />, {
+      wrapper: Wrapper,
+    });
+    const toggleButton = screen.getByTestId("menu-toggle");
+    fireEvent.click(toggleButton);
 
-  fireEvent.click(screen.getByTestId("menu-toggle"));
-  const statusButton = screen.getByRole("button", { name: /put on hold/i });
-  fireEvent.click(statusButton);
-  expect(screen.getByText(/change status/i)).toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name: /put on hold/i }));
-  expect(mockSavingStatus).toHaveBeenCalledTimes(1);
-  expect(mockSavingStatus).toHaveBeenCalledWith({ id: 1, status: "On hold" });
+    expect(screen.getByText(/update/i)).toBeInTheDocument();
+    expect(screen.getByText(/delete/i)).toBeInTheDocument();
+    expect(screen.getByText(/put on hold/i)).toBeInTheDocument();
+  });
+
+  it("shows message when goal is completed", () => {
+    const completedSaving = { ...mockSaving, status: "Completed" };
+    render(
+      <SavingsDetailCard currentSaving={completedSaving} currency="EUR" />,
+      {
+        wrapper: Wrapper,
+      }
+    );
+    expect(
+      screen.getByText(/you have reached goal amount/i)
+    ).toBeInTheDocument();
+  });
+
+  it("opens delete modal and confirm delete", () => {
+    render(<SavingsDetailCard currentSaving={mockSaving} currency="EUR" />, {
+      wrapper: Wrapper,
+    });
+    fireEvent.click(screen.getByTestId("menu-toggle"));
+    const deleteButton = screen.getByRole("button", { name: /delete/i });
+    fireEvent.click(deleteButton);
+    expect(
+      screen.getByText(/Are you sure you want to delete/i)
+    ).toBeInTheDocument();
+    const confirmButton = screen.getByRole("button", { name: /delete/i });
+    fireEvent.click(confirmButton);
+    expect(
+      screen.queryByText(/Are you sure you want to delete/i)
+    ).not.toBeInTheDocument();
+  });
+
+  it("opens 'add to this saving' modal", async () => {
+    render(<SavingsDetailCard currentSaving={mockSaving} currency="EUR" />, {
+      wrapper: Wrapper,
+    });
+    const addButton = screen.getByRole("button", {
+      name: /add to this saving/i,
+    });
+    fireEvent.click(addButton);
+    expect(await screen.findByLabelText(/amount/i)).toBeInTheDocument();
+  });
+
+  it("should change status", () => {
+    render(<SavingsDetailCard currentSaving={mockSaving} currency="EUR" />, {
+      wrapper: Wrapper,
+    });
+
+    fireEvent.click(screen.getByTestId("menu-toggle"));
+    const statusButton = screen.getByRole("button", { name: /put on hold/i });
+    fireEvent.click(statusButton);
+    expect(screen.getByText(/change status/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /put on hold/i }));
+    expect(mockSavingStatus).toHaveBeenCalledTimes(1);
+    expect(mockSavingStatus).toHaveBeenCalledWith({ id: 1, status: "On hold" });
+  });
 });

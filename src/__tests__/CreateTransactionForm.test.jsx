@@ -8,6 +8,7 @@ import { useTypes } from "../features/type/useTypes";
 import "@testing-library/jest-dom";
 import { useCategories } from "../features/category/useCategories";
 import { useUpdateTransaction } from "../features/transactions/useUpdateTransaction";
+import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 vi.mock("../features/transactions/useCreateTransaction", () => {
   return {
@@ -29,6 +30,10 @@ vi.mock("../features/category/useCategories", () => {
   return {
     useCategories: vi.fn(),
   };
+});
+
+vi.mock("../features/authentification/useCurrentUser", () => {
+  return { useCurrentUser: vi.fn() };
 });
 
 let mockCreateTransaction;
@@ -69,6 +74,11 @@ beforeEach(() => {
       { id: 1, name: "Income", color: "#22c55e" },
       { id: 2, name: "Expense", color: "#ef4444" },
     ],
+    isLoading: false,
+  });
+
+  useCurrentUser.mockReturnValue({
+    data: { id: "mock-user-123" },
     isLoading: false,
   });
 });
@@ -117,6 +127,7 @@ it("should call createTransaction when form is submitted", async () => {
       type: 2,
       amount: 100,
       description: "Test description",
+      user: "mock-user-123",
     });
   });
 });
@@ -164,11 +175,15 @@ it("should populate form fields when transactionToUpdate is provided to and call
     id: 123,
     name: "Old Transaction",
     date: "2025-01-01",
-    type: { id: 1 },
+    type: {
+      id: 1,
+      name: "Salary",
+      color: "#16a34a",
+      category: { id: 1, name: "Income", color: "#22c55e" },
+    },
     amount: "50",
     description: "Old description",
   };
-
   render(<CreateTransactionForm transactionToUpdate={transactionToUpdate} />, {
     wrapper: Wrapper,
   });
@@ -189,6 +204,7 @@ it("should populate form fields when transactionToUpdate is provided to and call
       type: 1,
       amount: 50,
       description: "Old description",
+      user: "mock-user-123",
     });
   });
 });

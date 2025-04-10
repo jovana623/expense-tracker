@@ -19,7 +19,7 @@ it("renders SummaryCard with correct data", () => {
     </MemoryRouter>
   );
   expect(screen.getByText("TOTAL INCOME")).toBeInTheDocument();
-  expect(screen.getByText(/5[,.]?\d*€/)).toBeInTheDocument();
+  expect(screen.getByText("5.000")).toBeInTheDocument();
   expect(screen.getByText("10%")).toBeInTheDocument();
 });
 

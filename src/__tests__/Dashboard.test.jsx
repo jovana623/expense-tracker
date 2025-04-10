@@ -58,7 +58,7 @@ describe("Time and month Filter", () => {
     expect(timeFilter).toBeInTheDocument();
   });
 
-  it("shows month filter wheb is not on savings page", () => {
+  it("shows month filter when is not on savings page", () => {
     render(<Dashboard />, {
       wrapper: (props) => (
         <Wrapper {...props} initialEntries={["/dashboard/income"]} />

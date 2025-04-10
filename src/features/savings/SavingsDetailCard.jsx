@@ -18,6 +18,7 @@ import ChangeStatus from "./ChangeStatus";
 
 /* eslint-disable react/prop-types */
 function SavingsDetailCard({ currentSaving, currency }) {
+  console.log(currentSaving);
   const { amount, goal } = currentSaving;
   const { mutate: deleteSaving, isLoading } = useDeleteSaving();
   const formattedCurrency = getCurrencyEntity(currency);
