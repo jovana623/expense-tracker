@@ -4,10 +4,13 @@ import { useLogout } from "../authentification/useLogout";
 import DarkModeSwitch from "./DarkModeSwitch";
 import { RxAvatar } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
+import NotificationDropdown from "../notifications/NotificationDropdown";
+import { useCurrentUser } from "../authentification/useCurrentUser";
 
 function UserMenu() {
   const { mutate: logout, isLoading: isLoggingOut } = useLogout();
-  const avatar = localStorage.getItem("avatar");
+  const { data: currentUser } = useCurrentUser();
+  const avatar = currentUser?.avatar;
   const username = localStorage.getItem("username") || "Guest";
 
   const avatarUrl = avatar
@@ -18,6 +21,7 @@ function UserMenu() {
 
   return (
     <div className="flex items-center gap-6">
+      <NotificationDropdown userId={currentUser?.id} />
       <DarkModeSwitch />
 
       <div className="flex items-center gap-3">

@@ -4,6 +4,7 @@ import {
   formatDate,
   formatMonthYear,
   getDaysInMonth,
+  getTimeAgo,
 } from "./dateFunctions";
 
 describe("formatDate", () => {
@@ -74,5 +75,51 @@ describe("calculateDaysLeft", () => {
 describe("getDaysInMonth", () => {
   it("should return correct number of days", () => {
     expect(getDaysInMonth(2024, 0)).toBe(31);
+  });
+});
+
+describe("getTimeAgo", () => {
+  const currentTime = new Date("2025-04-17T12:00:00Z").toISOString();
+
+  it("return minutes ago if difference is less than 60 minutes", () => {
+    const createdAt = new Date("2025-04-17T11:45:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("15 minutes ago");
+  });
+
+  it("should correctly return when is exactly 1 minute", () => {
+    const createdAt = new Date("2025-04-17T11:59:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("1 minute ago");
+  });
+
+  it("should return hours ago if difference is less than 24 hours", () => {
+    const createdAt = new Date("2025-04-17T08:00:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("4 hours ago");
+  });
+
+  it("should correctly return when difference is exactly 1 hour", () => {
+    const createdAt = new Date("2025-04-17T11:00:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("1 hour ago");
+  });
+
+  it("should return days when difference is less than a week", () => {
+    const createdAt = new Date("2025-04-15T12:00:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("2 days ago");
+  });
+
+  it("should correctly return when difference is exactly 1 hour", () => {
+    const createdAt = new Date("2025-04-16T12:00:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("1 day ago");
+  });
+
+  it("should return date in format DD/MM/YYYY if difference is bigger than a week", () => {
+    const createdAt = new Date("2025-04-01T10:00:00Z").toISOString();
+    const result = getTimeAgo(createdAt, currentTime);
+    expect(result).toBe("01/04/2025");
   });
 });
