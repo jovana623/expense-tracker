@@ -5,6 +5,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { VscGraphLine } from "react-icons/vsc";
 import { CiCalendar } from "react-icons/ci";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { MdOutlineContactSupport } from "react-icons/md";
 
 import Logo from "./Logo";
 
@@ -59,6 +60,12 @@ function NavBar() {
             </NavLink>
           </li>
         )}
+        <li>
+          <NavLink to="support" className={getNavLinkClass}>
+            <MdOutlineContactSupport />
+            <span>Support</span>
+          </NavLink>
+        </li>
       </ul>
     </aside>
   );

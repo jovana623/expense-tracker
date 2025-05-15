@@ -7,6 +7,7 @@ import { VscGraphLine } from "react-icons/vsc";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { MdOutlineContactSupport } from "react-icons/md";
 import UserMenu from "../features/header/UserMenu";
 
 function MobileNav() {
@@ -104,6 +105,16 @@ function MobileNav() {
               </NavLink>
             </li>
           )}
+          <li>
+            <NavLink
+              to="support"
+              className={getNavLinkClass}
+              onClick={() => setIsOpen(false)}
+            >
+              <MdOutlineContactSupport />
+              <span>Support</span>
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
