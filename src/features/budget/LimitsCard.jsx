@@ -13,10 +13,20 @@ import BudgetTransactionTable from "./BudgetTransactionsTable";
 function LimitsCard({ data, currency }) {
   const { deleteBudget } = useDeleteBudget();
 
+  const cappedPercentage = Math.min(data.percentage, 100);
+  const progressBarColor =
+    data.percentage > 100
+      ? "bg-red-500 dark:bg-red-500"
+      : "bg-blue-500 dark:bg-blue-500";
+  const percentageTextColor =
+    data.percentage > 100
+      ? "text-red-500 dark:text-red-400"
+      : "text-blue-500 dark:text-blue-400";
+
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden dark:bg-gray-700">
-      <div className="px-5 py-3 flex justify-between items-center">
-        <h3 className="text-zinc-900 text-lg dark:text-lightBg">
+    <div className="bg-white shadow-lg rounded-xl overflow-hidden dark:bg-gray-700 dark:border dark:border-gray-600 transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.005]">
+      <div className="px-6 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-600">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
           {data.type.name}
         </h3>
         <Modal>
@@ -53,24 +63,22 @@ function LimitsCard({ data, currency }) {
           </Menu>
         </Modal>
       </div>
-      <div className="px-5 pb-5">
-        <div className="w-full bg-zinc-200 rounded-full h-2.5">
-          {data.percentage > 100 ? (
-            <div className="bg-red-600 h-2.5 rounded-full w-[100%]"></div>
-          ) : (
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${data.percentage}%` }}
-            ></div>
-          )}
+
+      <div className="px-6 pt-4 pb-6">
+        <div className="w-full bg-gray-200 dark:bg-gray-500 rounded-full h-3 mb-2">
+          <div
+            className={`${progressBarColor} h-3 rounded-full transition-all duration-500 ease-out`}
+            style={{ width: `${cappedPercentage}%` }}
+          ></div>
         </div>
+
         <div className="flex justify-between items-center mt-3">
-          <span className="text-sm text-zinc-600 dark:text-gray-200">
-            {data.percentage.toFixed(0)}&#x25;
+          <span className={`text-sm font-medium ${percentageTextColor}`}>
+            {data.percentage.toFixed(0)}%
           </span>
-          <span className="text-sm text-zinc-600 dark:text-gray-200">
-            {data.total.toLocaleString()}
-            {getCurrencyEntity(currency)}/{data.amount.toLocaleString()}
+          <span className="text-sm text-gray-600 dark:text-gray-300">
+            <span className="font-semibold">{data.total.toLocaleString()}</span>
+            {getCurrencyEntity(currency)} / {data.amount.toLocaleString()}
             {getCurrencyEntity(currency)}
           </span>
         </div>

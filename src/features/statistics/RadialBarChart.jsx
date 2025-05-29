@@ -36,7 +36,7 @@ function RadialBarChartComponent({ data }) {
         options={options}
         series={series}
         type="radialBar"
-        height={350}
+        height={270}
       />
     </div>
   );

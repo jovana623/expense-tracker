@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-function SelectType({ data, onChange }) {
+function SelectType({ data, onChange, isLoading }) {
+  if (isLoading) return <div></div>;
   return (
     <select
       onChange={onChange}

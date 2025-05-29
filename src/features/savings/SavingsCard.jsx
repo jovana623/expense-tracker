@@ -23,7 +23,7 @@ function SavingCard({ saving, onCardChange, activeSaving, currency }) {
       <div
         className={`rounded-md px-3 pt-4 w-[90%]  items-end shadow hover:border hover:border-blue-500 hover:cursor-pointer mb-4 dark:bg-gray-700 dark:border-stone-600 ${
           activeSaving === saving.id
-            ? "border border-blue-500 dark:border-blue-500"
+            ? "border border-blue-500 dark:border-blue-400"
             : "border border-lightBg"
         }`}
         onClick={() => onCardChange(saving.id)}

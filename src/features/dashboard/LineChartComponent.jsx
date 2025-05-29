@@ -50,23 +50,28 @@ function LineChartComponent({ data, monthData, currency }) {
     });
 
     return (
-      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
+      <div
+        className="bg-white px-4 py-2 rounded-lg shadow-md border border-gray-200
+                   dark:bg-gray-700 dark:border-gray-600"
+      >
         {time === "month" ? (
-          <p className="dark:text-gray-200">
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
             {day} {currentMonth}
           </p>
         ) : monthParam ? (
-          <p className="dark:text-gray-200">
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
             {day} {monthLong}
           </p>
         ) : (
-          <p className="dark:text-gray-200">{monthYear}</p>
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
+            {monthYear}
+          </p>
         )}
-        <p className="text-green-500">
+        <p className="text-green-500 font-medium">
           Income: {income.toLocaleString()}
           {formattedCurrency}
         </p>
-        <p className="text-red-500">
+        <p className="text-red-500 font-medium">
           Expenses: {expenses.toLocaleString()}
           {formattedCurrency}
         </p>
@@ -76,7 +81,7 @@ function LineChartComponent({ data, monthData, currency }) {
 
   return (
     <div className="pl-0 ml-[-3rem] text-sm">
-      <ResponsiveContainer width="100%" height={280}>
+      <ResponsiveContainer width="100%" height={220}>
         <LineChart
           data={adjustedData}
           margin={{ top: 5, right: 10, left: 30, bottom: 5 }}

@@ -4,7 +4,6 @@ import Dashboard from "./pages/Dashboard";
 import Budget from "./pages/Budget";
 import Transactions from "./pages/Transactions";
 import Statistic from "./pages/Statistic";
-import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import { QueryClientProvider } from "@tanstack/react-query";
 import Overview from "./features/dashboard/Overview";
@@ -59,7 +58,6 @@ function App() {
                     <Route path="transactions" element={<Transactions />} />
                     <Route path="calendar" element={<Calendar />} />
                     <Route path="statistic" element={<Statistic />} />
-                    <Route path="settings" element={<Settings />} />
                     <Route path="profile" element={<Profile />} />
                     <Route element={<ProtectedSuperuserRoute />}>
                       <Route path="admin" element={<AdminPanel />} />

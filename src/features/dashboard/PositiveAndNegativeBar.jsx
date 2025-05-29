@@ -44,23 +44,28 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
     });
 
     return (
-      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
+      <div
+        className="bg-white px-4 py-2 rounded-lg shadow-md border border-gray-200
+                   dark:bg-gray-700 dark:border-gray-600"
+      >
         {time === "month" ? (
-          <p className="dark:text-gray-200">
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
             {day} {currentMonth}
           </p>
         ) : monthParam ? (
-          <p className="dark:text-gray-200">
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
             {day} {monthLong}
           </p>
         ) : (
-          <p className="dark:text-gray-200">{monthYear}</p>
+          <p className="text-gray-700 dark:text-gray-200 font-semibold">
+            {monthYear}
+          </p>
         )}
-        <p className="text-green-500">
+        <p className="text-green-500 font-medium">
           Income: {income.toLocaleString()}
           {formattedCurrency}
         </p>{" "}
-        <p className="text-red-500">
+        <p className="text-red-500 font-medium">
           Expenses: {Math.abs(expenses).toLocaleString()}
           {formattedCurrency}
         </p>
@@ -69,14 +74,14 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
   }
 
   return (
-    <div className="pl-0 ml-[-3rem] text-sm">
-      <ResponsiveContainer width="104%" height={280}>
+    <div className="text-sm">
+      <ResponsiveContainer width="100%" height={280}>
         <BarChart
           width={500}
           height={300}
           data={finalData}
           stackOffset="sign"
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 5, right: 0, left: 0, bottom: 0 }}
         >
           <CartesianGrid
             strokeDasharray="3 3"
@@ -87,13 +92,17 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
           <XAxis
             dataKey={time === "month" || monthParam ? "day" : "monthYear"}
             interval={time === "month" || monthParam ? 5 : "preserveStartEnd"}
-            tick={{ fill: "currentColor" }}
-            className="dark:text-white"
+            tickLine={false}
+            axisLine={false}
+            tick={{ fill: "#6b7280" }}
+            className="dark:text-gray-300"
           />
           <YAxis
             tickFormatter={currencyFormatter}
+            tickLine={false}
+            axisLine={false}
             tick={{ fill: "currentColor" }}
-            className="dark:text-white"
+            className="dark:text-gray-300"
           />
           <Tooltip content={renderTooltip} />
           <Legend
@@ -107,7 +116,8 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
           />
           <ReferenceLine
             y={0}
-            className="stroke-gray-800 dark:stroke-gray-400"
+            strokeDasharray="3 3"
+            className="stroke-gray-400 dark:stroke-gray-500"
           />
 
           <Bar
@@ -115,8 +125,14 @@ function PositiveAndNegativeBar({ data, monthData, currency }) {
             fill="#22c55e"
             stackId="stack"
             data-testid="income-bar"
+            radius={[4, 4, 0, 0]}
           />
-          <Bar dataKey="expenses" fill="#ef4444" stackId="stack" />
+          <Bar
+            dataKey="expenses"
+            fill="#ef4444"
+            stackId="stack"
+            radius={[4, 4, 0, 0]}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

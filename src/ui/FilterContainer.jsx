@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 function FilterContainer({ children }) {
   return (
-    <div className="flex gap-1 p-1 rounded-md shadow-sm border border-stone-200 justify-center dark:border-stone-600">
+    <div className="flex gap-1 p-1 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm">
       {children}
     </div>
   );

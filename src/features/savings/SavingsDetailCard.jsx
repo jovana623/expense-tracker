@@ -15,13 +15,22 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import useDeleteSaving from "./useDeleteSaving";
 import Spinner from "../../ui/Spinner";
 import ChangeStatus from "./ChangeStatus";
+import CardSkeleton from "../../ui/CardSkeleton";
 
 /* eslint-disable react/prop-types */
-function SavingsDetailCard({ currentSaving, currency }) {
-  console.log(currentSaving);
-  const { amount, goal } = currentSaving;
-  const { mutate: deleteSaving, isLoading } = useDeleteSaving();
+function SavingsDetailCard({ currentSaving, currency, isLoading }) {
+  const { mutate: deleteSaving, isLoading: isDeleting } = useDeleteSaving();
   const formattedCurrency = getCurrencyEntity(currency);
+
+  if (isLoading || isDeleting) {
+    return (
+      <div className="relative shadow rounded-md flex flex-col items-center py-3 gap-5 dark:bg-gray-700 h-full">
+        <CardSkeleton />
+      </div>
+    );
+  }
+
+  const { amount, goal } = currentSaving;
 
   if (isLoading) return <Spinner />;
   return (

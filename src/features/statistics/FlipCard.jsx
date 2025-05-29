@@ -5,7 +5,7 @@ import FlipCardFront from "./FlipCardFront";
 function FlipCard({ titleFront, titleBack, transaction, avg, currency }) {
   return (
     <div className="card w-full">
-      <div className="card__content relative p-20 transition-transform duration-1000 text-black font-bold rounded-2xl">
+      <div className="card__content relative h-48 transition-transform duration-1000 rounded-2xl">
         <div className="card__front absolute top-0 bottom-0 h-full right-0 left-0 rounded-2xl">
           <FlipCardFront
             title={titleFront}

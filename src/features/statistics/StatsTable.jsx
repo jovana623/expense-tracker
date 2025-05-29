@@ -29,7 +29,7 @@ function StatsTable({ data, isLoading, currency }) {
             {data.map((item, index) => (
               <tr
                 key={index}
-                className="odd:bg-white even:bg-gray-50 border-b dark:bg-gray-700 dark:border-stone-600"
+                className="odd:bg-white even:bg-gray-50 border-b dark:bg-gray-700 dark:border-stone-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-150 ease-in-out"
               >
                 <th
                   scope="row"

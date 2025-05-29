@@ -9,12 +9,11 @@ function ChartCard({ title, children, className }) {
 
   return (
     <div
-      className={`shadow-md w-full p-4 md:p-6 rounded-xl bg-lightBg dark:bg-gray-700 transition-shadow duration-300 hover:shadow-lg ${className} lg:flex lg:flex-col lg:h-full`}
+      className={`relative shadow-lg w-full p-4 md:p-6 rounded-2xl bg-white dark:bg-gray-700 transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.005] ${className} lg:flex lg:flex-col`}
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 lg:mb-6 lg:flex-shrink-0">
-        {" "}
         {title && (
-          <h2 className="text-lg font-semibold text-center md:text-left text-gray-700 dark:text-gray-100">
+          <h2 className="text-xl font-bold text-center md:text-left text-gray-800 dark:text-gray-100 flex-grow">
             {title}
           </h2>
         )}
@@ -23,7 +22,7 @@ function ChartCard({ title, children, className }) {
         </div>
       </div>
 
-      <div className="lg:flex-grow lg:min-h-0"> {childArray[1]}</div>
+      <div>{childArray[1]}</div>
     </div>
   );
 }

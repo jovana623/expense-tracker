@@ -19,11 +19,10 @@ function Statistic() {
   const time = searchParams.get("time") || "";
 
   const { data: typeData, isLoading } = useTypeByMonth(type);
-
   const { statistic, isLoading: isLoadingStats } =
     useTransactionStatistic(time);
-
   const { types, isLoading: isLoadingTypes } = useTypes();
+  console.log("Types:", types);
 
   function handleTypeChange(e) {
     searchParams.set("type", e.target.value);
@@ -33,29 +32,33 @@ function Statistic() {
   const currency = localStorage.getItem("currency");
 
   return (
-    <div className="py-8 px-7">
-      <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr_2fr] gap-10 h-[100%]">
-        <div className="flex flex-col gap-5">
+    <div className="py-4 px-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-rows-[1fr_2fr]  gap-5">
           <ChartCard title="Trends over time">
-            {isLoadingTypes ? (
-              <div></div>
-            ) : (
-              <SelectType data={types} onChange={handleTypeChange} />
-            )}
+            <SelectType
+              data={types}
+              onChange={handleTypeChange}
+              isLoading={isLoadingTypes}
+            />
+
             {isLoading ? (
               <ChartSkeleton />
             ) : (
               <CategoryChart data={typeData} currency={currency} />
             )}
           </ChartCard>
-          <ChartCard>
-            <TimeFilter />
 
-            <div className="flex flex-col sm:flex-row gap-3">
+          <SavingsContainer currency={currency} />
+        </div>
+
+        <ChartCard>
+          <TimeFilter />
+
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {isLoadingStats ? (
-                <div className="my-3 shadow-sm w-[200px] mx-auto">
-                  <CardSkeleton size={4} />
-                </div>
+                <CardSkeleton size={4} />
               ) : (
                 <FlipCard
                   titleFront="Average income"
@@ -66,9 +69,7 @@ function Statistic() {
                 />
               )}
               {isLoadingStats ? (
-                <div className="my-3 shadow-sm w-[200px] mx-auto">
-                  <CardSkeleton size={4} />
-                </div>
+                <CardSkeleton size={4} />
               ) : (
                 <FlipCard
                   titleFront="Average expense"
@@ -79,35 +80,33 @@ function Statistic() {
                 />
               )}
             </div>
-          </ChartCard>
-        </div>
-        <div className="">
-          <SavingsContainer currency={currency} />
-        </div>
-        <div>
-          <ChartCard>
-            <TimeFilter />
 
-            <div className="flex flex-col gap-3 g-gray-50 dark:bg-gray-700">
-              <p className="text-xs text-gray-700 uppercase dark:text-lightBg">
-                Top income types
-              </p>
-              <StatsTable
-                data={statistic?.top_income_types || []}
-                isLoading={isLoadingStats}
-                currency={currency}
-              />
-              <p className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-lightBg">
-                Top expense types
-              </p>
-              <StatsTable
-                data={statistic?.top_expense_types || []}
-                isLoading={isLoadingStats}
-                currency={currency}
-              />
+            <div className="flex-grow grid grid-cols-1 gap-4 mt-5">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-semibold text-gray-700 uppercase dark:text-lightBg mb-2">
+                    Top income types
+                  </p>
+                  <StatsTable
+                    data={statistic?.top_income_types || []}
+                    isLoading={isLoadingStats}
+                    currency={currency}
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-gray-700 uppercase dark:text-lightBg mb-2">
+                    Top expense types
+                  </p>
+                  <StatsTable
+                    data={statistic?.top_expense_types || []}
+                    isLoading={isLoadingStats}
+                    currency={currency}
+                  />
+                </div>
+              </div>
             </div>
-          </ChartCard>
-        </div>
+          </div>
+        </ChartCard>
       </div>
     </div>
   );

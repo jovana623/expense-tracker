@@ -34,13 +34,16 @@ function SavingsGoalChart({ saving, payments, currency }) {
     const { date, total, goal } = payload[0].payload;
 
     return (
-      <div className="bg-lightBg px-5 py-2 rounded-md border border-stone-200 dark:bg-gray-800 dark:border-stone-600">
+      <div
+        className="bg-white px-4 py-2 rounded-lg shadow-md border border-gray-200
+                   dark:bg-gray-700 dark:border-gray-600"
+      >
         <p>{date}</p>
-        <p className="text-red-500">
+        <p className="text-red-500 font-medium">
           Goal: {goal.toLocaleString()}
           {formattedCurrency}
         </p>
-        <p className="text-green-500">
+        <p className="text-green-500 font-medium">
           Saved: {total.toLocaleString()}
           {getCurrencyEntity(currency)}
         </p>{" "}

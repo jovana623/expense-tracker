@@ -29,10 +29,10 @@ const SummaryCard = React.memo(function SummaryCard({
   );
 
   const percentageClass = useMemo(() => {
-    if (isActive) return "text-white";
-    if (percentage > 0) return "text-green-500 group-hover:text-lightBg";
-    if (percentage < 0) return "text-red-500 group-hover:text-lightBg";
-    return "text-stone-500";
+    if (isActive) return "dark:text-white";
+    if (percentage > 0) return "text-emerald-500 hover:group-hover:text-white";
+    if (percentage < 0) return "text-rose-500 hover:group-hover:text-white";
+    return "text-gray-500";
   }, [percentage, isActive]);
 
   const arrowIcon = useMemo(() => {
@@ -42,23 +42,27 @@ const SummaryCard = React.memo(function SummaryCard({
   return (
     <div
       data-testid="summary-card"
-      className={`group shadow-md p-5 rounded-md hover:bg-green-500 hover:text-lightBg hover:shadow-lg transition-all duration-200 dark:hover:bg-green-500 ${
+      className={`group relative p-6 rounded-xl transition-all duration-300 ease-in-out ${
         isActive
-          ? "bg-green-500 text-lightBg shadow-xl"
-          : "bg-lightBg text-stone-800 dark:bg-gray-700 dark:text-white dark:shadow-lg"
-      }`}
+          ? "bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-xl shadow-green-500/30"
+          : "bg-gray-50 text-gray-800 dark:bg-gray-700 dark:text-white shadow-lg hover:shadow-xl dark:shadow-md dark:hover:shadow-lg"
+      } hover:scale-[1.02] hover:shadow-2xl hover:shadow-green-500/20 dark:hover:shadow-green-500/15`}
     >
       {isLoading ? (
         <CardSkeleton />
       ) : (
         <>
           <div className="flex items-start justify-between">
-            <div className="text-5xl bg-gray-100 dark:bg-gray-600 p-4 rounded-full text-green-500">
-              {icon}
+            <div
+              className={`p-3 rounded-full border${
+                isActive
+                  ? "bg-white bg-opacity-20 text-white"
+                  : "bg-green-100 text-green-600 dark:bg-gray-700 dark:text-green-400"
+              }`}
+            >
+              <span className="text-3xl">{icon}</span>
             </div>
-            {!isActive ? (
-              <div></div>
-            ) : (
+            {isActive && (
               <Menu>
                 <Menu.Toggle
                   onClick={(e) => {
@@ -83,29 +87,33 @@ const SummaryCard = React.memo(function SummaryCard({
           </div>
           <div className="mt-4">
             <p
-              className={`text-sm hover:text-lightBg${
-                isActive ? "text-lightBg" : "text-stone-500"
-              } group-hover:text-lightBg`}
+              className={`text-sm font-semibold tracking-wide ${
+                isActive
+                  ? "text-white text-opacity-80 group-hover:text-white"
+                  : "text-gray-500 dark:text-gray-400"
+              } `}
             >
               {name.toUpperCase()}
             </p>
-            <p className="text-xl font-bold mb-2">
+            <p className="text-3xl font-extrabold mt-1 mb-2">
               {amount.toLocaleString()}
               {getCurrencyEntity(currency)}
             </p>
 
             {time === "all" && name !== "Savings" ? (
-              <div className="h-[1rem]"></div>
+              <div className="h-6"></div>
             ) : (
-              <p className="flex items-center gap-1 h-4">
+              <p className="flex items-center gap-2 text-sm">
                 <span className={`flex items-center gap-1 ${percentageClass}`}>
                   <span data-testid="arrow-icon">{arrowIcon}</span>
-                  <span className="hover:text-lightBg">{percentage}&#x25;</span>
+                  <span className="font-medium">{percentage}&#x25;</span>
                 </span>{" "}
                 <span
                   className={`${
-                    isActive ? "text-lightBg" : ""
-                  } hover:text-lightBg`}
+                    isActive
+                      ? "text-white text-opacity-70 group-hover:text-white"
+                      : "text-gray-600 dark:text-gray-300"
+                  }`}
                 >
                   {name === "Savings"
                     ? "completed"

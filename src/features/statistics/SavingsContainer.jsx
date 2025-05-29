@@ -2,6 +2,7 @@ import { useSavings } from "../savings/useSavings";
 import Spinner from "../../ui/Spinner";
 import RadialBarChart from "./RadialBarChart";
 import RadialChartTable from "./RadialChartTable";
+import ChartCard from "../../ui/ChartCard";
 
 /* eslint-disable react/prop-types */
 function SavingsContainer({ currency }) {
@@ -15,19 +16,17 @@ function SavingsContainer({ currency }) {
   }));
 
   return (
-    <div className="rounded-md shadow h-[100%] flex flex-col px-4 py-7 dark:bg-gray-700">
-      <p className="font-semibold text-xl text-center dark:text-gray-200">
-        Saving goals
-      </p>
+    <ChartCard title="Saving goals">
+      <p></p>
       {isLoading ? (
         <Spinner />
       ) : (
-        <>
+        <div className="flex">
           <RadialBarChart data={adjustedData} />
           <RadialChartTable data={adjustedData} currency={currency} />
-        </>
+        </div>
       )}
-    </div>
+    </ChartCard>
   );
 }
 

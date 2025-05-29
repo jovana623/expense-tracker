@@ -8,7 +8,9 @@ function Budget() {
       <AddForm title="budget">
         <CreateBudgetForm />
       </AddForm>
-      <Limits />
+      <div className="mt-5">
+        <Limits />
+      </div>
     </div>
   );
 }

@@ -35,21 +35,26 @@ function Transactions() {
   }, [searchParams, month, sortBy, search, page, setSearchParams]);
 
   return (
-    <div>
-      <div className="my-4 pr-10 flex justify-end items-center gap-4">
-        <Search />
-        <SortByTable />
-        <TimeFilter />
+    <div className="flex flex-col h-full overflow-hidden">
+      <div className="my-4 px-4 sm:px-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="w-full md:flex-grow md:max-w-xs">
+          <Search />
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <SortByTable />
+          <TimeFilter />
+        </div>
       </div>
 
-      <div>
-        <div className="mx-10 h-[75vh]">
-          <Table
-            data={transactions?.results || []}
-            isLoading={isLoading}
-            currency={currency}
-          />
-        </div>
+      <div className="flex-grow overflow-auto px-4 sm:px-10">
+        <Table
+          data={transactions?.results || []}
+          isLoading={isLoading}
+          currency={currency}
+        />
+      </div>
+
+      <div className="sticky bottom-0 z-10 bg-white dark:bg-gray-800 py-4 mt-4 px-4 sm:px-10 border-t border-gray-200 dark:border-gray-700">
         <Pagination
           page={page}
           numOfPages={

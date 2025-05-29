@@ -6,60 +6,60 @@ function Limits() {
   const { budgets, isLoading } = useBudgets();
   const currency = localStorage.getItem("currency");
 
-  return (
-    <div className="rounded-md h-[100%]">
-      <div className="grid sm:grid-cols-2 gap-20 mt-5">
-        <div className="flex flex-col gap-8">
-          <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-stone-200 pb-2 dark:text-lightBg dark:border-stone-600">
-            Monthly Budgets
-          </h2>
-          <div className="grid md:grid-cols-2 gap-2">
-            {isLoading
-              ? Array.from({ length: 2 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-md rounded-lg overflow-hidden p-3 dark:bg-gray-700"
-                  >
-                    <CardSkeleton size={3} />
-                  </div>
-                ))
-              : budgets
-                  .filter((budget) => budget.period === "Monthly")
-                  .map((budget) => (
-                    <LimitsCard
-                      key={budget.id}
-                      data={budget}
-                      currency={currency}
-                    />
-                  ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-8">
-          <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-stone-200 pb-2 dark:text-lightBg dark:border-stone-600">
-            Yearly Budgets
-          </h2>
-          <div className="grid md:grid-cols-2 gap-2">
-            {isLoading
-              ? Array.from({ length: 2 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="bg-white shadow-md rounded-lg overflow-hidden p-3 dark:bg-gray-700"
-                  >
-                    <CardSkeleton size={3} />
-                  </div>
-                ))
-              : budgets
-                  .filter((budget) => budget.period === "Yearly")
-                  .map((budget) => (
-                    <LimitsCard
-                      key={budget.id}
-                      data={budget}
-                      currency={currency}
-                    />
-                  ))}
-          </div>
-        </div>
+  const renderSkeletons = (count) =>
+    Array.from({ length: count }).map((_, index) => (
+      <div
+        key={`skeleton-${index}`}
+        className="bg-white shadow-lg rounded-xl overflow-hidden dark:bg-gray-700 dark:border dark:border-gray-600 p-6"
+      >
+        <CardSkeleton size={3} />{" "}
       </div>
+    ));
+
+  const renderBudgets = (filteredBudgets) =>
+    filteredBudgets.map((budget) => (
+      <LimitsCard key={budget.id} data={budget} currency={currency} />
+    ));
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
+      <section className="flex flex-col gap-y-6">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-3 dark:text-gray-200 dark:border-gray-500">
+          Monthly Budgets
+        </h2>
+        {budgets?.filter((b) => b.period === "Monthly").length === 0 &&
+          !isLoading && (
+            <p className="text-gray-500 dark:text-gray-400">
+              No monthly budgets found.
+            </p>
+          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {isLoading
+            ? renderSkeletons(2)
+            : renderBudgets(
+                budgets.filter((budget) => budget.period === "Monthly")
+              )}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-y-6">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-3 dark:text-gray-200 dark:border-gray-500">
+          Yearly Budgets
+        </h2>
+        {budgets?.filter((b) => b.period === "Yearly").length === 0 &&
+          !isLoading && (
+            <p className="text-gray-500 dark:text-gray-400">
+              No yearly budgets found.
+            </p>
+          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {isLoading
+            ? renderSkeletons(2)
+            : renderBudgets(
+                budgets.filter((budget) => budget.period === "Yearly")
+              )}
+        </div>
+      </section>
     </div>
   );
 }

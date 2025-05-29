@@ -1,9 +1,25 @@
 import Slider from "react-slick";
 import SavingsCard from "./SavingsCard";
 import { getCurrencyEntity } from "../../helpers/currencyFunctions";
+import CardSkeleton from "../../ui/CardSkeleton";
 
 /* eslint-disable react/prop-types */
-function VerticalCarousel({ savings, onCardChange, activeSaving, currency }) {
+function VerticalCarousel({
+  savings,
+  onCardChange,
+  activeSaving,
+  currency,
+  isLoading,
+}) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full min-h-[200px]">
+        <div className="w-[90%]">
+          <CardSkeleton />
+        </div>
+      </div>
+    );
+  }
   const SamplePrevArrow = (props) => {
     const { className, onClick } = props;
     return (

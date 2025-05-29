@@ -21,7 +21,7 @@ function NavBar() {
                  px-6 py-8 gap-y-10 h-full bg-white dark:bg-gray-800"
     >
       <Logo />
-      <ul className="flex flex-col gap-y-3">
+      <ul className="flex flex-col gap-y-3 flex-grow">
         <li>
           <NavLink to="dashboard/overview" className={getNavLinkClass}>
             <BiHomeAlt2 />
@@ -60,7 +60,7 @@ function NavBar() {
             </NavLink>
           </li>
         )}
-        <li>
+        <li className="mt-auto">
           <NavLink to="support" className={getNavLinkClass}>
             <MdOutlineContactSupport />
             <span>Support</span>
