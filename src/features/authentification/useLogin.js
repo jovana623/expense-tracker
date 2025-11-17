@@ -10,13 +10,21 @@ export function useLogin() {
       localStorage.setItem("refreshToken", data.refresh);
 
       const userData = await getCurrentUser();
-      const { currency, avatar, username, is_staff, is_superuser } = userData;
+      const {
+        currency,
+        avatar,
+        username,
+        is_staff,
+        is_superuser,
+        current_balance,
+      } = userData;
 
       localStorage.setItem("currency", currency);
       localStorage.setItem("avatar", avatar);
       localStorage.setItem("username", username);
       localStorage.setItem("isStaff", is_staff);
       localStorage.setItem("isSuperuser", is_superuser);
+      localStorage.setItem("currentBalance", current_balance);
 
       toast.success("Welcome");
     },

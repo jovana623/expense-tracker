@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+/*import { useSearchParams } from "react-router-dom";
 
 import { sortByMonth, sortMonthData } from "../../helpers/sortTransactions";
 import { handleDownloadPDF } from "../../helpers/pdfDownload";
@@ -14,9 +14,10 @@ import Table from "../../ui/Table";
 import BalanceCard from "../balance/BalanceCard";
 import Spinner from "../../ui/Spinner";
 import ChartCard from "../../ui/ChartCard";
-import AreaChartComponent from "../balance/AreaChartComponent";
+import AreaChartComponent from "../balance/AreaChartComponent";*/
 
 function BalanceReport() {
+  /*
   const [searchParams] = useSearchParams();
   const month = searchParams.get("month") || "";
   const time = searchParams.get("time") || "";
@@ -168,7 +169,7 @@ function BalanceReport() {
         </div>
       </div>
     </div>
-  );
+  );*/
 }
 
 export default BalanceReport;

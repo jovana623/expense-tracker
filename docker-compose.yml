@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build:
+      context: .
+      target: dev
+    container_name: expense-tracker-frontend
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    command: npm run dev -- --host

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useBalanceStats } from "./hooks/useBalanceStats";
-import { useMonthlyBalance } from "../transactions/useMonthlyBalance";
-import { useDailyBalance } from "../transactions/useDailyBalance";
+import { useMonthlyBalance } from "./useMonthlyBalance";
+import { useDailyBalance } from "./useDailyBalance";
 
 import ChartCard from "../../ui/ChartCard";
 import AreaChartComponent from "./AreaChartComponent";

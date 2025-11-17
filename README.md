@@ -23,6 +23,9 @@ Please note, the backend for this application is located in a separate repositor
 - **Budgets**: Create budgets for various categories like groceries, entertainment, etc.
 - **Detailed Statistics**: View financial trends, summaries, and category-wise expenses.
 - **Calendar**: Keep track of your transactions by date.
+- **Admin Panel**: A dedicated panel for admin users to manage users, transactions, categories, and system-level settings.
+- **User Support Chat**: Built-in real-time support chat for users to communicate with support/admins directly.
+- **Notifications**: Real-time in-app notifications for budget limits, reminders, and support messages.
 - **Responsive Design**: Fully responsive design, optimized for both desktop and mobile use.
 
 ## 🎨 **Gallery**
@@ -31,14 +34,22 @@ Check out the interface and features of the app below:
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
   <img src="./images/dashboard.png" alt="Dashboard" width="30%" />
+  <img src="./images/dashboard-2.png" alt="Dashboard-2" width="30%" />
   <img src="./images/income.png" alt="Income" width="30%" />
   <img src="./images/form.png" alt="Form" width="30%" />
-  <img src="./images/savings.png" alt="Savings" width="30%" />
-  <img src="./images/statistic.png" alt="Statistic" width="30%" />
+  <img src="./images/login.png" alt="Login" width="30%" />
+  <img src="./images/statistics.png" alt="Statistic" width="30%" />
+  <img src="./images/admin.png" alt="Admin" width="30%" />
   <img src="./images/calendar.png" alt="Calendar" width="30%" />
-  <img src="./images/expenses-responsive.png" alt="Expenses responsive" width="30%" />
-  <img src="./images/form-responsive.png" alt="Form responsive" width="30%" />
+  <img src="./images/support.png" alt="Support" width="30%" />
+  <img src="./images/transactions.png" alt="Transactions" width="30%" />
+  <img src="./images/profile.png" alt="Profile" width="30%" />
+  <img src="./images/savings.png" alt="Savings" width="30%" />
   <img src="./images/menu-responsive.png" alt="Menu responsive" width="30%" />
+  <img src="./images/responsive.png" alt="Responsive" width="30%" />
+  <img src="./images/form-responsive.png" alt="Form responsive" width="30%" />
+  
+  
 </div>
 
 ## ✨ **Demo**
@@ -51,6 +62,8 @@ Here’s a quick demo of the app in action:
 
 - **React**
 - **Vite**
+- **Docker**
+- **Websockets**
 - **Tailwind CSS**
 - **React Query**
 - **React Router**

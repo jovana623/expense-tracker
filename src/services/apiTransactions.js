@@ -208,7 +208,7 @@ export async function getDailyBalance(month) {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
-      `${API_URL}/transactions/daily-balances/`,
+      `${API_URL}/transactions/balances/daily/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -227,7 +227,7 @@ export async function getMonthlyBalance(time, month) {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) throw new Error("No access token found");
     const response = await axios.get(
-      `${API_URL}/transactions/monthly-balances`,
+      `${API_URL}/transactions/balances/monthly/`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

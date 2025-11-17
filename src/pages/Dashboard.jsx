@@ -15,7 +15,7 @@ import { goalSummary, summary } from "../helpers/sortTransactions";
 
 import { useSavings } from "../features/savings/useSavings";
 import { useDashboardSummary } from "../features/transactions/useDashboardSummary";
-import { useMonthlyBalance } from "../features/transactions/useMonthlyBalance";
+import { useMonthlyBalance } from "../features/balance/useMonthlyBalance";
 import { useBalancePercentage } from "../features/dashboard/hooks/useBalancePercentage";
 import { useDashboardHistory } from "../features/transactions/useDashboardHistory";
 import { useIncomeExpensePercentage } from "../features/dashboard/hooks/useIncomeExpensePercentage";
@@ -26,6 +26,7 @@ import AddForm from "../ui/AddForm";
 import MonthFilter from "../ui/MonthFilter";
 import CreateSavingGoalForm from "../features/savings/CreateSavingGoalForm";
 import CreateTransactionForm from "../features/transactions/CreateTransactionForm";
+import { useCurrentUser } from "../features/authentification/useCurrentUser";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,6 +36,8 @@ function Dashboard() {
   const queryString = searchParams.toString()
     ? `?${searchParams.toString()}`
     : "";
+
+  const { data: user, isLoading: isLoadingUser } = useCurrentUser();
 
   useEffect(() => {
     if (!searchParams.has("time") && !searchParams.has("month")) {
@@ -58,7 +61,7 @@ function Dashboard() {
 
   const { monthlyBalance, isLoading: isLoadingBalance } = useMonthlyBalance();
 
-  const { currentMonthBalance, balancePercentage } = useBalancePercentage(
+  const { balancePercentage } = useBalancePercentage(
     monthlyBalance,
     isLoadingBalance,
     time
@@ -160,10 +163,10 @@ function Dashboard() {
           <SummaryCard
             icon={<BiWallet />}
             name="current balance"
-            amount={currentMonthBalance}
+            amount={user?.current_balance || 0}
             percentage={balancePercentage}
             isActive={location.pathname === "/dashboard/balance"}
-            isLoading={isLoadingBalance}
+            isLoading={isLoadingUser}
             reportPath="balance"
           />
         </NavLink>
